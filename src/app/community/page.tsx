@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import CommunityFeed from "@/components/community/CommunityFeed";
 import { Users, BookOpen, Heart, Share2, Crown, TrendingUp } from "lucide-react";
 import Link from "next/link";
@@ -7,10 +8,16 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CommunityPage() {
+  // ── Auth gate — must be signed in to view community ──────────────────────
   const session = await auth().catch(() => null);
-  const isPremium = session?.user?.plan === "PREMIUM";
+  if (!session?.user) {
+    redirect("/auth/signin?callbackUrl=/community");
+  }
+  // ── End auth gate ─────────────────────────────────────────────────────────
 
-  // Wrap all DB calls — if DATABASE_URL is missing or DB is down, show zeros
+  const isPremium = session.user?.plan === "PREMIUM";
+
+  // Wrap all DB calls — if DB is unavailable, render with zeros
   let totalShared = 0, totalTeachers = 0, totalLikes = 0;
   let topSubjects: { subject: string; _count: { subject: number } }[] = [];
 
@@ -52,52 +59,59 @@ export default async function CommunityPage() {
         <div className="flex flex-wrap gap-5 mt-5">
           <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
             <BookOpen size={14} className="text-[#ea4c89]" />
-            <span><strong className="text-[#0d0d0d] font-semibold">{totalShared.toLocaleString()}</strong> plans shared</span>
+            <span>
+              <strong className="text-[#0d0d0d] font-semibold">{totalShared.toLocaleString()}</strong> plans shared
+            </span>
           </div>
           <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
             <Users size={14} className="text-[#007531]" />
-            <span><strong className="text-[#0d0d0d] font-semibold">{totalTeachers.toLocaleString()}</strong> educators</span>
+            <span>
+              <strong className="text-[#0d0d0d] font-semibold">{totalTeachers.toLocaleString()}</strong> educators
+            </span>
           </div>
           <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
             <Heart size={14} className="text-red-400" />
-            <span><strong className="text-[#0d0d0d] font-semibold">{totalLikes.toLocaleString()}</strong> likes</span>
+            <span>
+              <strong className="text-[#0d0d0d] font-semibold">{totalLikes.toLocaleString()}</strong> likes
+            </span>
           </div>
         </div>
       </div>
 
       {/* ── Share / Upsell banner ── */}
-      {session && (
-        isPremium ? (
-          <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#007531]">
-            <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
-              <Share2 size={16} className="text-[#007531]" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[#0d0d0d] font-semibold text-sm">Share your lesson plans</p>
-              <p className="text-[#6b6b76] text-xs mt-0.5">
-                Open any saved plan from your dashboard and click Share to contribute to the community.
-              </p>
-            </div>
-            <Link href="/dashboard" className="text-[#ea4c89] text-xs hover:text-[#d6437a] font-medium shrink-0 transition-colors">
-              Go to Dashboard →
-            </Link>
+      {isPremium ? (
+        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#007531]">
+          <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Share2 size={16} className="text-[#007531]" />
           </div>
-        ) : (
-          <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#ea4c89]">
-            <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-              <Crown size={16} className="text-[#ea4c89]" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[#0d0d0d] font-semibold text-sm">Share with the community</p>
-              <p className="text-[#6b6b76] text-xs mt-0.5">
-                Upgrade to Premium to share plans and help colleagues cover absent teachers.
-              </p>
-            </div>
-            <Link href="/payment" className="drib-btn-primary text-xs px-4 py-2 shrink-0">
-              Upgrade
-            </Link>
+          <div className="flex-1">
+            <p className="text-[#0d0d0d] font-semibold text-sm">Share your lesson plans</p>
+            <p className="text-[#6b6b76] text-xs mt-0.5">
+              Open any saved plan from your dashboard and click Share to contribute to the community.
+            </p>
           </div>
-        )
+          <Link
+            href="/dashboard"
+            className="text-[#ea4c89] text-xs hover:text-[#d6437a] font-medium shrink-0 transition-colors"
+          >
+            Go to Dashboard →
+          </Link>
+        </div>
+      ) : (
+        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#ea4c89]">
+          <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={16} className="text-[#ea4c89]" />
+          </div>
+          <div className="flex-1">
+            <p className="text-[#0d0d0d] font-semibold text-sm">Share with the community</p>
+            <p className="text-[#6b6b76] text-xs mt-0.5">
+              Upgrade to Premium to share plans and help colleagues cover absent teachers.
+            </p>
+          </div>
+          <Link href="/payment" className="drib-btn-primary text-xs px-4 py-2 shrink-0">
+            Upgrade
+          </Link>
+        </div>
       )}
 
       {/* ── Trending subjects ── */}
@@ -121,7 +135,7 @@ export default async function CommunityPage() {
         </div>
       )}
 
-      <CommunityFeed userId={session?.user.id} isPremium={isPremium} />
+      <CommunityFeed userId={session.user.id} isPremium={isPremium} />
     </main>
   );
 }

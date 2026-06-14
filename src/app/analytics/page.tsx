@@ -22,28 +22,32 @@ export default async function AnalyticsPage() {
   const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
 
-  const [
-    totalPlans, thisMonthPlans, lastMonthPlans, sharedPlans,
-    subInfo, recentPlans, plansBySubject, plansByGrade,
-  ] = await Promise.all([
-    prisma.lessonPlan.count({ where: { userId } }),
-    prisma.lessonPlan.count({ where: { userId, createdAt: { gte: startOfMonth } } }),
-    prisma.lessonPlan.count({ where: { userId, createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } } }),
-    prisma.sharedPlan.count({ where: { userId } }),
-    getUserSubscriptionInfo(userId),
-    prisma.lessonPlan.findMany({
-      where: { userId }, orderBy: { createdAt: "desc" }, take: 5,
-      select: { id: true, topic: true, subject: true, grade: true, createdAt: true },
-    }),
-    prisma.lessonPlan.groupBy({
-      by: ["subject"], where: { userId }, _count: { subject: true },
-      orderBy: { _count: { subject: "desc" } }, take: 6,
-    }),
-    prisma.lessonPlan.groupBy({
-      by: ["grade"], where: { userId }, _count: { grade: true },
-      orderBy: { _count: { grade: "desc" } }, take: 6,
-    }),
-  ]);
+  const [totalPlans, thisMonthPlans, lastMonthPlans, sharedPlans,
+    subInfo, recentPlans, plansBySubject, plansByGrade] = await (async () => {
+    try {
+      return await Promise.all([
+        prisma.lessonPlan.count({ where: { userId } }),
+        prisma.lessonPlan.count({ where: { userId, createdAt: { gte: startOfMonth } } }),
+        prisma.lessonPlan.count({ where: { userId, createdAt: { gte: startOfLastMonth, lte: endOfLastMonth } } }),
+        prisma.sharedPlan.count({ where: { userId } }),
+        getUserSubscriptionInfo(userId),
+        prisma.lessonPlan.findMany({
+          where: { userId }, orderBy: { createdAt: "desc" }, take: 5,
+          select: { id: true, topic: true, subject: true, grade: true, createdAt: true },
+        }),
+        prisma.lessonPlan.groupBy({
+          by: ["subject"], where: { userId }, _count: { subject: true },
+          orderBy: { _count: { subject: "desc" } }, take: 6,
+        }),
+        prisma.lessonPlan.groupBy({
+          by: ["grade"], where: { userId }, _count: { grade: true },
+          orderBy: { _count: { grade: "desc" } }, take: 6,
+        }),
+      ]);
+    } catch {
+      return [0, 0, 0, 0, { plan: "FREE", status: "NONE", endDate: null, startDate: null, daysRemaining: null, paymentMethod: null, receiptNumber: null }, [], [], []];
+    }
+  })();
 
   const isPremium = subInfo.plan === "PREMIUM";
   const monthGrowth = lastMonthPlans > 0
@@ -96,7 +100,7 @@ export default async function AnalyticsPage() {
     last7Days.map((day) => {
       const start = new Date(day); start.setHours(0, 0, 0, 0);
       const end = new Date(day); end.setHours(23, 59, 59, 999);
-      return prisma.lessonPlan.count({ where: { userId, createdAt: { gte: start, lte: end } } });
+      return prisma.lessonPlan.count({ where: { userId, createdAt: { gte: start, lte: end } } }).catch(() => 0);
     })
   );
   const activityData = last7Days.map((day, i) => ({

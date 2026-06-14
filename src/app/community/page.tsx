@@ -7,21 +7,29 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CommunityPage() {
-  const session = await auth();
+  const session = await auth().catch(() => null);
   const isPremium = session?.user?.plan === "PREMIUM";
 
-  const [totalShared, totalTeachers, totalLikes, topSubjects] = await Promise.all([
-    prisma.sharedPlan.count({ where: { isPublic: true } }),
-    prisma.user.count(),
-    prisma.planLike.count(),
-    prisma.sharedPlan.groupBy({
-      by: ["subject"],
-      where: { isPublic: true },
-      _count: { subject: true },
-      orderBy: { _count: { subject: "desc" } },
-      take: 8,
-    }),
-  ]);
+  // Wrap all DB calls — if DATABASE_URL is missing or DB is down, show zeros
+  let totalShared = 0, totalTeachers = 0, totalLikes = 0;
+  let topSubjects: { subject: string; _count: { subject: number } }[] = [];
+
+  try {
+    [totalShared, totalTeachers, totalLikes, topSubjects] = await Promise.all([
+      prisma.sharedPlan.count({ where: { isPublic: true } }),
+      prisma.user.count(),
+      prisma.planLike.count(),
+      prisma.sharedPlan.groupBy({
+        by: ["subject"],
+        where: { isPublic: true },
+        _count: { subject: true },
+        orderBy: { _count: { subject: "desc" } },
+        take: 8,
+      }),
+    ]);
+  } catch {
+    // DB unavailable — page still renders with empty stats
+  }
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-8">

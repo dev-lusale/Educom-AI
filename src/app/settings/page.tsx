@@ -31,24 +31,29 @@ export default async function SettingsPage() {
   const session = await auth();
   if (!session) redirect("/auth/signin");
 
-  const [user, subInfo, transactions, googleAccount] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { name: true, email: true, school: true, province: true, plan: true, createdAt: true },
-    }),
-    getUserSubscriptionInfo(session.user.id),
-    prisma.transaction.findMany({
-      where: { userId: session.user.id },
-      orderBy: { createdAt: "desc" },
-      take: 10,
-      select: { id: true, transactionRef: true, paymentMethod: true, amount: true, currency: true, status: true, receiptNumber: true, createdAt: true },
-    }),
-    // Detect if this user signed in via Google (has a Google OAuth account record)
-    prisma.account.findFirst({
-      where: { userId: session.user.id, provider: "google" },
-      select: { id: true },
-    }),
-  ]);
+  const [user, subInfo, transactions, googleAccount] = await (async () => {
+    try {
+      return await Promise.all([
+        prisma.user.findUnique({
+          where: { id: session.user.id },
+          select: { name: true, email: true, school: true, province: true, plan: true, createdAt: true },
+        }),
+        getUserSubscriptionInfo(session.user.id),
+        prisma.transaction.findMany({
+          where: { userId: session.user.id },
+          orderBy: { createdAt: "desc" },
+          take: 10,
+          select: { id: true, transactionRef: true, paymentMethod: true, amount: true, currency: true, status: true, receiptNumber: true, createdAt: true },
+        }),
+        prisma.account.findFirst({
+          where: { userId: session.user.id, provider: "google" },
+          select: { id: true },
+        }),
+      ]);
+    } catch {
+      return [null, { plan: "FREE", status: "NONE", endDate: null, startDate: null, daysRemaining: null, paymentMethod: null, receiptNumber: null }, [], null];
+    }
+  })();
 
   if (!user) redirect("/auth/signin");
   const isPremium = subInfo.plan === "PREMIUM";

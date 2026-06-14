@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
   BookOpen, Users, Plus, ArrowRight, Clock,
@@ -19,7 +20,7 @@ const METHOD_LABELS: Record<string, string> = {
 
 export default async function DashboardPage() {
   const session = await auth();
-  if (!session) return null;
+  if (!session?.user) redirect("/auth/signin");
 
   const userId = session.user.id;
 

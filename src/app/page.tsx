@@ -8,9 +8,14 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function LandingPage() {
-  // Logged-in users go straight to their dashboard
-  const session = await auth();
-  if (session) redirect("/dashboard");
+  // Logged-in users go straight to their dashboard.
+  // Wrap in try/catch so a DB error never crashes the landing page.
+  try {
+    const session = await auth();
+    if (session?.user) redirect("/dashboard");
+  } catch {
+    // DB unavailable or auth misconfigured — show landing page anyway
+  }
 
   return (
     <div className="min-h-screen bg-white">

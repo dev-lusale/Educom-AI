@@ -1,0 +1,9 @@
+# Place your Zambian curriculum PDF/DOCX files here.
+# They will be automatically ingested into ChromaDB on startup.
+#
+# Recommended files:
+# - zambia_mathematics_syllabus_grade9.pdf
+# - zambia_science_syllabus_grade7.pdf
+# - zambia_english_syllabus_grade12.pdf
+# - zambia_cbc_framework.pdf
+# - teacher_guides/

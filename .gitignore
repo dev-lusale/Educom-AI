@@ -1,0 +1,69 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Environment files — NEVER commit real values ─────────────────
+# Local dev secrets
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Root .env files with real values
+.env
+.env.apis
+# AI backend secrets
+ai-backend/.env
+ai-backend/.env.local
+ai-backend/.env.production
+# SAFE to commit (no real values, just templates):
+# .env.production.example  ← commit this
+# ai-backend/.env.example  ← commit this
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ── ChromaDB vector store (generated at runtime, large) ──────────
+ai-backend/vector_db/chroma_store/
+
+# ── Uploaded files ────────────────────────────────────────────────
+ai-backend/uploads/
+
+# ── SQLite local database ─────────────────────────────────────────
+*.db
+*.db-journal
+prisma/dev.db

@@ -1,0 +1,48 @@
+# ═══════════════════════════════════════════════════════════════
+# Educom AI Backend — Python Dependencies
+# Install with: pip install -r requirements.txt
+# ═══════════════════════════════════════════════════════════════
+
+# ── Web Framework ────────────────────────────────────────────────
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# ── AI / LLM ─────────────────────────────────────────────────────
+# Google Gemini — PRIMARY AI provider
+google-generativeai==0.8.3
+
+# LangChain — text splitting only (no LLM usage)
+langchain==0.3.7
+langchain-community==0.3.7
+langchain-ollama==0.2.1
+langchain-text-splitters==0.3.11
+ollama==0.3.3
+numpy>=2.1.0
+
+# ── RAG / Vector DB ──────────────────────────────────────────────
+chromadb==0.5.20
+# NOTE: sentence-transformers removed — embeddings use ChromaDB's built-in
+# ONNXMiniLM_L6_V2 (onnxruntime) which is Python 3.13 compatible and
+# requires no PyTorch. See rag/embeddings.py.
+
+# ── Document Processing ──────────────────────────────────────────
+pypdf==5.1.0
+python-docx==1.1.2
+python-multipart==0.0.17
+
+# ── PDF Generation (server-side) ─────────────────────────────────
+reportlab==4.2.5
+# Pillow: optional (used by reportlab for image embedding in PDFs)
+# Install separately: pip install Pillow
+# On Python 3.14+ Windows, build from source may be required:
+# pip install Pillow --no-binary :all:
+
+# ── Data Validation ──────────────────────────────────────────────
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# ── Utilities ────────────────────────────────────────────────────
+python-dotenv==1.0.1
+httpx==0.28.0
+aiofiles==24.1.0
+tenacity==9.0.0

@@ -1,0 +1,707 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*BASE STYLES*/
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0A0A0B;
+    color: #E8E8F0;
+    font-family: 'DM Sans', 'Barlow', system-ui, sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'DM Sans', 'Barlow Condensed', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background-color: rgba(234, 76, 137, 0.2);
+    color: #0d0d0d;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f8f8f8;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ea4c89;
+  }
+}
+
+/*COMPONENT UTILITIES */
+@layer components {
+
+  /*Dark glass used in admin + landing/payment pages*/
+  .glass {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-gold {
+    background: rgba(239, 125, 0, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(239, 125, 0, 0.2);
+  }
+
+  .gold-text {
+    background: linear-gradient(135deg, #EF7D00, #F59332);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /*Dribbble-style dashboard components */
+  .drib-card {
+    @apply bg-white rounded-2xl border border-[#e8e8e8] shadow-card;
+  }
+
+  .drib-card-hover {
+    @apply bg-white rounded-2xl border border-[#e8e8e8] shadow-card hover:shadow-card-hover hover:border-[#d4d4d4] transition-all duration-200;
+  }
+
+  .drib-input {
+    @apply w-full bg-white border border-[#e8e8e8] rounded-xl px-4 py-2.5 text-[#0d0d0d] placeholder-[#9e9ea7] focus:outline-none focus:border-[#ea4c89] focus:ring-2 focus:ring-[#ea4c89]/10 transition-all duration-200 text-sm;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .drib-btn-primary {
+    @apply bg-[#ea4c89] text-white font-semibold rounded-xl px-5 py-2.5 text-sm hover:bg-[#d6437a] active:scale-[0.98] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .drib-btn-dark {
+    @apply bg-[#0d0d0d] text-white font-semibold rounded-xl px-5 py-2.5 text-sm hover:bg-[#1a1a1a] active:scale-[0.98] transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .drib-btn-outline {
+    @apply bg-white text-[#0d0d0d] font-medium rounded-xl px-5 py-2.5 text-sm border border-[#e8e8e8] hover:border-[#d4d4d4] hover:bg-[#f8f8f8] active:scale-[0.98] transition-all duration-150;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .drib-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  /*Legacy dark inputs (admin / landing)*/
+  .input-luxury {
+    @apply w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/25 focus:outline-none focus:border-zambia-gold focus:ring-1 focus:ring-zambia-gold/30 transition-all duration-200;
+    font-family: 'DM Sans', 'Barlow', system-ui, sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .input-light {
+    @apply w-full bg-white border border-[#e8e8e8] rounded-xl px-4 py-2.5 text-[#0d0d0d] placeholder-[#9e9ea7] focus:outline-none focus:border-[#ea4c89] focus:ring-2 focus:ring-[#ea4c89]/10 transition-all duration-200;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .btn-gold {
+    @apply bg-gold-gradient text-white font-semibold rounded-xl px-6 py-3 hover:brightness-110 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:brightness-100;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  .btn-ghost {
+    @apply border border-white/10 text-luxury-silver rounded-xl px-6 py-3 hover:border-white/20 hover:text-white active:scale-[0.98] transition-all duration-200;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  .card-luxury {
+    @apply glass rounded-2xl p-6 shadow-luxury-sm;
+  }
+
+  .badge-free {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/10 text-luxury-silver border border-white/10;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .badge-premium {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-zambia-gold/20 text-zambia-gold border border-zambia-gold/30;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+
+  .label-spacex {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9e9ea7;
+  }
+
+  .title-spacex {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+}
+
+/*
+   LESSON PLAN DOCUMENT — SCREEN STYLES  (lp-* classes)
+   These give the document a clean white-card look on screen too.
+   */
+
+/* Outer wrapper */
+.lp-doc {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* Print header — hidden on screen, shown on print */
+.lp-print-header {
+  display: none;
+}
+
+/* Body padding on screen */
+.lp-body {
+  padding: 1.5rem;
+}
+
+/* Meta fields — hidden on screen (we use the card grid instead) */
+.lp-meta {
+  display: none;
+}
+
+/* Table wrapper on screen — hidden, only shown on print */
+.lp-table-wrap {
+  display: none;
+}
+
+/* Footer — hidden on screen */
+.lp-footer {
+  display: none;
+}
+
+/* 
+   PRINT / PDF STYLES
+   Produces a pixel-perfect white A4 document matching the
+   Zambian school lesson plan format shown in the reference image.
+    */
+@media print {
+
+  /* Page setup */
+  @page {
+    size: A4 portrait;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+
+  /* Force colour accuracy */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    border-radius: 0 !important;
+    color: #000000 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+  }
+
+  /* White base  */
+  html,
+  body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Hide everything that should not print*/
+  nav,
+  footer,
+  header,
+  .print\:hidden,
+  [data-print-hide],
+  button,
+  .btn-gold,
+  .btn-ghost,
+  .glass-gold {
+    display: none !important;
+  }
+
+  /*  Lesson plan doc */
+  .lp-doc {
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  /* Screen gold header bar: hide  */
+  .lp-doc>div:first-child {
+    display: none !important;
+  }
+
+  /*  PRINT HEADER — School / Dept / Section */
+  .lp-print-header {
+    display: block !important;
+    text-align: center !important;
+    margin-bottom: 18pt !important;
+  }
+
+  .lp-school-name {
+    font-size: 16pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5pt !important;
+    margin: 0 0 4pt 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .lp-dept-name {
+    font-size: 15pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5pt !important;
+    margin: 0 0 4pt 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  .lp-section-name {
+    font-size: 14pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5pt !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  /*  Body padding  */
+  .lp-body {
+    padding: 0 !important;
+  }
+
+  /* Screen-only sections: hide */
+  .lp-body>.print\:hidden {
+    display: none !important;
+  }
+
+  /* META FIELDS */
+  .lp-meta {
+    display: block !important;
+    margin-bottom: 10pt !important;
+    font-size: 11pt !important;
+  }
+
+  .lp-field-row {
+    display: flex !important;
+    align-items: baseline !important;
+    margin-bottom: 5pt !important;
+  }
+
+  .lp-field-row--top {
+    align-items: flex-start !important;
+  }
+
+  .lp-field-label {
+    font-weight: 700 !important;
+    font-size: 11pt !important;
+    min-width: 110pt !important;
+    flex-shrink: 0 !important;
+  }
+
+  .lp-field-sep {
+    margin-right: 6pt !important;
+    flex-shrink: 0 !important;
+  }
+
+  .lp-field-value {
+    font-size: 11pt !important;
+    flex: 1 !important;
+    line-height: 1.5 !important;
+  }
+
+  .lp-two-col {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    margin-bottom: 0 !important;
+  }
+
+  .lp-two-col .lp-field-row {
+    margin-bottom: 5pt !important;
+  }
+
+  /* 4-COLUMN TABLE */
+  .lp-table-wrap {
+    display: block !important;
+    margin-top: 8pt !important;
+    overflow: visible !important;
+  }
+
+  .lp-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 10pt !important;
+    table-layout: fixed !important;
+    page-break-inside: auto !important;
+  }
+
+  .lp-th-stage {
+    width: 16% !important;
+  }
+
+  .lp-th-teacher {
+    width: 30% !important;
+  }
+
+  .lp-th-pupil {
+    width: 30% !important;
+  }
+
+  .lp-th-aids {
+    width: 24% !important;
+  }
+
+  .lp-th {
+    font-weight: 700 !important;
+    font-size: 10pt !important;
+    text-transform: uppercase !important;
+    padding: 5pt 6pt !important;
+    border: 1.5pt solid #000000 !important;
+    text-align: left !important;
+    vertical-align: top !important;
+    line-height: 1.4 !important;
+  }
+
+  .lp-td {
+    padding: 5pt 6pt !important;
+    border: 1pt solid #000000 !important;
+    vertical-align: top !important;
+    font-size: 9.5pt !important;
+    line-height: 1.45 !important;
+  }
+
+  .lp-stage-label {
+    font-weight: 700 !important;
+    font-size: 9.5pt !important;
+    text-transform: uppercase !important;
+    display: block !important;
+    margin-bottom: 3pt !important;
+  }
+
+  .lp-stage-situations {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 0 3pt 0 !important;
+    font-size: 9pt !important;
+  }
+
+  .lp-stage-situations li {
+    margin-bottom: 2pt !important;
+  }
+
+  .lp-stage-time {
+    font-size: 9pt !important;
+    display: block !important;
+    margin-top: 3pt !important;
+  }
+
+  .lp-bullet-list {
+    list-style: disc !important;
+    padding-left: 12pt !important;
+    margin: 0 !important;
+  }
+
+  .lp-bullet-list li {
+    margin-bottom: 3pt !important;
+    font-size: 9.5pt !important;
+    line-height: 1.4 !important;
+  }
+
+  .lp-tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .lp-hw-text {
+    font-size: 9.5pt !important;
+    white-space: pre-line !important;
+    margin-bottom: 4pt !important;
+    line-height: 1.45 !important;
+  }
+
+  .lp-ecz-text {
+    font-size: 9pt !important;
+    border-top: 0.5pt solid #000000 !important;
+    padding-top: 3pt !important;
+    margin-top: 3pt !important;
+  }
+
+  /* PRINT FOOTER */
+  .lp-footer {
+    display: block !important;
+    margin-top: 10pt !important;
+    padding-top: 5pt !important;
+    border-top: 0.5pt solid #999999 !important;
+    font-size: 7.5pt !important;
+    color: #666666 !important;
+    text-align: center !important;
+  }
+
+  /* Prevent headings from being orphaned */
+  h1,
+  h2,
+  h3,
+  h4 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}
+
+/* ASSESSMENT DOCUMENT — SCREEN STYLES  (assess-* classes) */
+
+.assess-doc {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.assess-print-header {
+  display: none;
+}
+
+.assess-body {
+  padding: 1.5rem;
+}
+
+.assess-meta {
+  display: none;
+}
+
+.assess-instructions {
+  display: none;
+}
+
+.assess-section-heading {
+  display: none;
+}
+
+.assess-footer {
+  display: none;
+}
+
+/*  Print styles for assessment documents  */
+@media print {
+  .assess-doc {
+    border: none !important;
+    overflow: visible !important;
+  }
+
+  .assess-doc>div:first-child {
+    display: none !important;
+  }
+
+  .assess-print-header {
+    display: block !important;
+    text-align: center !important;
+    margin-bottom: 14pt !important;
+    border-bottom: 2pt solid #000 !important;
+    padding-bottom: 8pt !important;
+  }
+
+  .assess-school-name {
+    font-size: 14pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    margin: 0 0 3pt 0 !important;
+  }
+
+  .assess-dept-name {
+    font-size: 13pt !important;
+    font-weight: 700 !important;
+    margin: 0 0 3pt 0 !important;
+  }
+
+  .assess-section-name {
+    font-size: 12pt !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+  }
+
+  .assess-body {
+    padding: 0 !important;
+  }
+
+  .assess-meta {
+    display: block !important;
+    margin-bottom: 10pt !important;
+    font-size: 11pt !important;
+  }
+
+  .assess-field-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4pt !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .assess-field-label {
+    font-weight: 700 !important;
+    min-width: 90pt !important;
+  }
+
+  .assess-field-sep {
+    margin-right: 4pt !important;
+  }
+
+  .assess-field-value {
+    flex: 1 !important;
+  }
+
+  .assess-instructions {
+    display: block !important;
+    border: 1pt solid #000 !important;
+    padding: 6pt !important;
+    margin-bottom: 10pt !important;
+  }
+
+  .assess-instructions-heading {
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    margin-bottom: 4pt !important;
+    font-size: 11pt !important;
+  }
+
+  .assess-instructions-list {
+    padding-left: 16pt !important;
+    margin: 0 !important;
+    font-size: 10pt !important;
+  }
+
+  .assess-instructions-list li {
+    margin-bottom: 2pt !important;
+  }
+
+  .assess-section-heading {
+    display: block !important;
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+    text-transform: uppercase !important;
+    margin: 12pt 0 6pt 0 !important;
+    page-break-after: avoid !important;
+  }
+
+  .assess-question {
+    font-size: 10.5pt !important;
+    margin-bottom: 4pt !important;
+    line-height: 1.5 !important;
+  }
+
+  .assess-marks {
+    font-size: 9.5pt !important;
+    font-style: italic !important;
+  }
+
+  .assess-options {
+    padding-left: 16pt !important;
+    margin-bottom: 8pt !important;
+  }
+
+  .assess-option {
+    font-size: 10pt !important;
+    margin-bottom: 2pt !important;
+  }
+
+  .assess-answer-line {
+    border-bottom: 0.5pt solid #000 !important;
+    height: 16pt !important;
+    margin: 4pt 0 10pt 0 !important;
+  }
+
+  /* Marking scheme print */
+  .assess-ms-q {
+    font-size: 10.5pt !important;
+    margin-bottom: 3pt !important;
+    border-top: 0.5pt solid #cccccc !important;
+    padding-top: 6pt !important;
+  }
+
+  .assess-ms-ans {
+    font-size: 10pt !important;
+    margin-bottom: 2pt !important;
+    padding-left: 12pt !important;
+  }
+
+  .assess-ms-alt {
+    font-size: 9.5pt !important;
+    margin-bottom: 2pt !important;
+    padding-left: 12pt !important;
+    font-style: italic !important;
+  }
+
+  .assess-ms-note {
+    font-size: 9pt !important;
+    margin-bottom: 2pt !important;
+    padding-left: 12pt !important;
+  }
+
+  .assess-ms-alloc {
+    font-size: 9pt !important;
+    font-weight: 700 !important;
+    padding-left: 12pt !important;
+    margin-bottom: 4pt !important;
+  }
+
+  .assess-footer {
+    display: block !important;
+    margin-top: 10pt !important;
+    padding-top: 5pt !important;
+    border-top: 0.5pt solid #999 !important;
+    font-size: 7.5pt !important;
+    color: #666 !important;
+    text-align: center !important;
+  }
+}

@@ -1,21 +1,17 @@
 # ─────────────────────────────────────────────────────────────────
-# Railway deployment config — tells Railway the backend lives in
-# the ai-backend/ subdirectory of this monorepo.
+# Railway config for the FRONTEND (Next.js) service
+# This file is at the repo root so Railway's frontend service picks it up.
 #
-# In Railway dashboard, set Root Directory = ai-backend
-# OR Railway reads this file from the repo root and respects [build].
+# The BACKEND (FastAPI) service must have Root Directory = "ai-backend"
+# in the Railway dashboard. That service uses ai-backend/railway.toml.
 # ─────────────────────────────────────────────────────────────────
 
 [build]
-builder = "DOCKERFILE"
-# Path is relative to the root Railway sets for this service.
-# When Root Directory is set to "ai-backend" in Railway dashboard,
-# this path is just "Dockerfile".
-dockerfilePath = "ai-backend/Dockerfile"
+builder = "NIXPACKS"
 
 [deploy]
-startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT --workers 2 --log-level info"
+startCommand = "npm run start"
+healthcheckPath = "/"
+healthcheckTimeout = 30
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
-healthcheckPath = "/health"
-healthcheckTimeout = 30

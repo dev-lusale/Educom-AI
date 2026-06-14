@@ -1,16 +1,11 @@
 /**
  * auth.config.ts — Edge-compatible auth configuration
  *
- * This file contains ONLY what is safe to run in the Vercel Edge runtime:
- *   - No Prisma / database calls
- *   - No bcrypt
- *   - No Node.js-only modules
+ * ONLY safe for the Vercel Edge runtime — no Prisma, no bcrypt, no Node.js modules.
+ * Imported by: src/middleware.ts ONLY.
  *
- * It is imported by:
- *   - src/middleware.ts  (Edge runtime — must stay lightweight)
- *
- * The full auth config (with PrismaAdapter, bcrypt, providers) lives in
- * src/lib/auth.ts and is imported only by Node.js route handlers.
+ * Full config with PrismaAdapter + providers lives in src/lib/auth.ts
+ * and is used only by Node.js API route handlers.
  */
 
 import type { NextAuthConfig } from "next-auth";
@@ -23,22 +18,23 @@ export const authConfig: NextAuthConfig = {
     error: "/auth/error",
   },
 
-  providers: [
-    // Providers are intentionally empty here.
-    // The full list (Google, Credentials) is in src/lib/auth.ts.
-    // The middleware only needs to check whether a JWT session exists —
-    // it does not need to know how users sign in.
-  ],
+  // Providers list is empty here — middleware only needs JWT verification.
+  // The real providers (Google, Credentials) live in auth.ts.
+  providers: [],
 
   callbacks: {
-    // This is the only callback the middleware needs.
-    // It runs on every matched request in the Edge runtime.
-    // It must not touch Prisma or any Node.js-only module.
+    /**
+     * authorized() — called by NextAuth on every middleware-matched request.
+     * Return true  → allow the request through.
+     * Return false → NextAuth redirects to pages.signIn automatically.
+     *
+     * We only block routes that are explicitly in PROTECTED_PATHS.
+     * All other routes (including /auth/*, /admin/*, /) pass through freely.
+     */
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
       const { pathname } = nextUrl;
 
-      const PROTECTED = [
+      const PROTECTED_PATHS = [
         "/dashboard",
         "/lesson-planner",
         "/community",
@@ -52,14 +48,15 @@ export const authConfig: NextAuthConfig = {
         "/classrooms",
       ];
 
-      const isProtected = PROTECTED.some((r) => pathname.startsWith(r));
+      const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
 
-      if (isProtected && !isLoggedIn) {
-        const signInUrl = new URL("/auth/signin", nextUrl);
-        signInUrl.searchParams.set("callbackUrl", pathname);
-        return Response.redirect(signInUrl);
+      // If the route is protected and the user has no session → block (NextAuth
+      // will redirect to /auth/signin automatically when we return false).
+      if (isProtected && !auth?.user) {
+        return false;
       }
 
+      // Everything else — public pages, auth pages, API routes — passes through.
       return true;
     },
   },

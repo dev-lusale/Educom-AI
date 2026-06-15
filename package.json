@@ -9,10 +9,9 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "db:generate": "prisma generate",
-    "db:generate:prod": "prisma generate --schema=prisma/schema.production.prisma",
     "db:push": "prisma db push",
     "db:push:prod": "prisma db push --schema=prisma/schema.production.prisma",
-    "db:migrate": "prisma migrate deploy --schema=prisma/schema.production.prisma",
+    "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio"
   },
   "dependencies": {

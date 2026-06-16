@@ -12,6 +12,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/auth/signin",
     error: "/auth/error",
   },
+  events: {
+    async signIn({ user, account }) {
+      console.log("[auth] signIn event — user:", user?.email, "provider:", account?.provider);
+    },
+  },
   providers: [
     GoogleProvider({
       clientId: (process.env.GOOGLE_CLIENT_ID ?? "").trim(),

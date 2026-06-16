@@ -41,9 +41,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ user }, { status: 201 });
-  } catch {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[register] error:", message);
     return NextResponse.json(
-      { error: "Registration failed. Please try again." },
+      { error: "Registration failed. Please try again.", detail: message },
       { status: 500 }
     );
   }

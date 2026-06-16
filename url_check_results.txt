@@ -1,0 +1,81 @@
+﻿=== URL 1: https://educom-ai.vercel.app/ (MaxRedir=5) ===
+EXCEPTION: The remote server returned an error: (500) Internal Server Error.
+StatusCode: InternalServerError (500)
+  Age: 0
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+  X-Matched-Path: /dashboard
+  X-Vercel-Cache: MISS
+  X-Vercel-Id: cpt1::iad1::kn2kg-1781464124225-57afec283b45
+  Transfer-Encoding: chunked
+  Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
+  Date: Sun, 14 Jun 2026 19:08:44 GMT
+  Server: Vercel
+  X-Powered-By: Next.js
+BODY: <!DOCTYPE html><html id="__next_error__"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-18e9977236f2b6b8.js"/><script src="/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js" async=""></script><script src="/_next/static/chunks/1255-eae4096fb21f1304.js" async=""></script><script src="/_next/static/chunks/main-app-b7ac91ae224968d9.js" async=""></script><meta name
+
+=== URL 2: https://educom-ai.vercel.app/auth/signin (MaxRedir=0) ===
+STATUS: 307
+content-type: text/html; charset=utf-8
+x-vercel-error: 
+location: /dashboard
+BODY: <!DOCTYPE html><html id="__next_error__"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-18e9977236f2b6b8.js"/><script src="/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js" async=""></script><script src="/_next/static/chunks/1255-eae4096fb21f1304.js" async=""></script><script src="/_next/static/chunks/main-app-b7ac91ae224968d9.js" async=""></script><script sr
+
+=== URL 3: https://educom-ai.vercel.app/api/auth/providers (MaxRedir=3) ===
+EXCEPTION: The remote server returned an error: (500) Internal Server Error.
+StatusCode: InternalServerError (500)
+  Age: 0
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-Matched-Path: /api/auth/[...nextauth]
+  X-Vercel-Cache: MISS
+  X-Vercel-Id: cpt1::iad1::kn2kg-1781464125525-76449f8dc346
+  X-Xss-Protection: 1; mode=block
+  Transfer-Encoding: chunked
+  Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: application/json
+  Date: Sun, 14 Jun 2026 19:08:45 GMT
+  Server: Vercel
+BODY: {"message":"There was a problem with the server configuration. Check the server logs for more information."}
+
+=== URL 4: https://educom-ai-production.up.railway.app/ (MaxRedir=3) ===
+EXCEPTION: The remote server returned an error: (500) Internal Server Error.
+StatusCode: InternalServerError (500)
+  Age: 0
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+  X-Matched-Path: /dashboard
+  X-Vercel-Cache: MISS
+  X-Vercel-Id: cpt1::iad1::6w4dw-1781464127313-e1d5414d9caf
+  Transfer-Encoding: chunked
+  Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
+  Date: Sun, 14 Jun 2026 19:08:47 GMT
+  Server: Vercel
+  X-Powered-By: Next.js
+BODY: <!DOCTYPE html><html id="__next_error__"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-18e9977236f2b6b8.js"/><script src="/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js" async=""></script><script src="/_next/static/chunks/1255-eae4096fb21f1304.js" async=""></script><script src="/_next/static/chunks/main-app-b7ac91ae224968d9.js" async=""></script><meta name
+
+=== URL 5: https://educom-ai-production.up.railway.app/health (MaxRedir=3) ===
+EXCEPTION: The remote server returned an error: (404) Not Found.
+StatusCode: NotFound (404)
+  vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding
+  x-nextjs-cache: HIT
+  x-nextjs-prerender: 1,1
+  x-nextjs-stale-time: 300
+  x-railway-edge: railway/europe-west4-drams3a
+  x-railway-request-id: uEVYYkqDQbO1jBkrjUJq2g
+  Transfer-Encoding: chunked
+  x-hikari-trace: cdg1.8vsn
+  Connection: keep-alive
+  Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
+  Date: Sun, 14 Jun 2026 19:08:48 GMT
+  ETag: "lx3xchuab35qv"
+  Server: railway-hikari
+  X-Powered-By: Next.js
+BODY: <!DOCTYPE html><!--Vjq_nCDiQ3L76dxXd23UJ--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="/_next/static/css/a448c3794ab0a82b.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-18e9977236f2b6b8.js"/><script src="/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js" async=""></script><script src="/_next/static/chunks/1255-eae4096fb21f1304.js"
+

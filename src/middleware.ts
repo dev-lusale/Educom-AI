@@ -1,46 +1,49 @@
-/**
- * src/middleware.ts — Vercel Edge Middleware
- *
- * RULES:
- *  - Import ONLY from auth.config.ts, never from auth.ts
- *  - auth.ts imports PrismaAdapter + bcrypt → blows past 1 MB Edge limit
- *  - Keep this file as small as possible
- */
-
-import NextAuth from "next-auth";
-import { authConfig } from "@/lib/auth.config";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const { auth } = NextAuth(authConfig);
+const PROTECTED_PATHS = [
+  "/dashboard",
+  "/lesson-planner",
+  "/community",
+  "/settings",
+  "/payment",
+  "/assessments",
+  "/assistant",
+  "/lesson-plans",
+  "/resources",
+  "/analytics",
+  "/classrooms",
+];
 
-export default auth((req: NextRequest & { auth: unknown }) => {
+export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Admin dashboard — cookie-based guard, no NextAuth needed
+  // Admin dashboard — cookie-based guard
   if (pathname.startsWith("/admin/dashboard")) {
     const adminCookie = req.cookies.get("admin_session");
     if (!adminCookie?.value) {
       return NextResponse.redirect(new URL("/admin/login", req.url));
     }
+    return NextResponse.next();
+  }
+
+  // Protected routes — check for NextAuth session token
+  const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
+  if (isProtected) {
+    const sessionToken =
+      req.cookies.get("authjs.session-token") ??
+      req.cookies.get("__Secure-authjs.session-token");
+    if (!sessionToken?.value) {
+      const signInUrl = new URL("/auth/signin", req.url);
+      signInUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(signInUrl);
+    }
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
-  /*
-   * Match every path EXCEPT the ones below.
-   * These are skipped entirely — middleware never runs on them.
-   *
-   * _next/static   → static files
-   * _next/image    → image optimisation
-   * favicon.ico    → browser favicon
-   * api            → Node.js serverless functions (not Edge)
-   * auth           → /auth/signin, /auth/signup, /auth/error etc.
-   * admin/login    → admin login page (public)
-   * _next          → catch-all for Next.js internals
-   */
   matcher: [
     "/((?!_next|favicon\\.ico|api/|auth/|admin/login).*)",
   ],

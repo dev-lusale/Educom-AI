@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
 
-export default function AuthErrorPage({
+export default async function AuthErrorPage({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
-  const error = searchParams?.error ?? "Unknown";
+  const { error = "Unknown" } = await searchParams;
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4">

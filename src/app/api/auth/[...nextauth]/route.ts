@@ -1,22 +1,34 @@
-import { handlers } from "@/lib/auth";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+// Lazy-load auth to catch initialization errors
+async function getHandlers() {
+  const { handlers } = await import("@/lib/auth");
+  return handlers;
+}
 
 export async function GET(req: NextRequest) {
   try {
+    const handlers = await getHandlers();
     return await handlers.GET(req);
-  } catch (err) {
-    const msg = err instanceof Error ? err.message + "\n" + err.stack : String(err);
-    console.error("[nextauth:GET]", msg);
-    return new Response(JSON.stringify({ error: msg }), { status: 500, headers: { "content-type": "application/json" } });
+  } catch (err: unknown) {
+    const msg = err instanceof Error
+      ? `${err.name}: ${err.message}\n${err.stack}`
+      : String(err);
+    console.error("[nextauth:GET:CAUGHT]", msg);
+    // Return the real error so we can see it
+    return NextResponse.json({ caught: true, error: msg }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
+    const handlers = await getHandlers();
     return await handlers.POST(req);
-  } catch (err) {
-    const msg = err instanceof Error ? err.message + "\n" + err.stack : String(err);
-    console.error("[nextauth:POST]", msg);
-    return new Response(JSON.stringify({ error: msg }), { status: 500, headers: { "content-type": "application/json" } });
+  } catch (err: unknown) {
+    const msg = err instanceof Error
+      ? `${err.name}: ${err.message}\n${err.stack}`
+      : String(err);
+    console.error("[nextauth:POST:CAUGHT]", msg);
+    return NextResponse.json({ caught: true, error: msg }, { status: 500 });
   }
 }

@@ -1,0 +1,17 @@
+# AI backend — deployed separately on Railway, not on Vercel
+ai-backend/
+
+# Prisma dev database
+prisma/dev.db
+prisma/*.db-journal
+
+# Local env files
+.env
+.env.local
+.env.apis
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/

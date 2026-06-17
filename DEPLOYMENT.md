@@ -88,33 +88,28 @@ Rotate any secrets that were ever committed (new NEXTAUTH_SECRET, new GEMINI_API
 
 ---
 
-## Step 2 — Neon PostgreSQL (production database)
+## Step 2 — Supabase PostgreSQL (production database)
 
-1. Go to https://neon.tech → **New Project** → name it `educom-prod`
-2. Select region closest to your users (e.g. `AWS / eu-central-1` for Africa)
-3. Copy the **connection string** — it looks like:
+This project is already configured to use Supabase. The connection string uses the **Supabase Pooler** (port 6543) which is required for serverless environments like Vercel.
+
+1. Go to https://supabase.com → open your project → **Project Settings → Database**
+2. Under **Connection string**, select **URI** and copy the **Session mode (port 6543)** string:
    ```
-   postgresql://user:password@ep-xxx.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-eu-north-1.pooler.supabase.com:6543/postgres?sslmode=require
    ```
-4. Keep this — you'll need it for both Vercel and running migrations
+3. This is your `DATABASE_URL` — add it to Vercel env vars
 
-**Run migrations from your local machine once:**
+**Run the schema migration once from your local machine:**
 
-```bash
-# Set the production DATABASE_URL temporarily in your shell (Windows PowerShell):
-$env:DATABASE_PROVIDER = "postgresql"
-$env:DATABASE_URL = "postgresql://user:password@ep-xxx.neon.tech/neondb?sslmode=require"
+```powershell
+# Set the production DATABASE_URL temporarily in PowerShell:
+$env:DATABASE_URL = "postgresql://postgres.REF:PASS@aws-1-eu-north-1.pooler.supabase.com:6543/postgres?sslmode=require"
 
-# Push the schema to production Neon
-npx prisma migrate deploy
-# or, if you haven't created migrations yet:
+# Push the Prisma schema to production Supabase
 npx prisma db push
-
-# Verify the tables were created
-npx prisma studio
 ```
 
-> After this, your local `.env.local` goes back to SQLite for development. Only Vercel and any `prisma migrate deploy` commands use the Neon URL.
+> Your local `.env.local` continues using the same Supabase URL for dev (or you can create a separate dev project). Only the Vercel deployment needs to have this set as an env var.
 
 ---
 
@@ -203,10 +198,9 @@ Go to **Project Settings → Environment Variables**. Set these for **Production
 
 | Variable | Value | Notes |
 |---|---|---|
-| `DATABASE_PROVIDER` | `postgresql` | |
-| `DATABASE_URL` | `postgresql://...neon.tech/...?sslmode=require` | From Neon Step 2 |
-| `NEXTAUTH_URL` | `https://your-app.vercel.app` | Update after adding custom domain |
-| `NEXTAUTH_SECRET` | 64-char random hex | `openssl rand -hex 32` |
+| `DATABASE_URL` | `postgresql://...supabase.com:6543/postgres?sslmode=require` | Supabase pooler URL |
+| `AUTH_URL` | `https://your-app.vercel.app` | Update after adding custom domain |
+| `AUTH_SECRET` | 64-char random hex | `openssl rand -hex 32` — **required by next-auth v5** |
 | `GOOGLE_CLIENT_ID` | From Google Cloud Console | |
 | `GOOGLE_CLIENT_SECRET` | From Google Cloud Console | |
 | `AI_BACKEND_URL` | `https://your-backend.up.railway.app` | From Railway Step 3d |
@@ -217,6 +211,8 @@ Go to **Project Settings → Environment Variables**. Set these for **Production
 | `ADMIN_JWT_SECRET` | 64-char random hex | |
 | `ADMIN_SETUP_KEY` | Strong random string | |
 | `ADMIN_SETUP_DONE` | `false` | Set to `true` after first admin setup |
+
+> **Note:** This project uses **next-auth v5** which reads `AUTH_SECRET` and `AUTH_URL` — not `NEXTAUTH_SECRET`/`NEXTAUTH_URL`. Using the wrong key names is the most common source of the "Configuration" error on Vercel.
 
 > Generate secrets with PowerShell: `[System.Web.Security.Membership]::GeneratePassword(64, 10)`  
 > Or online: https://generate-secret.vercel.app/64
@@ -254,11 +250,11 @@ In Google Cloud Console → APIs & Services → OAuth 2.0 Client:
 
 3. DNS propagation takes 5–30 minutes
 
-### Update NEXTAUTH_URL:
+### Update AUTH_URL:
 
 After the domain is live, update in Vercel env vars:
 ```
-NEXTAUTH_URL=https://yourdomain.com
+AUTH_URL=https://yourdomain.com
 ```
 Then redeploy.
 
@@ -366,19 +362,19 @@ The free tier is 15 requests/minute and 1 million tokens/day. For 600 active bet
 
 ### Vercel: `PrismaClientInitializationError: Can't reach database server`
 
-**Cause:** `DATABASE_URL` not set in Vercel env vars, or `DATABASE_PROVIDER` missing.
+**Cause:** `DATABASE_URL` not set in Vercel env vars, or pointing to a wrong host.
 
 **Fix:**
-1. Verify both `DATABASE_PROVIDER=postgresql` and `DATABASE_URL=postgresql://...` are set in Vercel dashboard
-2. Redeploy after adding them
+1. Verify `DATABASE_URL` is set in the Vercel dashboard and uses the Supabase **pooler** URL (port `6543`, not `5432`)
+2. Redeploy after adding/updating it
 
 ---
 
-### Vercel: `Module not found: Can't resolve 'prisma/client'`
+### Vercel: `Build failed — prisma generate exited with code 1`
 
-**Cause:** `prisma generate` didn't run during build.
+**Cause:** `DATABASE_URL` env var is missing at build time.
 
-**Fix:** Confirm `package.json` has `"postinstall": "prisma generate"`. This runs automatically on `npm install` which Vercel calls before building.
+**Fix:** In Vercel env vars, ensure `DATABASE_URL` is set for the **Production** environment (and Preview if needed). The schema is already set to `provider = "postgresql"` so no `DATABASE_PROVIDER` flag is needed.
 
 ---
 
@@ -423,15 +419,27 @@ Railway auto-redeploys when you change env vars. If not, trigger a manual redepl
 
 ---
 
-### NextAuth: `NEXTAUTH_URL` mismatch / redirect loop
+### NextAuth: `AUTH_URL` mismatch / redirect loop
 
-**Cause:** `NEXTAUTH_URL` set to `localhost:3000` in production, or doesn't match the actual domain.
+**Cause:** `AUTH_URL` set to `localhost:3000` in production, or doesn't match the actual domain.
 
 **Fix:** Set in Vercel env vars:
 ```
-NEXTAUTH_URL=https://your-app.vercel.app   (or your custom domain)
+AUTH_URL=https://your-app.vercel.app   (or your custom domain)
 ```
 Also update Google OAuth redirect URIs to match.
+
+---
+
+### NextAuth: "Configuration" error on sign in
+
+**Cause:** `AUTH_SECRET` is missing or misnamed. next-auth v5 requires `AUTH_SECRET`, not `NEXTAUTH_SECRET`.
+
+**Fix:** In Vercel env vars, add:
+```
+AUTH_SECRET=<64-char random hex>
+```
+Then redeploy. Do **not** use `NEXTAUTH_SECRET` — it is ignored by v5.
 
 ---
 

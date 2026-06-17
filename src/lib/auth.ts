@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 // Debug: log env vars at module load time
 console.log("[auth.ts] GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "SET" : "MISSING");
 console.log("[auth.ts] GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "SET" : "MISSING");
-console.log("[auth.ts] NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET ? "SET" : "MISSING");
+console.log("[auth.ts] AUTH_SECRET:", process.env.AUTH_SECRET ? "SET" : "MISSING");
 console.log("[auth.ts] DATABASE_URL:", process.env.DATABASE_URL?.substring(0, 40));
 
 export const { handlers, auth, signIn, signOut } = NextAuth({

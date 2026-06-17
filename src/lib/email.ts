@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const APP_URL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+const APP_URL = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL ?? "http://localhost:3000";
 
 // Reuse the transporter across requests in development (avoid creating a new
 // connection on every call). In production, nodemailer handles pooling.

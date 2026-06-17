@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate --schema=prisma/schema.prisma",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:push:prod": "prisma db push --schema=prisma/schema.production.prisma",
+    "db:push:prod": "prisma db push --schema=prisma/schema.prisma",
     "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio"
   },

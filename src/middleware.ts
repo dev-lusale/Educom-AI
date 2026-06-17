@@ -27,7 +27,9 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Protected routes — check for NextAuth session token
+  // Protected routes — check for NextAuth v5 (auth.js) session token.
+  // NextAuth v5 uses "authjs.session-token" on HTTP and the __Secure- prefixed
+  // variant on HTTPS (production). Both must be checked.
   const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p));
   if (isProtected) {
     const sessionToken =
@@ -45,6 +47,16 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next|favicon\\.ico|api/|auth/|admin/login).*)",
+    /*
+     * Match all paths EXCEPT:
+     *  - _next/static  (Next.js static assets)
+     *  - _next/image   (Next.js image optimisation)
+     *  - favicon.ico
+     *  - api/auth      (NextAuth v5 handlers — must never be blocked)
+     *  - auth/         (sign-in, sign-out, error pages)
+     *  - admin/login   (public admin login page)
+     *  - public static files (png, jpg, svg, etc.)
+     */
+    "/((?!_next/static|_next/image|favicon\\.ico|api/auth|auth/|admin/login|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|css|js|woff2?)$).*)",
   ],
 };

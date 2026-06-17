@@ -1,10 +1,24 @@
+// ─────────────────────────────────────────────────────────────────
+// EduCom — PRODUCTION Prisma Schema (PostgreSQL / Supabase)
+//
+// DATABASE_URL  → Supabase pooler (port 6543) — used at runtime
+// DIRECT_URL    → Supabase direct (port 5432) — used by prisma migrate/db push
+//
+// Run schema changes with:
+//   npx prisma db push
+//
+// Both URLs must be set in your .env / Vercel environment variables.
+// ─────────────────────────────────────────────────────────────────
+
 generator client {
   provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ── Auth (NextAuth Prisma Adapter) ──────────────────────────────
@@ -34,7 +48,7 @@ model User {
   saves         PlanSave[]
   subscriptions Subscription[]
   transactions  Transaction[]
-  assessments    Assessment[]
+  assessments   Assessment[]
   resources     Resource[]
   chatMessages  ChatMessage[]
 }
@@ -108,7 +122,7 @@ model Transaction {
   accountNumber   String?
   receiptNumber   String?
   failureReason   String?
-  metadata        String?           // JSON blob for extra gateway data
+  metadata        String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
@@ -211,7 +225,7 @@ model PlanSave {
 model ChatMessage {
   id        String   @id @default(cuid())
   userId    String
-  role      String   // "user" | "assistant"
+  role      String
   content   String
   createdAt DateTime @default(now())
 
@@ -226,8 +240,8 @@ model Assessment {
   grade          String
   subject        String
   topic          String
-  assessmentType String   // quiz | exam | marking_scheme
-  assessmentData String   // JSON blob
+  assessmentType String
+  assessmentData String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 

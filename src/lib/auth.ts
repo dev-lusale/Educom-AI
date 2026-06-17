@@ -22,7 +22,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   logger: {
     error: (code, ...message) => {
       // Log the full cause so the real error is visible in Vercel logs
-      const cause = (message[0] as { cause?: unknown })?.cause;
+      const firstMsg = message[0] as unknown as { cause?: unknown } | undefined;
+      const cause = firstMsg?.cause;
       console.error("[nextauth:error]", code, JSON.stringify(message, null, 2));
       if (cause) {
         console.error("[nextauth:error:cause]", JSON.stringify(cause, Object.getOwnPropertyNames(cause as object)));

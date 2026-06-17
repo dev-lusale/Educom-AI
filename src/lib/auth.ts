@@ -5,10 +5,28 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
+// Debug: log env vars at module load time
+console.log("[auth.ts] GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "SET" : "MISSING");
+console.log("[auth.ts] GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "SET" : "MISSING");
+console.log("[auth.ts] NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET ? "SET" : "MISSING");
+console.log("[auth.ts] DATABASE_URL:", process.env.DATABASE_URL?.substring(0, 40));
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   trustHost: true,
+  debug: true,
+  logger: {
+    error: (code, ...message) => {
+      console.error("[nextauth:error]", code, ...message);
+    },
+    warn: (code) => {
+      console.warn("[nextauth:warn]", code);
+    },
+    debug: (code, ...message) => {
+      console.log("[nextauth:debug]", code, ...message);
+    },
+  },
   pages: {
     signIn: "/auth/signin",
     error: "/auth/error",
@@ -27,21 +45,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-
         const user = await prisma.user.findUnique({
           where: { email: credentials.email as string },
         });
-
         if (!user || !user.password) return null;
         if (user.isActive === false) return null;
-
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.password
         );
-
         if (!isValid) return null;
-
         return {
           id: user.id,
           email: user.email,
@@ -63,7 +76,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return token;
     },
-
     async session({ session, token }) {
       if (token?.id && session.user) {
         session.user.id = token.id as string;

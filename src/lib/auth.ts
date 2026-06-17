@@ -19,23 +19,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   // Only enable debug in development — it causes noise and warns in production
   debug: !isProd,
-  logger: {
-    error: (code, ...message) => {
-      // Log the full cause so the real error is visible in Vercel logs
-      const firstMsg = message[0] as unknown as { cause?: unknown } | undefined;
-      const cause = firstMsg?.cause;
-      console.error("[nextauth:error]", code, JSON.stringify(message, null, 2));
-      if (cause) {
-        console.error("[nextauth:error:cause]", JSON.stringify(cause, Object.getOwnPropertyNames(cause as object)));
-      }
-    },
-    warn: (code) => {
-      if (!isProd) console.warn("[nextauth:warn]", code);
-    },
-    debug: (code, ...message) => {
-      if (!isProd) console.log("[nextauth:debug]", code, ...message);
-    },
-  },
   pages: {
     signIn: "/auth/signin",
     error: "/auth/error",

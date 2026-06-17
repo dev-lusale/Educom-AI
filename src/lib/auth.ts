@@ -5,7 +5,9 @@ import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-// Debug: log env vars at module load time
+const isProd = process.env.NODE_ENV === "production";
+
+// Startup diagnostics — visible in Vercel function logs
 console.log("[auth.ts] GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "SET" : "MISSING");
 console.log("[auth.ts] GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "SET" : "MISSING");
 console.log("[auth.ts] AUTH_SECRET:", process.env.AUTH_SECRET ? "SET" : "MISSING");
@@ -15,16 +17,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   trustHost: true,
-  debug: true,
+  // Only enable debug in development — it causes noise and warns in production
+  debug: !isProd,
   logger: {
     error: (code, ...message) => {
-      console.error("[nextauth:error]", code, ...message);
+      // Log the full cause so the real error is visible in Vercel logs
+      const cause = (message[0] as { cause?: unknown })?.cause;
+      console.error("[nextauth:error]", code, JSON.stringify(message, null, 2));
+      if (cause) {
+        console.error("[nextauth:error:cause]", JSON.stringify(cause, Object.getOwnPropertyNames(cause as object)));
+      }
     },
     warn: (code) => {
-      console.warn("[nextauth:warn]", code);
+      if (!isProd) console.warn("[nextauth:warn]", code);
     },
     debug: (code, ...message) => {
-      console.log("[nextauth:debug]", code, ...message);
+      if (!isProd) console.log("[nextauth:debug]", code, ...message);
     },
   },
   pages: {
@@ -45,24 +53,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
-        if (!user || !user.password) return null;
-        if (user.isActive === false) return null;
-        const isValid = await bcrypt.compare(
-          credentials.password as string,
-          user.password
-        );
-        if (!isValid) return null;
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          plan: user.plan as string,
-          role: user.role as string,
-        };
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
+          if (!user || !user.password) return null;
+          if (user.isActive === false) return null;
+          const isValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password
+          );
+          if (!isValid) return null;
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            plan: user.plan as string,
+            role: user.role as string,
+          };
+        } catch (err) {
+          console.error("[auth] credentials authorize error:", err);
+          return null;
+        }
       },
     }),
   ],
@@ -93,7 +106,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             session.user.role = "TEACHER";
             session.user.school = null;
           }
-        } catch {
+        } catch (err) {
+          console.error("[auth] session callback db error:", err);
           session.user.plan = (token.plan as string) ?? "FREE";
           session.user.role = (token.role as string) ?? "TEACHER";
           session.user.school = (token.school as string | null) ?? null;

@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 import asyncio
 
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form, status, BackgroundTasks
+from pydantic import BaseModel
 import aiofiles
 
 from models.lesson_plan import (
@@ -25,6 +26,15 @@ from config.settings import get_settings
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/curriculum", tags=["Curriculum"])
+
+
+# ── Request model for resource deletion ──────────────────────────────────────
+
+class DeleteResourceRequest(BaseModel):
+    stored_filename:   str = ""
+    original_filename: str = ""
+    user_id:           str
+    collection:        str = "user_resources"
 
 # Track ingestion state
 _ingestion_state = {
@@ -220,10 +230,41 @@ async def search_curriculum(request: CurriculumSearchRequest) -> CurriculumSearc
     Uses sentence-transformer embeddings to find the most relevant
     curriculum content for a given query.
 
-    Optionally filter by grade and/or subject.
+    Optionally filter by grade, subject, user_id, and/or collection.
     """
     try:
         retriever = get_retriever()
+
+        # If a specific collection is requested (e.g. user_resources),
+        # perform a direct ChromaDB search with optional user_id filter
+        if hasattr(request, "collection") and request.collection == "user_resources":
+            from vector_db.chroma_client import get_chroma_client
+            chroma = get_chroma_client()
+            where  = None
+            if hasattr(request, "user_id") and request.user_id:
+                where = {"user_id": {"$eq": request.user_id}}
+            raw = chroma.search(
+                query=request.query,
+                collection_name="user_resources",
+                top_k=request.top_k,
+                where=where,
+            )
+            search_results = [
+                CurriculumSearchResult(
+                    content=r["content"],
+                    source=r.get("metadata", {}).get("source", "Unknown"),
+                    relevance_score=round(r.get("relevance_score", 0.0), 4),
+                    grade=r.get("metadata", {}).get("grade"),
+                    subject=r.get("metadata", {}).get("subject"),
+                )
+                for r in raw
+            ]
+            return CurriculumSearchResponse(
+                query=request.query,
+                results=search_results,
+                total_found=len(search_results),
+            )
+
         results = retriever.retrieve_for_search(
             query=request.query,
             grade=request.grade,
@@ -339,9 +380,206 @@ async def get_ingestion_status() -> dict:
     return state
 
 
-@router.get(
-    "/stats",
+@router.delete(
+    "/delete-resource",
     status_code=status.HTTP_200_OK,
+    summary="Delete a user resource from ChromaDB",
+    description=(
+        "Removes all chunks belonging to a teacher-uploaded resource from the "
+        "user_resources ChromaDB collection. Called by the Next.js backend when "
+        "a teacher deletes a resource from their library."
+    ),
+)
+async def delete_resource(payload: DeleteResourceRequest) -> dict:
+
+    stored_filename   = payload.stored_filename
+    original_filename = payload.original_filename
+    user_id           = payload.user_id
+    collection        = payload.collection
+
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="user_id is required.",
+        )
+
+    from vector_db.chroma_client import get_chroma_client
+    chroma = get_chroma_client()
+
+    if collection == "lesson_plans":
+        coll = chroma.get_lesson_plans_collection()
+    elif collection == "user_resources":
+        coll = chroma.get_user_resources_collection()
+    else:
+        coll = chroma.get_curriculum_collection()
+
+    # Guard: empty collection
+    if coll.count() == 0:
+        return {"chunks_deleted": 0, "message": "Collection is empty — nothing to delete."}
+
+    chunks_deleted = 0
+    errors = []
+
+    # Try each filename variant as the "source" field in metadata
+    filenames_to_try = [f for f in [stored_filename, original_filename] if f]
+
+    for fname in filenames_to_try:
+        try:
+            # Fetch IDs where source matches this filename AND user_id matches
+            results = coll.get(
+                where={"$and": [{"source": {"$eq": fname}}, {"user_id": {"$eq": user_id}}]},
+                include=["metadatas"],
+            )
+            ids = results.get("ids", [])
+            if ids:
+                coll.delete(ids=ids)
+                chunks_deleted += len(ids)
+                logger.info(
+                    f"[delete-resource] Deleted {len(ids)} chunks for "
+                    f"source='{fname}' user_id='{user_id}'"
+                )
+        except Exception as e:
+            logger.warning(f"[delete-resource] Filter by source+user_id failed for '{fname}': {e}")
+            errors.append(str(e))
+
+        # If nothing found with user_id filter, fall back to source-only
+        # (handles older uploads where user_id wasn't stored as dedicated field)
+        if chunks_deleted == 0:
+            try:
+                results = coll.get(
+                    where={"source": {"$eq": fname}},
+                    include=["metadatas"],
+                )
+                ids_all = results.get("ids", [])
+                # Filter in Python to only delete chunks belonging to this user
+                safe_ids = [
+                    id_ for id_, meta in zip(ids_all, results.get("metadatas", []))
+                    if (meta or {}).get("user_id", "") == user_id
+                    or user_id in (meta or {}).get("description", "")
+                ]
+                if safe_ids:
+                    coll.delete(ids=safe_ids)
+                    chunks_deleted += len(safe_ids)
+                    logger.info(
+                        f"[delete-resource] Fallback deleted {len(safe_ids)} chunks "
+                        f"for source='{fname}'"
+                    )
+            except Exception as e2:
+                logger.warning(f"[delete-resource] Fallback delete failed for '{fname}': {e2}")
+                errors.append(str(e2))
+
+    return {
+        "chunks_deleted": chunks_deleted,
+        "collection": collection,
+        "message": (
+            f"Deleted {chunks_deleted} chunk(s) for '{original_filename or stored_filename}'."
+            if chunks_deleted > 0
+            else f"No chunks found for '{original_filename or stored_filename}' — may have already been removed."
+        ),
+        "errors": errors if errors else None,
+    }
+
+
+@router.get(
+    "/exam-papers-status",
+    status_code=status.HTTP_200_OK,
+    summary="Exam papers ingestion status",
+    description=(
+        "Returns per-subject and per-grade counts of indexed exam paper chunks, "
+        "plus total file counts from the exam_papers directory. "
+        "Useful for verifying that all ECZ papers have been successfully ingested."
+    ),
+)
+async def get_exam_papers_status() -> dict:
+    """
+    Show how many exam paper chunks are indexed per subject and per grade.
+    Also lists which files are present on disk vs indexed in ChromaDB.
+    """
+    from vector_db.chroma_client import get_chroma_client
+    from rag.exam_paper_parser import parse_exam_filename
+    from config.settings import get_settings
+    from pathlib import Path as _Path
+
+    chroma   = get_chroma_client()
+    settings = get_settings()
+
+    # ── Count indexed chunks by subject and grade ──────────────────────────
+    try:
+        coll    = chroma.get_curriculum_collection()
+        total   = coll.count()
+
+        # Fetch all metadata for exam_paper category chunks
+        # (ChromaDB doesn't support GROUP BY, so we fetch and aggregate in Python)
+        results = coll.get(
+            where={"category": {"$eq": "exam_paper"}},
+            include=["metadatas"],
+        )
+        metadatas = results.get("metadatas", []) or []
+
+        by_subject: dict[str, int] = {}
+        by_grade:   dict[str, int] = {}
+        by_year:    dict[str, int] = {}
+        indexed_sources: set[str]  = set()
+
+        for meta in metadatas:
+            if not meta:
+                continue
+            subj = meta.get("subject", "Unknown")
+            grd  = meta.get("grade",   "Unknown")
+            yr   = meta.get("year",    "Unknown")
+            src  = meta.get("source",  "")
+
+            by_subject[subj] = by_subject.get(subj, 0) + 1
+            by_grade[grd]    = by_grade.get(grd,   0) + 1
+            by_year[yr]      = by_year.get(yr,     0) + 1
+            if src:
+                indexed_sources.add(src)
+
+        exam_paper_chunks = len(metadatas)
+
+    except Exception as e:
+        logger.warning(f"[exam-papers-status] ChromaDB query failed: {e}")
+        total = exam_paper_chunks = 0
+        by_subject = by_grade = by_year = {}
+        indexed_sources = set()
+
+    # ── Scan disk for exam paper files ─────────────────────────────────────
+    exam_papers_dir = _Path(settings.curriculum_docs_dir) / "exam_papers"
+    disk_files: list[dict] = []
+    missing_from_index: list[str] = []
+
+    if exam_papers_dir.exists():
+        for f in sorted(exam_papers_dir.iterdir()):
+            if f.is_file() and f.suffix.lower() == ".pdf":
+                parsed  = parse_exam_filename(f.name)
+                indexed = f.name in indexed_sources
+                if not indexed:
+                    missing_from_index.append(f.name)
+                disk_files.append({
+                    "filename":  f.name,
+                    "grade":     parsed.get("grade", ""),
+                    "subject":   parsed.get("subject", ""),
+                    "year":      parsed.get("year", ""),
+                    "exam_type": parsed.get("exam_type", ""),
+                    "indexed":   indexed,
+                })
+
+    return {
+        "total_curriculum_chunks":  total,
+        "exam_paper_chunks":        exam_paper_chunks,
+        "files_on_disk":            len(disk_files),
+        "files_indexed":            len(indexed_sources),
+        "files_missing_from_index": len(missing_from_index),
+        "missing_filenames":        missing_from_index[:20],   # cap at 20 for readability
+        "chunks_by_subject":        dict(sorted(by_subject.items())),
+        "chunks_by_grade":          dict(sorted(by_grade.items())),
+        "chunks_by_year":           dict(sorted(by_year.items(), reverse=True)),
+        "files":                    disk_files,
+    }
+
+
+@router.get(
+    "/stats",    status_code=status.HTTP_200_OK,
     summary="Get curriculum database statistics",
 )
 async def get_curriculum_stats() -> dict:

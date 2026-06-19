@@ -1,7 +1,8 @@
 """
 Educom AI Backend — Document Processor
 Handles PDF and DOCX ingestion, chunking, and storage into ChromaDB.
-Supports curriculum documents, teacher guides, and lesson plan samples.
+Supports curriculum documents, teacher guides, lesson plan samples,
+and ECZ exam papers.
 """
 
 import hashlib
@@ -9,7 +10,7 @@ import logging
 import os
 import uuid
 from pathlib import Path
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
@@ -20,6 +21,17 @@ from vector_db.chroma_client import get_chroma_client
 
 logger = logging.getLogger(__name__)
 
+# ── Chunk size profiles ───────────────────────────────────────────────────────
+# Exam papers have long questions with sub-parts — use larger chunks so
+# full questions stay together and remain coherent in the AI's context window.
+
+CHUNK_PROFILES = {
+    "exam_paper":  {"chunk_size": 1500, "chunk_overlap": 300},
+    "curriculum":  {"chunk_size": 1000, "chunk_overlap": 200},
+    "lesson_plan": {"chunk_size": 800,  "chunk_overlap": 150},
+    "default":     {"chunk_size": 1000, "chunk_overlap": 200},
+}
+
 
 class DocumentProcessor:
     """
@@ -27,22 +39,26 @@ class DocumentProcessor:
 
     Workflow:
     1. Extract text from PDF or DOCX
-    2. Split into overlapping chunks
+    2. Split into overlapping chunks (size varies by document category)
     3. Generate embeddings (via ChromaDB client)
     4. Store in ChromaDB with metadata
     """
 
     def __init__(self):
         settings = get_settings()
-        self.chunk_size = settings.rag_chunk_size
-        self.chunk_overlap = settings.rag_chunk_overlap
+        self.default_chunk_size    = settings.rag_chunk_size
+        self.default_chunk_overlap = settings.rag_chunk_overlap
         self.chroma = get_chroma_client()
 
-        self.text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=self.chunk_size,
-            chunk_overlap=self.chunk_overlap,
+    def _get_text_splitter(self, category: str = "default") -> RecursiveCharacterTextSplitter:
+        """Return a text splitter tuned for the given document category."""
+        profile = CHUNK_PROFILES.get(category, CHUNK_PROFILES["default"])
+        return RecursiveCharacterTextSplitter(
+            chunk_size=profile["chunk_size"],
+            chunk_overlap=profile["chunk_overlap"],
             length_function=len,
-            separators=["\n\n", "\n", ". ", " ", ""],
+            # Preserve question/section boundaries in exam papers
+            separators=["\n\n", "\n", ". ", "? ", "! ", " ", ""],
         )
 
     def extract_text_from_pdf(self, file_path: str) -> str:
@@ -105,40 +121,57 @@ class DocumentProcessor:
         else:
             raise ValueError(f"Unsupported file type: {ext}. Supported: PDF, DOCX, TXT")
 
-    def chunk_text(self, text: str) -> List[str]:
+    def chunk_text(self, text: str, category: str = "default") -> List[str]:
         """
         Split text into overlapping chunks for embedding.
 
         Args:
-            text: Full document text.
+            text:     Full document text.
+            category: Document category — controls chunk size profile.
 
         Returns:
             List of text chunks.
         """
-        chunks = self.text_splitter.split_text(text)
-        # Filter out very short chunks (likely noise)
-        chunks = [c.strip() for c in chunks if len(c.strip()) > 50]
-        logger.info(f"Created {len(chunks)} chunks from document")
+        splitter = self._get_text_splitter(category)
+        chunks = splitter.split_text(text)
+        # Filter out very short chunks (likely noise or page headers)
+        min_len = 80 if category == "exam_paper" else 50
+        chunks = [c.strip() for c in chunks if len(c.strip()) > min_len]
+        logger.info(
+            f"Created {len(chunks)} chunks from document "
+            f"(category={category}, profile={CHUNK_PROFILES.get(category, CHUNK_PROFILES['default'])})"
+        )
         return chunks
 
     def ingest_document(
         self,
         file_path: str,
         collection_name: str = "curriculum",
-        metadata: Dict[str, Any] | None = None,
+        metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Full ingestion pipeline: extract → chunk → embed → store.
 
         Args:
-            file_path: Path to the document file.
+            file_path:       Path to the document file.
             collection_name: Target ChromaDB collection.
-            metadata: Additional metadata to attach to all chunks.
+            metadata:        Additional metadata to attach to all chunks.
+                             If metadata contains "category": "exam_paper",
+                             larger chunk sizes are used automatically.
 
         Returns:
             Dict with ingestion statistics.
         """
         filename = Path(file_path).name
+
+        # Determine chunk category from metadata or collection name
+        category = "default"
+        if metadata and metadata.get("category") == "exam_paper":
+            category = "exam_paper"
+        elif collection_name == "lesson_plans":
+            category = "lesson_plan"
+        elif collection_name == "curriculum":
+            category = "curriculum"
 
         # Step 1: Extract text
         text, file_type = self.extract_text(file_path)
@@ -146,17 +179,17 @@ class DocumentProcessor:
         if not text.strip():
             raise ValueError(f"No text could be extracted from {filename}")
 
-        # Step 2: Chunk the text
-        chunks = self.chunk_text(text)
+        # Step 2: Chunk the text using category-appropriate profile
+        chunks = self.chunk_text(text, category=category)
 
         if not chunks:
             raise ValueError(f"No valid chunks created from {filename}")
 
         # Step 3: Build metadata for each chunk
         base_metadata = {
-            "source": filename,
-            "file_type": file_type,
-            "collection": collection_name,
+            "source":      filename,
+            "file_type":   file_type,
+            "collection":  collection_name,
         }
         if metadata:
             base_metadata.update(metadata)
@@ -166,7 +199,7 @@ class DocumentProcessor:
             chunk_meta = {**base_metadata, "chunk_index": i, "total_chunks": len(chunks)}
             chunk_metadatas.append(chunk_meta)
 
-        # Step 4: Generate unique IDs (hash-based to avoid duplicates)
+        # Step 4: Generate unique IDs (hash-based to avoid duplicates on re-ingest)
         file_hash = hashlib.md5(text.encode()).hexdigest()[:8]
         chunk_ids = [f"{file_hash}_chunk_{i}" for i in range(len(chunks))]
 
@@ -179,11 +212,12 @@ class DocumentProcessor:
         )
 
         return {
-            "filename": filename,
-            "file_type": file_type,
-            "chunks_created": len(chunks),
+            "filename":         filename,
+            "file_type":        file_type,
+            "chunks_created":   len(chunks),
             "embeddings_stored": stored_count,
-            "collection": collection_name,
+            "collection":       collection_name,
+            "category":         category,
         }
 
     def ingest_directory(

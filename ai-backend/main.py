@@ -60,8 +60,7 @@ async def lifespan(app: FastAPI):
     logger.info("  Educom AI Backend — Starting Up")
     logger.info("=" * 60)
     logger.info(f"  Environment : {settings.environment}")
-    logger.info(f"  AI Provider : Google Gemini (primary) / Ollama (fallback)")
-    logger.info(f"  Gemini Model: {settings.gemini_model}")
+    logger.info(f"  AI Provider : EduCom AI via OpenRouter (primary) / Ollama (fallback)")
     logger.info(f"  Ollama URL  : {settings.ollama_base_url}")
     logger.info(f"  ChromaDB    : {settings.chroma_persist_dir}")
     logger.info(f"  Embeddings  : {settings.embedding_model}")
@@ -95,26 +94,25 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"  ChromaDB initialization warning: {e}")
 
-    # Check Gemini / AI provider availability
+    # Check OpenRouter / AI provider availability
     try:
-        from services.ai_provider import get_ai_service
-        from services.gemini_service import get_gemini_service
-        gemini = get_gemini_service()
-        if gemini.is_configured():
-            available = await gemini.is_available()
+        from services.openrouter_service import get_openrouter_service
+        from services.ollama_service import get_ollama_service
+        openrouter = get_openrouter_service()
+        if openrouter.is_configured():
+            available = await openrouter.is_available()
             if available:
-                logger.info(f"  Google Gemini connected | Model: {settings.gemini_model}")
+                logger.info("  EduCom AI (OpenRouter) connected and ready")
             else:
                 logger.warning(
-                    "  Gemini API key configured but unreachable — check GEMINI_API_KEY. "
-                    "Falling back to Ollama if available."
+                    "  OPENROUTER_API_KEY configured but OpenRouter unreachable — "
+                    "check your key or network. Falling back to Ollama if available."
                 )
         else:
             logger.warning(
-                "  GEMINI_API_KEY not configured. Add it to .env to use Google Gemini. "
+                "  OPENROUTER_API_KEY not configured. Add it to .env to enable EduCom AI. "
                 "Falling back to Ollama for local generation."
             )
-            from services.ollama_service import get_ollama_service
             ollama = get_ollama_service()
             available = await ollama.is_available()
             if available:
@@ -128,70 +126,136 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning(f"  AI provider check failed: {e}")
 
-    # Auto-ingest curriculum_docs directory if it has files
-    # Runs in background thread so it doesn't block startup or requests
+    # Auto-ingest curriculum_docs directory on startup
+    # Uses a folder-content hash to detect new/changed files — avoids
+    # redundant re-ingestion on every redeploy while ensuring new papers
+    # are always picked up.
     try:
-        docs_dir = settings.curriculum_docs_dir
+        from rag.exam_paper_parser import build_exam_paper_metadata
+        from rag.document_processor import DocumentProcessor
+        from vector_db.chroma_client import get_chroma_client as _get_chroma
+
+        _chroma      = _get_chroma()
+        docs_dir     = settings.curriculum_docs_dir
+        supported    = {".pdf", ".docx", ".doc", ".txt"}
+
         if os.path.exists(docs_dir):
-            supported = {".pdf", ".docx", ".doc", ".txt"}
-            doc_files = [
+            all_doc_files = [
                 f for f in Path(docs_dir).rglob("*")
                 if f.is_file() and f.suffix.lower() in supported
             ]
-            if doc_files:
-                # Check how many chunks are already indexed
-                from vector_db.chroma_client import get_chroma_client as _get_chroma
-                _chroma = _get_chroma()
-                already_indexed = _chroma.get_collection_count("curriculum")
 
-                # Estimate expected chunks: ~10 chunks per document on average
-                # Re-ingest if we have significantly fewer chunks than expected
-                expected_min_chunks = len(doc_files) * 5  # conservative: 5 chunks/doc minimum
+            # Separate exam papers from general curriculum docs
+            exam_papers_dir  = Path(docs_dir) / "exam_papers"
+            exam_paper_files = [
+                f for f in all_doc_files
+                if f.parent == exam_papers_dir or "exam_paper" in str(f.parent).lower()
+            ]
+            other_doc_files  = [f for f in all_doc_files if f not in exam_paper_files]
 
-                if already_indexed < expected_min_chunks:
-                    logger.info(
-                        f"  Found {len(doc_files)} curriculum documents. "
-                        f"Currently indexed: {already_indexed} chunks "
-                        f"(expected ≥ {expected_min_chunks}). Starting background ingestion…"
-                    )
-                    from rag.document_processor import DocumentProcessor
+            logger.info(
+                f"  Found {len(all_doc_files)} curriculum documents "
+                f"({len(exam_paper_files)} exam papers, {len(other_doc_files)} other)"
+            )
 
-                    def _ingest_all():
-                        """Ingest all curriculum docs in a background thread."""
-                        processor = DocumentProcessor()
-                        success = 0
-                        failed = 0
-                        for file_path in doc_files:
-                            try:
-                                subfolder = file_path.parent.name
-                                meta = {}
-                                if subfolder != Path(docs_dir).name:
-                                    meta["category"] = subfolder
-                                processor.ingest_document(str(file_path), "curriculum", meta)
-                                success += 1
-                                logger.info(f"  Ingested: {file_path.name}")
-                            except Exception as exc:
-                                failed += 1
-                                logger.warning(f"  Failed to ingest {file_path.name}: {exc}")
-                        final_count = _chroma.get_collection_count("curriculum")
-                        logger.info(
-                            f"  Ingestion complete: {success} succeeded, {failed} failed "
-                            f"out of {len(doc_files)} documents. "
-                            f"Total chunks in DB: {final_count}"
-                        )
+            # ── Folder-content hash: SHA1 of sorted filename+size pairs ─────
+            # Changes only when files are added, removed, or replaced.
+            def _folder_hash(files: list) -> str:
+                sig = "|".join(
+                    sorted(f"{f.name}:{f.stat().st_size}" for f in files)
+                )
+                import hashlib
+                return hashlib.sha1(sig.encode()).hexdigest()[:12]
 
-                    executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ingest")
-                    asyncio.get_running_loop().run_in_executor(executor, _ingest_all)
-                    logger.info("  Background ingestion started. Use GET /api/curriculum/ingest-status to monitor.")
-                else:
-                    logger.info(
-                        f"  Curriculum already well-indexed: {already_indexed} chunks "
-                        f"from {len(doc_files)} documents. Skipping re-ingestion."
-                    )
+            # Hash stored in a tiny sentinel file next to the vector DB
+            sentinel_path = Path(settings.chroma_persist_dir) / ".ingest_hash"
+
+            def _read_sentinel() -> str:
+                try:
+                    return sentinel_path.read_text().strip()
+                except Exception:
+                    return ""
+
+            def _write_sentinel(h: str):
+                try:
+                    sentinel_path.write_text(h)
+                except Exception:
+                    pass
+
+            current_hash  = _folder_hash(all_doc_files)
+            previous_hash = _read_sentinel()
+            already_indexed = _chroma.get_collection_count("curriculum")
+
+            needs_ingest = (
+                current_hash != previous_hash
+                or already_indexed < len(all_doc_files) * 3   # safety net
+            )
+
+            if not needs_ingest:
+                logger.info(
+                    f"  Curriculum already up-to-date: {already_indexed} chunks, "
+                    f"hash={current_hash}. Skipping ingestion."
+                )
             else:
-                logger.info("  No curriculum documents found. Add PDFs to curriculum_docs/")
+                logger.info(
+                    f"  New/changed documents detected (hash {previous_hash!r} → {current_hash!r}). "
+                    f"Starting background ingestion of {len(all_doc_files)} files…"
+                )
+
+                def _ingest_all():
+                    processor = DocumentProcessor()
+                    success = failed = 0
+
+                    # ── 1. Exam papers — rich filename metadata ───────────────
+                    for file_path in exam_paper_files:
+                        try:
+                            meta = build_exam_paper_metadata(str(file_path))
+                            processor.ingest_document(
+                                str(file_path), "curriculum", meta
+                            )
+                            success += 1
+                            logger.info(
+                                f"  [exam_paper] ✓ {file_path.name} "
+                                f"→ {meta.get('subject','')} {meta.get('grade','')} {meta.get('year','')}"
+                            )
+                        except Exception as exc:
+                            failed += 1
+                            logger.warning(f"  [exam_paper] ✗ {file_path.name}: {exc}")
+
+                    # ── 2. Other curriculum docs (syllabi, guides, etc.) ──────
+                    for file_path in other_doc_files:
+                        try:
+                            subfolder = file_path.parent.name
+                            meta: dict = {}
+                            if subfolder.lower() != Path(docs_dir).name.lower():
+                                meta["category"] = subfolder
+                            processor.ingest_document(
+                                str(file_path), "curriculum", meta
+                            )
+                            success += 1
+                            logger.info(f"  [curriculum] ✓ {file_path.name}")
+                        except Exception as exc:
+                            failed += 1
+                            logger.warning(f"  [curriculum] ✗ {file_path.name}: {exc}")
+
+                    final_count = _chroma.get_collection_count("curriculum")
+                    logger.info(
+                        f"  Ingestion complete — {success} succeeded, {failed} failed "
+                        f"| Total chunks in DB: {final_count}"
+                    )
+                    _write_sentinel(current_hash)
+
+                executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ingest")
+                asyncio.get_running_loop().run_in_executor(executor, _ingest_all)
+                logger.info(
+                    "  Background ingestion started. "
+                    "Poll GET /api/curriculum/ingest-status for progress."
+                )
+        else:
+            logger.info(f"  curriculum_docs directory not found at: {docs_dir}")
+
     except Exception as e:
-        logger.warning(f"  Curriculum docs check warning: {e}")
+        logger.warning(f"  Curriculum ingestion startup error: {e}", exc_info=True)
 
     logger.info("  Educom AI Backend is ready!")
     logger.info("=" * 60)
@@ -210,7 +274,7 @@ app = FastAPI(
     description=(
         "AI-powered backend for the Educom Zambian education platform. "
         "Generates CBC-aligned lesson plans, assessments, and schemes of work "
-        "using Ollama (phi3/mistral) with RAG from curriculum documents."
+        "using EduCom AI (OpenRouter) with RAG from Zambian curriculum documents."
     ),
     version="1.0.0",
     docs_url="/docs",

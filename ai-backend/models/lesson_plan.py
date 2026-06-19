@@ -77,10 +77,13 @@ class LearningOutcomesRequest(BaseModel):
 
 class CurriculumSearchRequest(BaseModel):
     """Request body for semantic curriculum search."""
-    query: str = Field(..., min_length=3, description="Search query")
-    grade: Optional[str] = Field(default=None, description="Filter by grade")
-    subject: Optional[str] = Field(default=None, description="Filter by subject")
-    top_k: int = Field(default=5, ge=1, le=20, description="Number of results")
+    query:      str           = Field(..., min_length=3, description="Search query")
+    grade:      Optional[str] = Field(default=None,              description="Filter by grade")
+    subject:    Optional[str] = Field(default=None,              description="Filter by subject")
+    top_k:      int           = Field(default=5, ge=1, le=20,    description="Number of results")
+    # Extended fields for user-resource search
+    collection: str           = Field(default="curriculum",      description="Collection to search: curriculum | user_resources")
+    user_id:    Optional[str] = Field(default=None,              description="Filter user_resources by teacher user ID")
 
 
 # ── Response Models ──────────────────────────────────────────────────────────

@@ -11,7 +11,8 @@ uvicorn[standard]==0.32.1
 # OpenRouter is called via plain httpx (no SDK needed).
 # google-generativeai removed — replaced by OpenRouter.
 # ollama kept as local fallback for development.
-httpx==0.28.0
+# httpx pinned to >=0.27,<0.28 to satisfy ollama 0.3.3 constraint
+httpx>=0.27.0,<0.28.0
 ollama==0.3.3
 
 # ── LangChain — text splitting only (no LLM calls) ───────────────

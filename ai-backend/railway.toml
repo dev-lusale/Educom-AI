@@ -8,8 +8,9 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-# Use sh -c so $PORT expands correctly (Railway injects PORT as an env var)
-startCommand = "sh -c 'uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2 --log-level info'"
+# Use sh -c so $PORT and $WORKERS expand correctly
+# WORKERS defaults to 1 to stay within Railway hobby plan (512 MB RAM)
+startCommand = "sh -c 'uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WORKERS:-1} --log-level info'"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
 

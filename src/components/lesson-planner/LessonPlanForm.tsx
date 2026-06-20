@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -146,7 +146,7 @@ export default function LessonPlanForm({
 
   // Dribbble-style input
   const inp = "drib-input";
-  const lbl = "block text-xs font-medium text-[#6b6b76] mb-1.5";
+  const lbl = "block text-xs font-medium text-[--text-secondary] mb-1.5";
 
   return (
     <form onSubmit={handleSubmit} className="drib-card p-6 space-y-6">
@@ -155,7 +155,7 @@ export default function LessonPlanForm({
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="w-1.5 h-4 rounded-full bg-[#ea4c89] shrink-0" />
-          <p className="text-[#0d0d0d] text-sm font-semibold">School Information</p>
+          <p className="text-[--text-primary] text-sm font-semibold">School Information</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
@@ -245,13 +245,13 @@ export default function LessonPlanForm({
         </div>
       </div>
 
-      <div className="border-t border-[#f0f0f0]" />
+      <div className="border-t border-[--border]" />
 
       {/* ── Lesson Details ── */}
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="w-1.5 h-4 rounded-full bg-[#007531] shrink-0" />
-          <p className="text-[#0d0d0d] text-sm font-semibold">Lesson Details</p>
+          <p className="text-[--text-primary] text-sm font-semibold">Lesson Details</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -348,7 +348,7 @@ export default function LessonPlanForm({
         className={cn(
           "w-full py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2",
           loading || !grade || !subject || !lessonTitle || !topic
-            ? "bg-[#f0f0f0] text-[#9e9ea7] cursor-not-allowed"
+            ? "bg-[--bg-elevated] text-[--text-muted] cursor-not-allowed"
             : "bg-[#ea4c89] text-white hover:bg-[#d6437a] active:scale-[0.99]"
         )}
       >

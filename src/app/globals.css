@@ -1,8 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* â”€â”€ CSS Design Tokens (Light / Dark) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+:root {
+  --bg-canvas:   #f8f8f8;
+  --bg-surface:  #ffffff;
+  --bg-elevated: #ffffff;
+  --border:      #e8e8e8;
+  --border-hover:#d4d4d4;
+  --text-primary:#0d0d0d;
+  --text-secondary:#6b6b76;
+  --text-muted:  #9e9ea7;
+  --accent:      #ea4c89;
+  --accent-pale: #fce4ef;
+  --accent-hover:#d6437a;
+}
+
+.dark {
+  /* Facebook Lite / Meta dark palette â€” warm neutral greys, clean and friendly */
+  --bg-canvas:     #18191a;   /* deepest background â€” fb dark base             */
+  --bg-surface:    #242526;   /* cards, sidebar, panels                        */
+  --bg-elevated:   #3a3b3c;   /* inputs, dropdowns, modals, hover states       */
+  --border:        #3e4042;   /* dividers and card outlines                    */
+  --border-hover:  #4e4f50;   /* focused / hovered borders                     */
+  --text-primary:  #e4e6eb;   /* headings, labels â€” fb primary text            */
+  --text-secondary:#b0b3b8;   /* body, descriptions â€” fb secondary text        */
+  --text-muted:    #8a8d91;   /* placeholders, disabled â€” fb muted text        */
+  --accent:        #ea4c89;   /* brand pink â€” unchanged                        */
+  --accent-pale:   #2a1420;   /* pink-tinted surface                           */
+  --accent-hover:  #f06aa0;
+}
 
 /*BASE STYLES*/
 @layer base {
@@ -15,13 +45,14 @@
   }
 
   body {
-    background-color: #0A0A0B;
-    color: #E8E8F0;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
     font-family: 'DM Sans', 'Barlow', system-ui, sans-serif;
     font-size: 15px;
     letter-spacing: 0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   h1,
@@ -84,15 +115,26 @@
 
   /*Dribbble-style dashboard components */
   .drib-card {
-    @apply bg-white rounded-2xl border border-[#e8e8e8] shadow-card;
+    background-color: var(--bg-surface);
+    border-color: var(--border);
+    @apply rounded-2xl border shadow-card;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .drib-card-hover {
-    @apply bg-white rounded-2xl border border-[#e8e8e8] shadow-card hover:shadow-card-hover hover:border-[#d4d4d4] transition-all duration-200;
+    background-color: var(--bg-surface);
+    border-color: var(--border);
+    @apply rounded-2xl border shadow-card hover:shadow-card-hover transition-all duration-200;
+  }
+  .drib-card-hover:hover {
+    border-color: var(--border-hover);
   }
 
   .drib-input {
-    @apply w-full bg-white border border-[#e8e8e8] rounded-xl px-4 py-2.5 text-[#0d0d0d] placeholder-[#9e9ea7] focus:outline-none focus:border-[#ea4c89] focus:ring-2 focus:ring-[#ea4c89]/10 transition-all duration-200 text-sm;
+    background-color: var(--bg-surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+    @apply w-full rounded-xl px-4 py-2.5 border focus:outline-none focus:border-[#ea4c89] focus:ring-2 focus:ring-[#ea4c89]/10 transition-all duration-200 text-sm;
     font-family: 'DM Sans', system-ui, sans-serif;
   }
 
@@ -107,8 +149,15 @@
   }
 
   .drib-btn-outline {
-    @apply bg-white text-[#0d0d0d] font-medium rounded-xl px-5 py-2.5 text-sm border border-[#e8e8e8] hover:border-[#d4d4d4] hover:bg-[#f8f8f8] active:scale-[0.98] transition-all duration-150;
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    border-color: var(--border);
+    @apply font-medium rounded-xl px-5 py-2.5 text-sm border active:scale-[0.98] transition-all duration-150;
     font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  .drib-btn-outline:hover {
+    border-color: var(--border-hover);
+    background-color: var(--bg-canvas);
   }
 
   .drib-badge {
@@ -174,7 +223,7 @@
 }
 
 /*
-   LESSON PLAN DOCUMENT — SCREEN STYLES  (lp-* classes)
+   LESSON PLAN DOCUMENT â€” SCREEN STYLES  (lp-* classes)
    These give the document a clean white-card look on screen too.
    */
 
@@ -187,7 +236,7 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-/* Print header — hidden on screen, shown on print */
+/* Print header â€” hidden on screen, shown on print */
 .lp-print-header {
   display: none;
 }
@@ -197,17 +246,17 @@
   padding: 1.5rem;
 }
 
-/* Meta fields — hidden on screen (we use the card grid instead) */
+/* Meta fields â€” hidden on screen (we use the card grid instead) */
 .lp-meta {
   display: none;
 }
 
-/* Table wrapper on screen — hidden, only shown on print */
+/* Table wrapper on screen â€” hidden, only shown on print */
 .lp-table-wrap {
   display: none;
 }
 
-/* Footer — hidden on screen */
+/* Footer â€” hidden on screen */
 .lp-footer {
   display: none;
 }
@@ -282,7 +331,7 @@
     display: none !important;
   }
 
-  /*  PRINT HEADER — School / Dept / Section */
+  /*  PRINT HEADER â€” School / Dept / Section */
   .lp-print-header {
     display: block !important;
     text-align: center !important;
@@ -498,7 +547,7 @@
   }
 }
 
-/* ASSESSMENT DOCUMENT — SCREEN STYLES  (assess-* classes) */
+/* ASSESSMENT DOCUMENT â€” SCREEN STYLES  (assess-* classes) */
 
 .assess-doc {
   background: #ffffff;
@@ -705,3 +754,216 @@
     text-align: center !important;
   }
 }
+
+
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   DARK MODE â€” Facebook Lite / Meta warm dark palette
+   Canvas: #18191A  Surface: #242526  Elevated: #3A3B3C
+   Border: #3E4042  Text: #E4E6EB  Text2: #B0B3B8  Muted: #8A8D91
+   Warm neutral greys, no tinting, exactly how Facebook Lite looks.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+
+/* â”€â”€ Primary text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .text-\[#0d0d0d\],
+.dark .text-\[#0D0D0D\] {
+  color: #e4e6eb !important;
+}
+
+/* â”€â”€ Secondary text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .text-\[#6b6b76\],
+.dark .text-\[#6B6B76\] {
+  color: #b0b3b8 !important;
+}
+
+/* â”€â”€ Muted text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .text-\[#9e9ea7\],
+.dark .text-\[#9E9EA7\] {
+  color: #8a8d91 !important;
+}
+
+/* â”€â”€ White surfaces â†’ fb card (#242526) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .bg-white {
+  background-color: #242526 !important;
+}
+
+/* â”€â”€ Off-white canvas â†’ fb base (#18191a) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .bg-\[#f8f8f8\] {
+  background-color: #18191a !important;
+}
+
+/* â”€â”€ Light grey â†’ fb elevated (#3a3b3c) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .bg-\[#f0f0f0\] {
+  background-color: #3a3b3c !important;
+}
+
+/* â”€â”€ Tinted backgrounds â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+
+/* Pink / accent */
+.dark .bg-\[#fce4ef\]      { background-color: #2a1420 !important; }
+.dark .bg-\[#fce4ef\]\/40  { background-color: rgba(42,20,32,0.7) !important; }
+.dark .bg-\[#fce4ef\]\/20  { background-color: rgba(42,20,32,0.4) !important; }
+
+/* Green success */
+.dark .bg-\[#e6f4ec\]      { background-color: #1c2e22 !important; }
+
+/* Blue info */
+.dark .bg-\[#eff6ff\]      { background-color: #1c2333 !important; }
+
+/* Purple */
+.dark .bg-\[#f5f3ff\]      { background-color: #231e33 !important; }
+
+/* Yellow / warning */
+.dark .bg-yellow-50        { background-color: #2a2210 !important; }
+.dark .bg-\[#fffbf0\]      { background-color: #222010 !important; }
+
+/* Red */
+.dark .bg-red-50           { background-color: #2a1515 !important; }
+.dark .bg-red-100          { background-color: #331a1a !important; }
+
+/* â”€â”€ Borders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .border-\[#e8e8e8\]  { border-color: #3e4042 !important; }
+.dark .border-\[#f0f0f0\]  { border-color: #3e4042 !important; }
+.dark .border-\[#d4d4d4\]  { border-color: #4e4f50 !important; }
+.dark .border-\[#f5b8d4\]  { border-color: #5a2040 !important; }
+.dark .border-yellow-200   { border-color: #4a3a00 !important; }
+.dark .border-red-200      { border-color: #5a1818 !important; }
+.dark .border-red-300      { border-color: #6e2020 !important; }
+
+/* â”€â”€ Hover backgrounds â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .hover\:bg-\[#f8f8f8\]:hover  { background-color: #3a3b3c !important; }
+.dark .hover\:bg-\[#f0f0f0\]:hover  { background-color: #4e4f50 !important; }
+.dark .hover\:bg-\[#f8c8d9\]:hover  { background-color: #3d1828 !important; }
+.dark .hover\:border-\[#d4d4d4\]:hover { border-color: #4e4f50 !important; }
+
+/* â”€â”€ Status text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .text-yellow-600 { color: #f0b429 !important; }
+.dark .text-yellow-500 { color: #f0b429 !important; }
+.dark .text-red-600    { color: #f47c7c !important; }
+.dark .text-red-500    { color: #f47c7c !important; }
+
+/* â”€â”€ Form elements â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: #3a3b3c !important;
+  color: #e4e6eb !important;
+  border-color: #3e4042 !important;
+}
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: #ea4c89 !important;
+  box-shadow: 0 0 0 2px rgba(234,76,137,0.15) !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #8a8d91 !important;
+}
+.dark select option {
+  background-color: #3a3b3c;
+  color: #e4e6eb;
+}
+
+/* â”€â”€ Scrollbars â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark ::-webkit-scrollbar-track { background: #18191a; }
+.dark ::-webkit-scrollbar-thumb { background: #4e4f50; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #ea4c89; }
+
+/* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .drib-card,
+.dark .drib-card-hover {
+  box-shadow: none !important;
+  border-color: #3e4042 !important;
+}
+
+/* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .drib-btn-outline {
+  background-color: #3a3b3c !important;
+  color: #e4e6eb !important;
+  border-color: #3e4042 !important;
+}
+.dark .drib-btn-outline:hover {
+  background-color: #4e4f50 !important;
+  border-color: #5e5f60 !important;
+}
+
+/* â”€â”€ Modal backdrops â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .bg-black\/30,
+.dark .bg-black\/40,
+.dark .bg-black\/50 {
+  background-color: rgba(0,0,0,0.75) !important;
+}
+
+/* â”€â”€ Mono / code text â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark .font-mono { color: #ccd0d5 !important; }
+
+/* â”€â”€ Navigation separator borders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.dark [class*="border-t"],
+.dark [class*="border-b"] {
+  border-color: #3e4042;
+}
+
+
+.dark .text-\[#0d0d0d\], .dark .text-\[#0D0D0D\] { color: #e4e6eb !important; }
+.dark .text-\[#6b6b76\], .dark .text-\[#6B6B76\] { color: #b0b3b8 !important; }
+.dark .text-\[#9e9ea7\], .dark .text-\[#9E9EA7\] { color: #8a8d91 !important; }
+
+.dark .bg-white            { background-color: #242526 !important; }
+.dark .bg-\[#f8f8f8\]      { background-color: #18191a !important; }
+.dark .bg-\[#f0f0f0\]      { background-color: #3a3b3c !important; }
+
+.dark .bg-\[#fce4ef\]      { background-color: #2a1420 !important; }
+.dark .bg-\[#fce4ef\]\/40  { background-color: rgba(42,20,32,0.7) !important; }
+.dark .bg-\[#fce4ef\]\/20  { background-color: rgba(42,20,32,0.4) !important; }
+.dark .bg-\[#e6f4ec\]      { background-color: #1c2e22 !important; }
+.dark .bg-\[#eff6ff\]      { background-color: #1c2333 !important; }
+.dark .bg-\[#f5f3ff\]      { background-color: #231e33 !important; }
+.dark .bg-yellow-50        { background-color: #2a2210 !important; }
+.dark .bg-\[#fffbf0\]      { background-color: #222010 !important; }
+.dark .bg-red-50           { background-color: #2a1515 !important; }
+.dark .bg-red-100          { background-color: #331a1a !important; }
+
+.dark .border-\[#e8e8e8\]  { border-color: #3e4042 !important; }
+.dark .border-\[#f0f0f0\]  { border-color: #3e4042 !important; }
+.dark .border-\[#d4d4d4\]  { border-color: #4e4f50 !important; }
+.dark .border-\[#f5b8d4\]  { border-color: #5a2040 !important; }
+.dark .border-yellow-200   { border-color: #4a3a00 !important; }
+.dark .border-red-200      { border-color: #5a1818 !important; }
+.dark .border-red-300      { border-color: #6e2020 !important; }
+
+.dark .hover\:bg-\[#f8f8f8\]:hover  { background-color: #3a3b3c !important; }
+.dark .hover\:bg-\[#f0f0f0\]:hover  { background-color: #4e4f50 !important; }
+.dark .hover\:bg-\[#f8c8d9\]:hover  { background-color: #3d1828 !important; }
+.dark .hover\:border-\[#d4d4d4\]:hover { border-color: #4e4f50 !important; }
+
+.dark .text-yellow-600 { color: #f0b429 !important; }
+.dark .text-yellow-500 { color: #f0b429 !important; }
+.dark .text-red-600    { color: #f47c7c !important; }
+.dark .text-red-500    { color: #f47c7c !important; }
+
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark textarea,
+.dark select {
+  background-color: #3a3b3c !important;
+  color: #e4e6eb !important;
+  border-color: #3e4042 !important;
+}
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+  border-color: #ea4c89 !important;
+  box-shadow: 0 0 0 2px rgba(234,76,137,0.15) !important;
+}
+.dark input::placeholder, .dark textarea::placeholder { color: #8a8d91 !important; }
+.dark select option { background-color: #3a3b3c; color: #e4e6eb; }
+
+.dark ::-webkit-scrollbar-track { background: #18191a; }
+.dark ::-webkit-scrollbar-thumb { background: #4e4f50; border-radius: 3px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #ea4c89; }
+
+.dark .drib-card, .dark .drib-card-hover { box-shadow: none !important; border-color: #3e4042 !important; }
+
+.dark .drib-btn-outline { background-color: #3a3b3c !important; color: #e4e6eb !important; border-color: #3e4042 !important; }
+.dark .drib-btn-outline:hover { background-color: #4e4f50 !important; border-color: #5e5f60 !important; }
+
+.dark .bg-black\/30, .dark .bg-black\/40, .dark .bg-black\/50 { background-color: rgba(0,0,0,0.75) !important; }
+
+.dark .font-mono { color: #ccd0d5 !important; }

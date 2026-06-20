@@ -1,9 +1,9 @@
 """
 Educom AI Backend — Conversational Chat Route
-Handles free-form teacher queries with full conversation history.
+Handles free-form teacher and student queries with full conversation history.
 Uses RAG to ground answers in Zambian curriculum context.
 
-AI Provider: Google Gemini (primary) → Ollama (fallback)
+AI Provider: OpenRouter (primary) → Ollama (fallback)
 """
 
 import logging
@@ -14,7 +14,7 @@ from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 from services.ai_provider import get_ai_service
-from services.gemini_service import GeminiService
+from services.openrouter_service import OpenRouterService
 from rag.retriever import get_retriever
 
 logger = logging.getLogger(__name__)
@@ -25,14 +25,14 @@ _rag_executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="chat_rag")
 
 # ── System prompt ─────────────────────────────────────────────────────────────
 
-CHAT_SYSTEM_PROMPT = """You are Educom AI, a friendly and knowledgeable teaching assistant for Zambian teachers.
+CHAT_SYSTEM_PROMPT = """You are EduCom AI, a friendly and knowledgeable teaching assistant for Zambian teachers and students.
 
 Your expertise covers:
 - The Zambia Competency-Based Curriculum (CBC) Framework for all grades (ECE to Form 4)
 - The Examinations Council of Zambia (ECZ) examination standards and formats
 - The Teachers' Council of Zambia (TCZ) professional standards
-- All subjects taught in Zambian schools
-- Learner-centered, activity-based teaching methodologies
+- All subjects taught in Zambian schools and universities
+- Learner-centred, activity-based teaching methodologies
 - Zambian classroom contexts — both rural and urban schools
 - Lesson planning, scheme of work development, and assessment design
 - CBC competencies: Critical Thinking, Communication, Cooperation, Creativity, Self-Management
@@ -44,7 +44,7 @@ How you respond:
 - Keep responses clear and well-structured (use bullet points or numbered lists when helpful)
 - When a teacher asks for lesson plan IDEAS or SUGGESTIONS, provide them directly
 - When a teacher asks you to GENERATE a complete formatted lesson plan, guide them to the Lesson Planner tool
-- When a teacher asks about assessments, provide specific question types, marking schemes, and ECZ alignment tips
+- When asked about assessments, provide specific question types, marking schemes, and ECZ alignment tips
 - Never respond with JSON — always respond in natural, conversational language
 - Keep responses concise but complete — aim for 150-300 words unless more detail is needed
 - When curriculum context is available, cite the source document to build trust"""
@@ -75,26 +75,26 @@ class ChatResponse(BaseModel):
     "/chat",
     response_model=ChatResponse,
     status_code=status.HTTP_200_OK,
-    summary="Conversational AI assistant (Gemini-powered)",
+    summary="Conversational AI assistant",
     description=(
-        "Free-form conversational endpoint for Zambian teachers. "
-        "Powered by Google Gemini with RAG from Zambian curriculum documents. "
-        "Falls back to Ollama if Gemini is unavailable."
+        "Free-form conversational endpoint for Zambian teachers and students. "
+        "Powered by EduCom AI (OpenRouter) with RAG from Zambian curriculum documents. "
+        "Falls back to Ollama if OpenRouter is unavailable."
     ),
 )
 async def chat(request: ChatRequest) -> ChatResponse:
     """
-    AI assistant for Zambian teachers — powered by Google Gemini.
+    AI assistant for Zambian teachers and students.
     Uses multi-turn conversation history and curriculum RAG context.
     """
-    # ── Resolve AI service (Gemini preferred) ────────────────────────────────
+    # ── Resolve AI service (OpenRouter preferred) ─────────────────────────────
     ai = await get_ai_service()
     available = await ai.is_available()
 
     if not available:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="AI model unavailable. Please check your GEMINI_API_KEY.",
+            detail="AI model unavailable. Please check your OPENROUTER_API_KEY.",
         )
 
     # ── RAG: retrieve relevant curriculum context ─────────────────────────────
@@ -135,8 +135,8 @@ async def chat(request: ChatRequest) -> ChatResponse:
     try:
         history_dicts = [{"role": m.role, "content": m.content} for m in request.history]
 
-        # Gemini: use native multi-turn chat for best quality
-        if isinstance(ai, GeminiService):
+        # OpenRouter: use native multi-turn chat for best quality
+        if isinstance(ai, OpenRouterService):
             reply = await ai.generate_chat(
                 message=request.message,
                 history=history_dicts,
@@ -151,10 +151,10 @@ async def chat(request: ChatRequest) -> ChatResponse:
                     f"RELEVANT CURRICULUM CONTEXT:\n{rag_context}\n\n---"
                 )
             for msg in history_dicts[-20:]:
-                role_label = request.user_name if msg["role"] == "user" else "Educom AI"
+                role_label = request.user_name if msg["role"] == "user" else "EduCom AI"
                 conversation_parts.append(f"{role_label}: {msg['content']}")
             conversation_parts.append(f"{request.user_name}: {request.message}")
-            conversation_parts.append("Educom AI:")
+            conversation_parts.append("EduCom AI:")
             full_prompt = "\n\n".join(conversation_parts)
             reply = await ai.generate_text(
                 prompt=full_prompt,
@@ -163,7 +163,7 @@ async def chat(request: ChatRequest) -> ChatResponse:
 
         # Clean up any model-added prefixes
         reply = reply.strip()
-        for prefix in ["Educom AI:", "Assistant:", "AI:"]:
+        for prefix in ["EduCom AI:", "Educom AI:", "Assistant:", "AI:"]:
             if reply.startswith(prefix):
                 reply = reply[len(prefix):].strip()
 

@@ -8,7 +8,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from services.ai_provider import get_ai_service
-from services.gemini_service import get_gemini_service
+from services.openrouter_service import get_openrouter_service
 from vector_db.chroma_client import get_chroma_client
 from rag.embeddings import get_embeddings_service
 from config.settings import get_settings
@@ -31,25 +31,26 @@ class HealthResponse(BaseModel):
 async def health_check() -> HealthResponse:
     """
     Check the health of all system components:
-    - AI provider (Google Gemini or Ollama fallback)
+    - AI provider (OpenRouter or Ollama fallback)
     - ChromaDB vector database
     - Sentence transformer embeddings
     """
     settings = get_settings()
-    gemini = get_gemini_service()
+    openrouter = get_openrouter_service()
     chroma = get_chroma_client()
     embeddings = get_embeddings_service()
 
     # Determine active AI provider and check availability
-    if gemini.is_configured():
-        ai_available = await gemini.is_available()
-        ai_provider = "Google Gemini"
-        ai_model = settings.gemini_model
+    if openrouter.is_configured():
+        ai_available = await openrouter.is_available()
+        ai_provider = "EduCom AI (OpenRouter)"
+        # Report the default chat model — never expose the underlying model name to clients
+        ai_model = "EduCom AI"
     else:
         from services.ollama_service import get_ollama_service
         ollama = get_ollama_service()
         ai_available = await ollama.is_available()
-        ai_provider = "Ollama (fallback)"
+        ai_provider = "Ollama (local fallback)"
         ai_model = settings.ollama_model
         if ai_available:
             try:
@@ -87,7 +88,7 @@ async def root():
     return {
         "name": "Educom AI Backend",
         "version": "1.0.0",
-        "description": "AI-powered Zambian education platform backend (Gemini-powered)",
+        "description": "AI-powered Zambian education platform backend",
         "docs": "/docs",
         "health": "/health",
     }

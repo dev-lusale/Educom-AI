@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -83,10 +83,10 @@ export default function LessonPlannerPage() {
     <main className="max-w-4xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8 print:hidden">
-        <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1 tracking-tight">
+        <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">
           Lesson Plan Generator
         </h1>
-        <p className="text-[#6b6b76] text-sm">
+        <p className="text-[--text-secondary] text-sm">
           Fill in the details below and get a complete, CBC-aligned lesson plan in seconds.
         </p>
       </div>

@@ -84,7 +84,7 @@ git rm --cached .env .env.local ai-backend/.env
 git commit -m "remove secrets from tracking"
 ```
 
-Rotate any secrets that were ever committed (new NEXTAUTH_SECRET, new GEMINI_API_KEY, new OAuth credentials).
+Rotate any secrets that were ever committed (new NEXTAUTH_SECRET, new OPENROUTER_API_KEY, new OAuth credentials).
 
 ---
 
@@ -137,8 +137,7 @@ In Railway → your service → **Variables** tab, add each of these:
 
 | Variable | Value |
 |---|---|
-| `GEMINI_API_KEY` | Your Gemini API key |
-| `GEMINI_MODEL` | `gemini-2.0-flash` |
+| `OPENROUTER_API_KEY` | Your OpenRouter API key (from https://openrouter.ai/keys) |
 | `ALLOWED_ORIGINS` | `https://your-app.vercel.app,https://yourdomain.com` |
 | `ENVIRONMENT` | `production` |
 | `DEBUG` | `false` |
@@ -204,8 +203,7 @@ Go to **Project Settings → Environment Variables**. Set these for **Production
 | `GOOGLE_CLIENT_ID` | From Google Cloud Console | |
 | `GOOGLE_CLIENT_SECRET` | From Google Cloud Console | |
 | `AI_BACKEND_URL` | `https://your-backend.up.railway.app` | From Railway Step 3d |
-| `GEMINI_API_KEY` | Your Gemini API key | Server-side only, safe on Vercel |
-| `GEMINI_MODEL` | `gemini-2.0-flash` | |
+| `OPENROUTER_API_KEY` | Your OpenRouter API key | Server-side only, safe on Vercel — get at https://openrouter.ai/keys |
 | `GMAIL_USER` | `noreply.educom@gmail.com` | |
 | `GMAIL_APP_PASSWORD` | Your Gmail App Password | |
 | `ADMIN_JWT_SECRET` | 64-char random hex | |
@@ -397,12 +395,12 @@ CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers
 
 ---
 
-### Railway: `GEMINI_API_KEY not configured` in logs
+### Railway: `OPENROUTER_API_KEY not configured` in logs
 
 **Cause:** Env var not set, or spelled incorrectly.
 
 **Fix:**
-1. Railway → service → Variables → confirm `GEMINI_API_KEY` is present (no quotes, no spaces)
+1. Railway → service → Variables → confirm `OPENROUTER_API_KEY` is present (no quotes, no spaces, starts with `sk-or-`)
 2. Trigger a redeploy after adding it — env vars only take effect on the next deploy
 
 ---

@@ -133,6 +133,80 @@ class CurriculumRetriever:
             "user_chunks": len(user_results),
         }
 
+    def retrieve_for_assessment(
+        self,
+        grade: str,
+        subject: str,
+        topic: str,
+    ) -> Dict[str, Any]:
+        """
+        Retrieve exam paper context specifically for assessment generation.
+
+        Runs two targeted searches:
+        1. Exam papers matching grade + subject — for ECZ style/difficulty calibration
+        2. Syllabus/curriculum content — for learning objective alignment
+
+        Args:
+            grade:   Grade level (e.g. "Grade 9")
+            subject: Subject name (e.g. "Mathematics")
+            topic:   Topic being assessed (e.g. "Quadratic Equations")
+
+        Returns:
+            Dict with 'curriculum_context', 'exam_paper_context', 'has_context'.
+        """
+        # ── 1. Exam papers ────────────────────────────────────────────────
+        exam_filter: Optional[Dict[str, Any]] = None
+        count = self.chroma.get_collection_count("curriculum")
+        if count >= 10:
+            exam_filter = {
+                "$and": [
+                    {"category": {"$eq": "exam_paper"}},
+                    {"grade": {"$eq": grade}},
+                    {"subject": {"$eq": subject}},
+                ]
+            }
+
+        exam_results = self.chroma.search(
+            query=f"{grade} {subject} {topic} ECZ examination question",
+            collection_name="curriculum",
+            top_k=self.top_k,
+            where=exam_filter,
+        )
+
+        # Fallback: grade+subject filter only (no category filter)
+        if not exam_results and exam_filter:
+            exam_results = self.chroma.search(
+                query=f"{grade} {subject} {topic}",
+                collection_name="curriculum",
+                top_k=self.top_k,
+                where=self._build_filter(grade=grade, subject=subject),
+            )
+
+        # ── 2. Curriculum / syllabus content ──────────────────────────────
+        syllabus_results = self.chroma.search(
+            query=f"{grade} {subject} {topic} learning objectives syllabus",
+            collection_name="curriculum",
+            top_k=3,
+        )
+
+        exam_context = self._format_context(exam_results, "ECZ Past Paper Reference",
+                                            max_chars_per_chunk=700, max_total_chars=2500)
+        curriculum_context = self._format_context(syllabus_results, "Curriculum/Syllabus Content",
+                                                   max_chars_per_chunk=500, max_total_chars=1200)
+
+        has_context = bool(exam_results or syllabus_results)
+
+        logger.info(
+            f"Assessment RAG: {len(exam_results)} exam paper chunks, "
+            f"{len(syllabus_results)} syllabus chunks for {grade} {subject} - {topic}"
+        )
+
+        return {
+            "curriculum_context": curriculum_context,
+            "exam_paper_context": exam_context,
+            "has_context": has_context,
+        }
+
     def retrieve_for_search(
         self,
         query: str,
@@ -202,12 +276,13 @@ class CurriculumRetriever:
         self,
         results: List[Dict[str, Any]],
         section_title: str,
-        max_chars_per_chunk: int = 300,
-        max_total_chars: int = 800,
+        max_chars_per_chunk: int = 600,
+        max_total_chars: int = 2000,
     ) -> str:
         """
-        Format search results into a compact context string for the AI prompt.
-        Chunks are trimmed to keep the total prompt size manageable for small models.
+        Format search results into a context string for the AI prompt.
+        Chunks are trimmed to keep the total prompt size manageable.
+        OpenRouter models support large context windows, so we allow generous limits.
         """
         if not results:
             return ""
@@ -219,7 +294,6 @@ class CurriculumRetriever:
             content = result.get("content", "").strip()
             if not content:
                 continue
-            # Trim each chunk and stop if we've hit the total cap
             trimmed = content[:max_chars_per_chunk]
             entry = f"[{source}] {trimmed}"
             if total + len(entry) > max_total_chars:

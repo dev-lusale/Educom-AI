@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 import { BookOpen, Users, Sparkles, Shield, ArrowRight, CheckCircle2, GraduationCap, Globe } from "lucide-react";
 import Footer from "@/components/layout/Footer";
@@ -18,11 +18,11 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[--bg-surface]">
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative pt-28 pb-24 px-4 overflow-hidden bg-[#f8f8f8]">
+      <section className="relative pt-28 pb-24 px-4 overflow-hidden bg-[--bg-canvas]">
         {/* Subtle pink bloom */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#ea4c89]/6 blur-[100px] pointer-events-none" />
         {/* Hero image strip */}
@@ -35,13 +35,13 @@ export default async function LandingPage() {
           {/* Pill badge */}
           
 
-          <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-[#0d0d0d] leading-[1.08] tracking-tight mb-6 animate-fade-in">
+          <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-[--text-primary] leading-[1.08] tracking-tight mb-6 animate-fade-in">
             The Platform Built for
             <br />
             <span className="text-[#ea4c89]">Zambian Educators</span>
           </h1>
 
-          <p className="text-[#6b6b76] text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-[--text-secondary] text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
             Generate professional CBC-aligned lesson plans in seconds, collaborate with fellow teachers,
             and grow your practice — all in one elegant workspace.
           </p>
@@ -57,20 +57,20 @@ export default async function LandingPage() {
           </div>
 
           {/* Social proof */}
-          <p className="mt-8 text-[#9e9ea7] text-sm">
+          <p className="mt-8 text-[--text-muted] text-sm">
             Trusted by educators across all 10 provinces of Zambia
           </p>
         </div>
       </section>
 
       {/* ── Features ── */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-[--bg-surface]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-[#0d0d0d] mb-4 tracking-tight">
+            <h2 className="text-4xl font-bold text-[--text-primary] mb-4 tracking-tight">
               Everything a Zambian Teacher Needs
             </h2>
-            <p className="text-[#6b6b76] max-w-xl mx-auto">
+            <p className="text-[--text-secondary] max-w-xl mx-auto">
               Built from the ground up for the Zambian curriculum, teaching culture, and classroom reality.
             </p>
           </div>
@@ -81,8 +81,8 @@ export default async function LandingPage() {
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: f.iconBg }}>
                   <f.icon size={20} style={{ color: f.iconColor }} />
                 </div>
-                <h3 className="text-[#0d0d0d] font-semibold text-base mb-2">{f.title}</h3>
-                <p className="text-[#6b6b76] text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="text-[--text-primary] font-semibold text-base mb-2">{f.title}</h3>
+                <p className="text-[--text-secondary] text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -90,29 +90,29 @@ export default async function LandingPage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section id="pricing" className="py-24 px-4 bg-[#f8f8f8]">
+      <section id="pricing" className="py-24 px-4 bg-[--bg-canvas]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-4xl font-bold text-[#0d0d0d] mb-4 tracking-tight">
+            <h2 className="text-4xl font-bold text-[--text-primary] mb-4 tracking-tight">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-[#6b6b76]">Start free. Upgrade when you&apos;re ready.</p>
+            <p className="text-[--text-secondary]">Start free. Upgrade when you&apos;re ready.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Free */}
             <div className="drib-card p-7 flex flex-col">
               <div className="mb-6">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#f0f0f0] text-[#6b6b76] mb-4">Free Plan</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[--bg-elevated] text-[--text-secondary] mb-4">Free Plan</span>
                 <div className="flex items-end gap-1.5 mt-2">
-                  <span className="text-5xl font-bold text-[#0d0d0d]">K0</span>
-                  <span className="text-[#6b6b76] mb-1.5 text-sm">/month</span>
+                  <span className="text-5xl font-bold text-[--text-primary]">K0</span>
+                  <span className="text-[--text-secondary] mb-1.5 text-sm">/month</span>
                 </div>
-                <p className="text-[#9e9ea7] text-sm mt-2">Perfect for getting started</p>
+                <p className="text-[--text-muted] text-sm mt-2">Perfect for getting started</p>
               </div>
               <ul className="space-y-3 flex-1 mb-7">
                 {FREE_FEATURES.map((f, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-[#6b6b76]">
+                  <li key={i} className="flex items-start gap-3 text-sm text-[--text-secondary]">
                     <CheckCircle2 size={15} className="text-[#007531] mt-0.5 shrink-0" />
                     {f}
                   </li>
@@ -153,15 +153,15 @@ export default async function LandingPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-24 px-4 bg-[--bg-surface]">
         <div className="max-w-3xl mx-auto text-center">
           <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-6">
             <GraduationCap size={26} className="text-[#ea4c89]" />
           </div>
-          <h2 className="text-4xl font-bold text-[#0d0d0d] mb-4 tracking-tight">
+          <h2 className="text-4xl font-bold text-[--text-primary] mb-4 tracking-tight">
             Ready to Transform Your Teaching?
           </h2>
-          <p className="text-[#6b6b76] mb-8 text-lg">
+          <p className="text-[--text-secondary] mb-8 text-lg">
             Join hundreds of Zambian teachers already saving hours every week.
           </p>
           <Link href="/auth/signup" className="drib-btn-primary inline-flex items-center gap-2 text-base px-10 py-3.5">

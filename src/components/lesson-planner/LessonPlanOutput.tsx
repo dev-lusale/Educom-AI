@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Printer, Share2, Crown, CheckCircle2, Loader2, FileDown, BookOpen, X } from "lucide-react";
@@ -125,7 +125,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
           {/* Print */}
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-white border border-[#e8e8e8] text-[#6b6b76] hover:border-[#d4d4d4] hover:text-[#0d0d0d] transition-all"
+            className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-[--bg-surface] border border-[--border] text-[--text-secondary] hover:border-[--border-hover] hover:text-[--text-primary] transition-all"
           >
             <Printer size={14} /> Print
           </button>
@@ -145,18 +145,18 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
       {/* ── Share Modal ── */}
       {showShareModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 print:hidden">
-          <div className="bg-white border border-[#e8e8e8] rounded-2xl p-6 w-full max-w-md shadow-xl">
+          <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-6 w-full max-w-md shadow-xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[#0d0d0d] font-semibold text-base">Share with Community</h3>
+              <h3 className="text-[--text-primary] font-semibold text-base">Share with Community</h3>
               <button
                 onClick={() => setShowShareModal(false)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9e9ea7] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all"
               >
                 <X size={15} />
               </button>
             </div>
-            <p className="text-[#6b6b76] text-sm mb-4">
-              Your plan for <strong className="text-[#0d0d0d]">{plan.lessonTitle || plan.topic}</strong>{" "}
+            <p className="text-[--text-secondary] text-sm mb-4">
+              Your plan for <strong className="text-[--text-primary]">{plan.lessonTitle || plan.topic}</strong>{" "}
               ({plan.grade} · {plan.subject}) will be visible to all teachers.
             </p>
             <textarea
@@ -245,9 +245,9 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
               { label: "No. of Learners", value: plan.enrollment },
               { label: "Date",            value: plan.date },
             ].map(({ label, value }) => (
-              <div key={label} className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-3">
-                <p className="text-[#9e9ea7] text-xs mb-1 font-medium">{label}</p>
-                <p className="text-[#0d0d0d] font-semibold text-sm leading-tight">{value}</p>
+              <div key={label} className="bg-[--bg-canvas] border border-[--border] rounded-xl p-3">
+                <p className="text-[--text-muted] text-xs mb-1 font-medium">{label}</p>
+                <p className="text-[--text-primary] font-semibold text-sm leading-tight">{value}</p>
               </div>
             ))}
           </div>
@@ -344,7 +344,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
               {plan.teachingAids.map((aid, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1.5 bg-white border border-[#e8e8e8] rounded-full text-[#6b6b76] text-xs font-medium shadow-card"
+                  className="px-3 py-1.5 bg-[--bg-surface] border border-[--border] rounded-full text-[--text-secondary] text-xs font-medium shadow-card"
                 >
                   {aid}
                 </span>
@@ -364,10 +364,10 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
                 ];
                 const col = stepColors[(step.stepNumber - 1) % stepColors.length];
                 return (
-                  <div key={step.stepNumber} className="bg-white border border-[#e8e8e8] rounded-2xl overflow-hidden shadow-card">
+                  <div key={step.stepNumber} className="bg-[--bg-surface] border border-[--border] rounded-2xl overflow-hidden shadow-card">
                     {/* Step header */}
                     <div
-                      className="flex items-center justify-between px-5 py-3 border-b border-[#f0f0f0]"
+                      className="flex items-center justify-between px-5 py-3 border-b border-[--border]"
                       style={{ backgroundColor: col.bg }}
                     >
                       <div className="flex items-center gap-3">
@@ -398,11 +398,11 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
                     {/* Competencies footer */}
                     {step.competencies && step.competencies.length > 0 && (
                       <div
-                        className="px-5 py-2.5 border-t border-[#f0f0f0] text-xs"
+                        className="px-5 py-2.5 border-t border-[--border] text-xs"
                         style={{ backgroundColor: col.bg }}
                       >
                         <span className="font-semibold" style={{ color: col.accent }}>Competencies: </span>
-                        <span className="text-[#6b6b76]">{step.competencies.join(" · ")}</span>
+                        <span className="text-[--text-secondary]">{step.competencies.join(" · ")}</span>
                       </div>
                     )}
                   </div>
@@ -414,12 +414,12 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
           {/* ── SCREEN: Homework ── */}
           <div className="print:hidden">
             <SectionHeading title="Homework & ECZ Alignment" accent="#ea4c89" />
-            <div className="bg-white border border-[#e8e8e8] rounded-2xl p-5 shadow-card">
-              <p className="text-[#0d0d0d] leading-relaxed whitespace-pre-line text-sm mb-4">
+            <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-5 shadow-card">
+              <p className="text-[--text-primary] leading-relaxed whitespace-pre-line text-sm mb-4">
                 {plan.homework.description}
               </p>
-              <div className="pt-4 border-t border-[#f0f0f0]">
-                <p className="text-xs text-[#6b6b76]">
+              <div className="pt-4 border-t border-[--border]">
+                <p className="text-xs text-[--text-secondary]">
                   <span className="font-semibold text-[#ea4c89]">ECZ Alignment: </span>
                   {plan.homework.eczAlignment}
                 </p>
@@ -509,7 +509,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
 
 function SectionHeading({ title, accent }: { title: string; accent: string }) {
   return (
-    <h2 className="text-[#0d0d0d] font-semibold text-base mb-3 flex items-center gap-2.5">
+    <h2 className="text-[--text-primary] font-semibold text-base mb-3 flex items-center gap-2.5">
       <span className="w-1 h-5 rounded-full shrink-0" style={{ backgroundColor: accent }} />
       {title}
     </h2>
@@ -520,14 +520,14 @@ function CompCard({ title, items, accent, bg }: {
   title: string; items: string[]; accent: string; bg: string;
 }) {
   return (
-    <div className="bg-white border border-[#e8e8e8] rounded-xl p-4 shadow-card">
+    <div className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 shadow-card">
       <div className="flex items-center gap-2 mb-3">
         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: accent }} />
         <h3 className="font-semibold text-sm" style={{ color: accent }}>{title}</h3>
       </div>
       <ul className="space-y-1.5">
         {items.map((item, i) => (
-          <li key={i} className="text-[#6b6b76] text-xs flex gap-2 leading-relaxed">
+          <li key={i} className="text-[--text-secondary] text-xs flex gap-2 leading-relaxed">
             <span className="shrink-0 mt-0.5" style={{ color: accent }}>•</span>
             <span>{item}</span>
           </li>
@@ -540,10 +540,10 @@ function CompCard({ title, items, accent, bg }: {
 function ActivityColumn({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="p-4">
-      <h4 className="font-semibold text-[#9e9ea7] text-[10px] uppercase tracking-wider mb-3">{title}</h4>
+      <h4 className="font-semibold text-[--text-muted] text-[10px] uppercase tracking-wider mb-3">{title}</h4>
       <ol className="space-y-2 list-decimal list-inside">
         {items.map((item, i) => (
-          <li key={i} className="text-[#6b6b76] text-xs leading-relaxed">{item}</li>
+          <li key={i} className="text-[--text-secondary] text-xs leading-relaxed">{item}</li>
         ))}
       </ol>
     </div>

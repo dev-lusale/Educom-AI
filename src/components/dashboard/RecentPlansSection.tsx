@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -117,8 +117,8 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
         <div className="w-12 h-12 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-4">
           <BookOpen size={22} className="text-[#ea4c89]" />
         </div>
-        <p className="text-[#0d0d0d] font-semibold text-sm mb-1">No lesson plans yet</p>
-        <p className="text-[#9e9ea7] text-xs mb-5">
+        <p className="text-[--text-primary] font-semibold text-sm mb-1">No lesson plans yet</p>
+        <p className="text-[--text-muted] text-xs mb-5">
           Create your first CBC-aligned lesson plan in seconds.
         </p>
         <Link
@@ -152,14 +152,14 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
 
             {/* Title + meta */}
             <div className="flex-1 min-w-0">
-              <p className="text-[#0d0d0d] font-semibold text-sm truncate">{plan.topic}</p>
-              <p className="text-[#9e9ea7] text-xs mt-0.5">
+              <p className="text-[--text-primary] font-semibold text-sm truncate">{plan.topic}</p>
+              <p className="text-[--text-muted] text-xs mt-0.5">
                 {plan.grade} · {plan.subject}
               </p>
             </div>
 
             {/* Date */}
-            <div className="hidden sm:flex items-center gap-1.5 text-[#9e9ea7] text-xs shrink-0">
+            <div className="hidden sm:flex items-center gap-1.5 text-[--text-muted] text-xs shrink-0">
               <Clock size={11} />
               {new Date(plan.createdAt).toLocaleDateString("en-ZM", {
                 day: "numeric",
@@ -172,7 +172,7 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
               className={
                 plan.isShared
                   ? "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#e6f4ec] text-[#007531]"
-                  : "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#f8f8f8] text-[#6b6b76]"
+                  : "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--bg-canvas] text-[--text-secondary]"
               }
             >
               {plan.isShared ? "Published" : "Draft"}
@@ -183,7 +183,7 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
               <button
                 onClick={() => setOpenMenuId(isMenuOpen ? null : plan.id)}
                 disabled={isDeleting || isSharing}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9e9ea7] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all disabled:opacity-40"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all disabled:opacity-40"
                 aria-label="Plan actions"
               >
                 {isDeleting || isSharing ? (
@@ -194,11 +194,11 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
               </button>
 
               {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-white border border-[#e8e8e8] rounded-xl shadow-card-hover overflow-hidden">
+                <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-[--bg-surface] border border-[--border] rounded-xl shadow-card-hover overflow-hidden">
                   <Link
                     href={`/lesson-planner?edit=${plan.id}`}
                     onClick={() => setOpenMenuId(null)}
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors"
                   >
                     <Pencil size={13} className="text-[#ea4c89]" />
                     Edit
@@ -206,12 +206,12 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
                   <button
                     onClick={() => handleShare(plan)}
                     disabled={plan.isShared}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     <Share2 size={13} className="text-[#007531]" />
                     {plan.isShared ? "Shared" : "Share"}
                   </button>
-                  <div className="h-px bg-[#f0f0f0] mx-3" />
+                  <div className="h-px bg-[--bg-elevated] mx-3" />
                   <button
                     onClick={() => handleDelete(plan.id)}
                     disabled={isDeleting}

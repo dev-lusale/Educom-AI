@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+﻿import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -115,8 +115,8 @@ export default async function AnalyticsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1 tracking-tight">Analytics</h1>
-          <p className="text-[#6b6b76] text-sm">Track your teaching activity and performance.</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">Analytics</h1>
+          <p className="text-[--text-secondary] text-sm">Track your teaching activity and performance.</p>
         </div>
         {!isPremium && (
           <Link href="/payment" className="drib-btn-primary inline-flex items-center gap-2 text-sm">
@@ -158,13 +158,13 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 drib-card p-5">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[#0d0d0d] font-semibold">Activity — Last 7 Days</h2>
-            <span className="text-[#9e9ea7] text-xs">Plans per day</span>
+            <h2 className="text-[--text-primary] font-semibold">Activity — Last 7 Days</h2>
+            <span className="text-[--text-muted] text-xs">Plans per day</span>
           </div>
           <div className="flex items-end gap-2 h-36">
             {activityData.map((day) => (
               <div key={day.label} className="flex-1 flex flex-col items-center gap-1.5">
-                <span className="text-[#9e9ea7] text-[10px]">{day.count > 0 ? day.count : ""}</span>
+                <span className="text-[--text-muted] text-[10px]">{day.count > 0 ? day.count : ""}</span>
                 <div
                   className="w-full rounded-t-lg transition-all duration-500"
                   style={{
@@ -173,12 +173,12 @@ export default async function AnalyticsPage() {
                     minHeight: "4px",
                   }}
                 />
-                <span className="text-[#9e9ea7] text-[10px]">{day.label}</span>
+                <span className="text-[--text-muted] text-[10px]">{day.label}</span>
               </div>
             ))}
           </div>
           {activityData.every((d) => d.count === 0) && (
-            <p className="text-center text-[#9e9ea7] text-sm mt-4">
+            <p className="text-center text-[--text-muted] text-sm mt-4">
               No plans in the last 7 days.{" "}
               <Link href="/lesson-planner" className="text-[#ea4c89] hover:underline">Create one now →</Link>
             </p>
@@ -186,7 +186,7 @@ export default async function AnalyticsPage() {
         </div>
 
         <div className="drib-card p-5 flex flex-col gap-4">
-          <h2 className="text-[#0d0d0d] font-semibold">Quick Stats</h2>
+          <h2 className="text-[--text-primary] font-semibold">Quick Stats</h2>
           <QuickStatRow icon={Star} label="Last Month Plans" value={lastMonthPlans} color="#f59e0b" bg="#fef9c3" />
           <QuickStatRow
             icon={CheckCircle2} label="Avg Plans / Month"
@@ -201,7 +201,7 @@ export default async function AnalyticsPage() {
       {/* Subject & Grade breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="drib-card p-5">
-          <h2 className="text-[#0d0d0d] font-semibold mb-5">Plans by Subject</h2>
+          <h2 className="text-[--text-primary] font-semibold mb-5">Plans by Subject</h2>
           {plansBySubject.length > 0 ? (
             <div className="space-y-3.5">
               {plansBySubject.map((s) => {
@@ -209,10 +209,10 @@ export default async function AnalyticsPage() {
                 return (
                   <div key={s.subject}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[#0d0d0d] text-sm truncate max-w-[70%]">{s.subject}</span>
-                      <span className="text-[#9e9ea7] text-xs font-medium">{s._count.subject} <span className="text-[#c4c4ca]">({pct}%)</span></span>
+                      <span className="text-[--text-primary] text-sm truncate max-w-[70%]">{s.subject}</span>
+                      <span className="text-[--text-muted] text-xs font-medium">{s._count.subject} <span className="text-[#c4c4ca]">({pct}%)</span></span>
                     </div>
-                    <div className="h-1.5 bg-[#f0f0f0] rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
                       <div className="h-full rounded-full transition-all duration-700 bg-[#ea4c89]" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
@@ -220,14 +220,14 @@ export default async function AnalyticsPage() {
               })}
             </div>
           ) : (
-            <p className="text-[#9e9ea7] text-sm text-center py-8">
+            <p className="text-[--text-muted] text-sm text-center py-8">
               No plans yet. <Link href="/lesson-planner" className="text-[#ea4c89] hover:underline">Create your first →</Link>
             </p>
           )}
         </div>
 
         <div className="drib-card p-5">
-          <h2 className="text-[#0d0d0d] font-semibold mb-5">Plans by Grade</h2>
+          <h2 className="text-[--text-primary] font-semibold mb-5">Plans by Grade</h2>
           {sortedPlansByGrade.length > 0 ? (
             <div className="space-y-3.5">
               {sortedPlansByGrade.map((g) => {
@@ -235,10 +235,10 @@ export default async function AnalyticsPage() {
                 return (
                   <div key={g.grade}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[#0d0d0d] text-sm">{g.grade}</span>
-                      <span className="text-[#9e9ea7] text-xs font-medium">{g._count.grade} <span className="text-[#c4c4ca]">({pct}%)</span></span>
+                      <span className="text-[--text-primary] text-sm">{g.grade}</span>
+                      <span className="text-[--text-muted] text-xs font-medium">{g._count.grade} <span className="text-[#c4c4ca]">({pct}%)</span></span>
                     </div>
-                    <div className="h-1.5 bg-[#f0f0f0] rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
                       <div className="h-full rounded-full transition-all duration-700 bg-[#007531]" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
@@ -246,7 +246,7 @@ export default async function AnalyticsPage() {
               })}
             </div>
           ) : (
-            <p className="text-[#9e9ea7] text-sm text-center py-8">No plans yet.</p>
+            <p className="text-[--text-muted] text-sm text-center py-8">No plans yet.</p>
           )}
         </div>
       </div>
@@ -254,7 +254,7 @@ export default async function AnalyticsPage() {
       {/* Recent Plans */}
       <div className="drib-card p-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-[#0d0d0d] font-semibold">Recent Plans</h2>
+          <h2 className="text-[--text-primary] font-semibold">Recent Plans</h2>
           <Link href="/lesson-planner" className="text-[#ea4c89] text-xs hover:text-[#d6437a] transition-colors font-medium">
             View all →
           </Link>
@@ -262,17 +262,17 @@ export default async function AnalyticsPage() {
         {recentPlans.length > 0 ? (
           <div className="space-y-1.5">
             {recentPlans.map((plan) => (
-              <div key={plan.id} className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-[#f8f8f8] transition-colors">
+              <div key={plan.id} className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-[--bg-canvas] transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-8 h-8 bg-[#fce4ef] rounded-lg flex items-center justify-center shrink-0">
                     <BookOpen size={13} className="text-[#ea4c89]" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[#0d0d0d] text-sm font-medium truncate">{plan.topic}</p>
-                    <p className="text-[#9e9ea7] text-xs">{plan.subject} · {plan.grade}</p>
+                    <p className="text-[--text-primary] text-sm font-medium truncate">{plan.topic}</p>
+                    <p className="text-[--text-muted] text-xs">{plan.subject} · {plan.grade}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-[#9e9ea7] text-xs shrink-0 ml-4">
+                <div className="flex items-center gap-1.5 text-[--text-muted] text-xs shrink-0 ml-4">
                   <Clock size={11} />
                   {new Date(plan.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short" })}
                 </div>
@@ -282,7 +282,7 @@ export default async function AnalyticsPage() {
         ) : (
           <div className="text-center py-10">
             <BookOpen size={28} className="text-[#e8e8e8] mx-auto mb-3" />
-            <p className="text-[#9e9ea7] text-sm mb-4">No lesson plans yet.</p>
+            <p className="text-[--text-muted] text-sm mb-4">No lesson plans yet.</p>
             <Link href="/lesson-planner" className="drib-btn-primary inline-flex items-center gap-2 text-sm">
               <Sparkles size={13} /> Create Your First Plan
             </Link>
@@ -297,8 +297,8 @@ export default async function AnalyticsPage() {
             <Crown size={20} className="text-[#ea4c89]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold mb-1">Unlock Advanced Analytics</p>
-            <p className="text-[#6b6b76] text-sm">Get performance trends, engagement metrics, and exportable reports.</p>
+            <p className="text-[--text-primary] font-semibold mb-1">Unlock Advanced Analytics</p>
+            <p className="text-[--text-secondary] text-sm">Get performance trends, engagement metrics, and exportable reports.</p>
           </div>
           <Link href="/payment" className="drib-btn-primary inline-flex items-center gap-2 text-sm shrink-0">
             <Crown size={13} /> Upgrade
@@ -319,10 +319,10 @@ function KpiCard({ icon: Icon, label, value, accent, accentBg, isText, badge }: 
         <Icon size={18} style={{ color: accent }} />
       </div>
       <div className="flex items-center gap-2 mb-0.5">
-        <p className="font-bold text-2xl leading-tight text-[#0d0d0d]" style={isText ? { color: accent } : undefined}>{value}</p>
+        <p className="font-bold text-2xl leading-tight text-[--text-primary]" style={isText ? { color: accent } : undefined}>{value}</p>
         {badge}
       </div>
-      <p className="text-[#9e9ea7] text-xs">{label}</p>
+      <p className="text-[--text-muted] text-xs">{label}</p>
     </div>
   );
 }
@@ -336,9 +336,9 @@ function QuickStatRow({ icon: Icon, label, value, color, bg }: {
         <Icon size={15} style={{ color }} />
       </div>
       <div className="flex-1">
-        <p className="text-[#6b6b76] text-xs">{label}</p>
+        <p className="text-[--text-secondary] text-xs">{label}</p>
       </div>
-      <p className="text-[#0d0d0d] font-bold text-lg">{value}</p>
+      <p className="text-[--text-primary] font-bold text-lg">{value}</p>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
@@ -12,29 +12,29 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[#e8e8e8]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[--bg-surface] border-b border-[--border]">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo — goes to /dashboard if logged in, / if not */}
         <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-2.5 group">
           <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center">
             <GraduationCap size={18} className="text-white" />
           </div>
-          <span className="font-bold text-lg text-[#0d0d0d] group-hover:text-[#ea4c89] transition-colors tracking-tight">
+          <span className="font-bold text-lg text-[--text-primary] group-hover:text-[#ea4c89] transition-colors tracking-tight">
             Educom
           </span>
         </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/#pricing" className="text-[#6b6b76] hover:text-[#0d0d0d] text-sm transition-colors font-medium">
+          <Link href="/#pricing" className="text-[--text-secondary] hover:text-[--text-primary] text-sm transition-colors font-medium">
             Pricing
           </Link>
-          <Link href="/community" className="text-[#6b6b76] hover:text-[#0d0d0d] text-sm transition-colors font-medium">
+          <Link href="/community" className="text-[--text-secondary] hover:text-[--text-primary] text-sm transition-colors font-medium">
             Community
           </Link>
           {!session ? (
             <div className="flex items-center gap-3">
-              <Link href="/auth/signin" className="text-[#6b6b76] hover:text-[#0d0d0d] text-sm transition-colors font-medium">
+              <Link href="/auth/signin" className="text-[--text-secondary] hover:text-[--text-primary] text-sm transition-colors font-medium">
                 Sign In
               </Link>
               <Link href="/auth/signup" className="drib-btn-primary py-2 px-5 text-sm">
@@ -45,7 +45,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl px-3 py-2 hover:border-[#d4d4d4] transition-all"
+                className="flex items-center gap-2 bg-[--bg-canvas] border border-[--border] rounded-xl px-3 py-2 hover:border-[--border-hover] transition-all"
               >
                 {session.user.image ? (
                   <img src={session.user.image} alt="" className="w-7 h-7 rounded-full" />
@@ -54,26 +54,26 @@ export default function Navbar() {
                     {session.user.name?.[0]?.toUpperCase() ?? "T"}
                   </div>
                 )}
-                <span className="text-sm text-[#0d0d0d] max-w-[120px] truncate font-medium">{session.user.name}</span>
+                <span className="text-sm text-[--text-primary] max-w-[120px] truncate font-medium">{session.user.name}</span>
                 {session.user.plan === "PREMIUM" && (
                   <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#fce4ef] text-[#ea4c89]">PRO</span>
                 )}
-                <ChevronDown size={14} className={cn("text-[#9e9ea7] transition-transform", userMenuOpen && "rotate-180")} />
+                <ChevronDown size={14} className={cn("text-[--text-muted] transition-transform", userMenuOpen && "rotate-180")} />
               </button>
 
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-52 bg-white border border-[#e8e8e8] rounded-xl shadow-card-hover overflow-hidden">
-                  <div className="px-4 py-3 border-b border-[#f0f0f0]">
-                    <p className="text-[#0d0d0d] text-sm font-semibold truncate">{session.user.name}</p>
-                    <p className="text-[#9e9ea7] text-xs truncate">{session.user.email}</p>
+                <div className="absolute right-0 top-full mt-2 w-52 bg-[--bg-surface] border border-[--border] rounded-xl shadow-card-hover overflow-hidden">
+                  <div className="px-4 py-3 border-b border-[--border]">
+                    <p className="text-[--text-primary] text-sm font-semibold truncate">{session.user.name}</p>
+                    <p className="text-[--text-muted] text-xs truncate">{session.user.email}</p>
                   </div>
                   <div className="py-1">
                     <Link href="/dashboard" onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors">
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors">
                       <LayoutDashboard size={14} /> Dashboard
                     </Link>
                     <Link href="/settings" onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors">
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors">
                       <Settings size={14} /> Settings
                     </Link>
                     <button onClick={() => signOut({ callbackUrl: "/" })}
@@ -89,7 +89,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-[#6b6b76] hover:text-[#0d0d0d] transition-colors"
+          className="md:hidden text-[--text-secondary] hover:text-[--text-primary] transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
@@ -99,22 +99,22 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-[#e8e8e8] px-4 py-4 space-y-2">
+        <div className="md:hidden bg-[--bg-surface] border-t border-[--border] px-4 py-4 space-y-2">
           <Link href="/#pricing" onClick={() => setMobileOpen(false)}
-            className="block text-[#6b6b76] hover:text-[#0d0d0d] py-2.5 text-sm font-medium">Pricing</Link>
+            className="block text-[--text-secondary] hover:text-[--text-primary] py-2.5 text-sm font-medium">Pricing</Link>
           <Link href="/community" onClick={() => setMobileOpen(false)}
-            className="block text-[#6b6b76] hover:text-[#0d0d0d] py-2.5 text-sm font-medium">Community</Link>
+            className="block text-[--text-secondary] hover:text-[--text-primary] py-2.5 text-sm font-medium">Community</Link>
           {!session ? (
             <>
               <Link href="/auth/signin" onClick={() => setMobileOpen(false)}
-                className="block text-[#6b6b76] hover:text-[#0d0d0d] py-2.5 text-sm font-medium">Sign In</Link>
+                className="block text-[--text-secondary] hover:text-[--text-primary] py-2.5 text-sm font-medium">Sign In</Link>
               <Link href="/auth/signup" onClick={() => setMobileOpen(false)}
                 className="drib-btn-primary block text-center text-sm py-2.5 mt-2">Get Started</Link>
             </>
           ) : (
             <>
               <Link href="/dashboard" onClick={() => setMobileOpen(false)}
-                className="block text-[#6b6b76] hover:text-[#0d0d0d] py-2.5 text-sm font-medium">Dashboard</Link>
+                className="block text-[--text-secondary] hover:text-[--text-primary] py-2.5 text-sm font-medium">Dashboard</Link>
               <button onClick={() => signOut({ callbackUrl: "/" })}
                 className="block text-red-500 py-2.5 text-sm font-medium w-full text-left">Sign Out</button>
             </>

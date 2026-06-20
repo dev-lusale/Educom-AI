@@ -11,13 +11,14 @@ const isProd = process.env.NODE_ENV === "production";
 console.log("[auth.ts] GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "SET" : "MISSING");
 console.log("[auth.ts] GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "SET" : "MISSING");
 console.log("[auth.ts] AUTH_SECRET:", process.env.AUTH_SECRET ? "SET" : "MISSING");
+console.log("[auth.ts] AUTH_URL:", process.env.AUTH_URL);
 console.log("[auth.ts] DATABASE_URL:", process.env.DATABASE_URL?.substring(0, 40));
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   trustHost: true,
-  // Only enable debug in development — it causes noise and warns in production
+  // Only enable debug in development
   debug: !isProd,
   pages: {
     signIn: "/auth/signin",

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
 
         {/* Logo */}
@@ -45,15 +45,15 @@ export default function ForgotPasswordPage() {
             <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
-            <span className="font-bold text-xl text-[#0d0d0d] tracking-tight">Educom</span>
+            <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1.5">Forgot your password?</h1>
-          <p className="text-[#6b6b76] text-sm">
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1.5">Forgot your password?</h1>
+          <p className="text-[--text-secondary] text-sm">
             Enter your email and we'll send you a reset link.
           </p>
         </div>
 
-        <div className="bg-white border border-[#e8e8e8] rounded-2xl p-8 shadow-card">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-8 shadow-card">
           {sent ? (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
@@ -62,13 +62,13 @@ export default function ForgotPasswordPage() {
                 </div>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-[#0d0d0d] mb-2">Check your inbox</h2>
-                <p className="text-[#6b6b76] text-sm leading-relaxed">
+                <h2 className="text-lg font-semibold text-[--text-primary] mb-2">Check your inbox</h2>
+                <p className="text-[--text-secondary] text-sm leading-relaxed">
                   If an account with <strong>{email}</strong> exists, we've sent a password reset link.
                   The link will expire in 1 hour.
                 </p>
               </div>
-              <p className="text-xs text-[#9e9ea7] pt-2">
+              <p className="text-xs text-[--text-muted] pt-2">
                 Didn't receive it? Check your spam folder or{" "}
                 <button
                   onClick={() => setSent(false)}
@@ -81,11 +81,11 @@ export default function ForgotPasswordPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+                <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                   Email address
                 </label>
                 <div className="relative">
-                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+                  <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
                   <input
                     type="email"
                     value={email}
@@ -113,7 +113,7 @@ export default function ForgotPasswordPage() {
           )}
         </div>
 
-        <p className="text-center text-sm text-[#6b6b76] mt-5">
+        <p className="text-center text-sm text-[--text-secondary] mt-5">
           <Link
             href="/auth/signin"
             className="inline-flex items-center gap-1.5 text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold"

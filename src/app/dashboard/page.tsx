@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+﻿import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -92,15 +92,15 @@ export default async function DashboardPage() {
   const firstName = session.user.name ?? "Teacher";
 
   return (
-    <main className="px-6 py-8 max-w-7xl mx-auto">
+    <main className="px-6 py-8 max-w-7xl mx-auto min-h-screen bg-[--bg-canvas] transition-colors duration-200">
 
       {/* ── Page header ── */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1 tracking-tight">
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">
             Good to see you, {firstName} 
           </h1>
-          <p className="text-[#6b6b76] text-sm">
+          <p className="text-[--text-secondary] text-sm">
             Here&apos;s your teaching overview for today.
           </p>
         </div>
@@ -112,8 +112,8 @@ export default async function DashboardPage() {
           >
             <Plus size={15} /> New Plan
           </Link>
-          <button className="relative w-10 h-10 bg-white border border-[#e8e8e8] rounded-xl flex items-center justify-center hover:border-[#d4d4d4] transition-all shadow-card">
-            <Bell size={16} className="text-[#6b6b76]" />
+          <button className="relative w-10 h-10 bg-[--bg-surface] border border-[--border] rounded-xl flex items-center justify-center hover:border-[--border-hover] transition-all shadow-card">
+            <Bell size={16} className="text-[--text-secondary]" />
           </button>
         </div>
       </div>
@@ -125,10 +125,10 @@ export default async function DashboardPage() {
             <AlertTriangle size={16} className="text-yellow-600" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">
+            <p className="text-[--text-primary] font-semibold text-sm">
               Subscription expires in {subInfo.daysRemaining} day{subInfo.daysRemaining !== 1 ? "s" : ""}
             </p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">Renew now to keep uninterrupted access.</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">Renew now to keep uninterrupted access.</p>
           </div>
           <Link href="/payment" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow-500 text-white text-xs font-semibold hover:bg-yellow-600 transition-colors shrink-0">
             <RefreshCw size={13} /> Renew
@@ -142,8 +142,8 @@ export default async function DashboardPage() {
             <AlertTriangle size={16} className="text-red-500" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">Your Premium subscription has expired</p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">You&apos;ve been moved to the Free plan.</p>
+            <p className="text-[--text-primary] font-semibold text-sm">Your Premium subscription has expired</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">You&apos;ve been moved to the Free plan.</p>
           </div>
           <Link href="/payment" className="drib-btn-primary inline-flex items-center gap-1.5 text-xs px-4 py-2 shrink-0">
             <Crown size={13} /> Renew
@@ -192,8 +192,8 @@ export default async function DashboardPage() {
               <Crown size={16} className="text-[#ea4c89]" />
             </div>
             <div>
-              <p className="text-[#0d0d0d] font-semibold text-sm">Premium Subscription Active</p>
-              <p className="text-[#9e9ea7] text-xs">Full access to all features</p>
+              <p className="text-[--text-primary] font-semibold text-sm">Premium Subscription Active</p>
+              <p className="text-[--text-muted] text-xs">Full access to all features</p>
             </div>
             <div className="ml-auto">
               <span className={cn(
@@ -210,17 +210,17 @@ export default async function DashboardPage() {
             <MetaField icon={Calendar} label="Start Date" value={subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" }) : "—"} />
             <MetaField icon={Calendar} label="Expiry Date" value={new Date(subInfo.endDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })} />
             <div>
-              <p className="text-[#9e9ea7] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
-              <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-600" : "text-[#0d0d0d]")}>
+              <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
+              <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-600" : "text-[--text-primary]")}>
                 {subInfo.daysRemaining ?? "∞"}
               </p>
             </div>
             <MetaField icon={CreditCard} label="Payment" value={subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—"} />
           </div>
           {subInfo.receiptNumber && (
-            <div className="mt-3 pt-3 border-t border-[#f0f0f0]">
-              <p className="text-[#9e9ea7] text-xs">
-                Receipt: <span className="text-[#0d0d0d] font-mono">{subInfo.receiptNumber}</span>
+            <div className="mt-3 pt-3 border-t border-[--border]">
+              <p className="text-[--text-muted] text-xs">
+                Receipt: <span className="text-[--text-primary] font-mono">{subInfo.receiptNumber}</span>
               </p>
             </div>
           )}
@@ -232,8 +232,8 @@ export default async function DashboardPage() {
         <div className="drib-card p-5 mb-6">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-[#0d0d0d] font-semibold text-sm">Free Plan Usage</p>
-              <p className="text-[#9e9ea7] text-xs mt-0.5">
+              <p className="text-[--text-primary] font-semibold text-sm">Free Plan Usage</p>
+              <p className="text-[--text-muted] text-xs mt-0.5">
                 {monthlyCount} of {FREE_LIMIT} lesson plans this month
               </p>
             </div>
@@ -241,7 +241,7 @@ export default async function DashboardPage() {
               <Crown size={10} /> Upgrade
             </Link>
           </div>
-          <div className="h-2 bg-[#f0f0f0] rounded-full overflow-hidden">
+          <div className="h-2 bg-[--bg-elevated] rounded-full overflow-hidden">
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-500",
@@ -264,7 +264,7 @@ export default async function DashboardPage() {
         {/* Recent Plans — 2 cols */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[#0d0d0d] font-semibold text-base">Recent Lesson Plans</h2>
+            <h2 className="text-[--text-primary] font-semibold text-base">Recent Lesson Plans</h2>
             <Link
               href="/lesson-plans"
               className="text-[#ea4c89] text-xs hover:text-[#d6437a] transition-colors flex items-center gap-1 font-medium"
@@ -303,11 +303,11 @@ export default async function DashboardPage() {
 
           {/* Quick Actions */}
           <div className="drib-card p-5">
-            <p className="text-[#0d0d0d] font-semibold text-sm mb-3">Quick Actions</p>
+            <p className="text-[--text-primary] font-semibold text-sm mb-3">Quick Actions</p>
             <div className="space-y-1">
               <Link
                 href="/lesson-planner"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all group"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all group"
               >
                 <div className="w-7 h-7 bg-[#fce4ef] rounded-lg flex items-center justify-center shrink-0">
                   <Plus size={14} className="text-[#ea4c89]" />
@@ -316,7 +316,7 @@ export default async function DashboardPage() {
               </Link>
               <Link
                 href="/community"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all group"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all group"
               >
                 <div className="w-7 h-7 bg-[#e6f4ec] rounded-lg flex items-center justify-center shrink-0">
                   <Users size={14} className="text-[#007531]" />
@@ -325,7 +325,7 @@ export default async function DashboardPage() {
               </Link>
               <Link
                 href="/analytics"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all group"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all group"
               >
                 <div className="w-7 h-7 bg-[#eff6ff] rounded-lg flex items-center justify-center shrink-0">
                   <BarChart2 size={14} className="text-[#3b82f6]" />
@@ -335,9 +335,9 @@ export default async function DashboardPage() {
               {!isPremium && (
                 <Link
                   href="/payment"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#ea4c89] hover:bg-[#fce4ef] transition-all group"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#ea4c89] hover:bg-[--accent-pale] transition-all group"
                 >
-                  <div className="w-7 h-7 bg-[#fce4ef] rounded-lg flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 bg-[--accent-pale] rounded-lg flex items-center justify-center shrink-0">
                     <Crown size={14} className="text-[#ea4c89]" />
                   </div>
                   Upgrade to Premium
@@ -371,11 +371,11 @@ function StatCard({
       >
         <Icon size={18} style={{ color: accent }} />
       </div>
-      <p className={cn("font-bold text-2xl leading-tight mb-0.5", isText ? "" : "text-[#0d0d0d]")}
+      <p className={cn("font-bold text-2xl leading-tight mb-0.5", isText ? "" : "text-[--text-primary]")}
          style={isText ? { color: accent } : undefined}>
         {value}
       </p>
-      <p className="text-[#9e9ea7] text-xs">{label}</p>
+      <p className="text-[--text-muted] text-xs">{label}</p>
     </div>
   );
 }
@@ -389,10 +389,10 @@ function MetaField({
 }) {
   return (
     <div>
-      <p className="text-[#9e9ea7] text-xs mb-1 flex items-center gap-1">
+      <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1">
         <Icon size={10} /> {label}
       </p>
-      <p className="text-[#0d0d0d] font-medium text-sm">{value}</p>
+      <p className="text-[--text-primary] font-medium text-sm">{value}</p>
     </div>
   );
 }

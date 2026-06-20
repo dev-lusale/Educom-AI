@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -23,6 +23,13 @@ export default function AssessmentsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Map assessment type → dedicated OpenRouter-powered API route
+  const ENDPOINT: Record<string, string> = {
+    quiz:           "/api/quiz-generator",
+    exam:           "/api/exam-generator",
+    marking_scheme: "/api/marking-scheme",
+  };
+
   async function handleGenerate(values: AssessmentFormValues) {
     setLoading(true);
     setError(null);
@@ -30,7 +37,8 @@ export default function AssessmentsPage() {
     setSavedId(null);
 
     try {
-      const res = await fetch("/api/generate-assessment", {
+      const endpoint = ENDPOINT[values.assessment_type] ?? "/api/generate-assessment";
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -85,7 +93,7 @@ export default function AssessmentsPage() {
           <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
             <ClipboardList size={17} className="text-[#ea4c89]" />
           </div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] tracking-tight">
+          <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight">
             Assessment Intelligence
           </h1>
           {isPremium && (
@@ -94,7 +102,7 @@ export default function AssessmentsPage() {
             </span>
           )}
         </div>
-        <p className="text-[#6b6b76] text-sm">
+        <p className="text-[--text-secondary] text-sm">
           Generate ECZ-aligned quizzes, examination papers, and marking schemes in seconds.
         </p>
 
@@ -111,7 +119,7 @@ export default function AssessmentsPage() {
               <Icon size={11} /> {label}
             </span>
           ))}
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[#f8f8f8] text-[#6b6b76]">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-[--bg-canvas] text-[--text-secondary]">
             PDF Export
           </span>
         </div>
@@ -124,8 +132,8 @@ export default function AssessmentsPage() {
             <Lock size={16} className="text-[#ea4c89]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">Premium Feature</p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">
+            <p className="text-[--text-primary] font-semibold text-sm">Premium Feature</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">
               Assessment generation requires a Premium subscription. Upgrade to unlock unlimited quizzes, exam papers, marking schemes, and PDF exports.
             </p>
           </div>

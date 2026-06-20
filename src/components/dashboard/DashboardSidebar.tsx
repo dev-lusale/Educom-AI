@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +19,8 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import NotificationBell from "@/components/dashboard/NotificationBell";
+import ThemeToggle from "@/components/dashboard/ThemeToggle";
 
 const NAV_ITEMS = [
   { href: "/dashboard",      icon: LayoutDashboard, label: "Dashboard"    },
@@ -61,21 +63,17 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
 
       <aside
         className={cn(
-          // Dribbble sidebar: white, clean, full-height
           "fixed inset-y-0 left-0 z-40 flex flex-col",
           "w-60 md:w-56",
-          // White background, subtle right border
-          "bg-white border-r border-[#e8e8e8]",
-          // Mobile: slide in/out
+          "bg-[--bg-surface] border-r border-[--border] transition-colors duration-200",
           "transform transition-transform duration-250 ease-out",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          // Desktop: always visible, flush
           "md:relative md:translate-x-0 md:transform-none",
           "md:sticky md:top-0 md:h-screen",
         )}
       >
         {/* ── Logo ── */}
-        <div className="px-5 pt-6 pb-5 border-b border-[#f0f0f0]">
+        <div className="px-5 pt-6 pb-5 border-b border-[--border]">
           <Link
             href="/dashboard"
             onClick={onClose}
@@ -84,7 +82,7 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
             <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#d6437a] transition-colors">
               <GraduationCap size={16} className="text-white" />
             </div>
-            <span className="font-bold text-[#0d0d0d] text-base tracking-tight group-hover:text-[#ea4c89] transition-colors">
+            <span className="font-bold text-[--text-primary] text-base tracking-tight group-hover:text-[#ea4c89] transition-colors">
               Educom
             </span>
           </Link>
@@ -106,17 +104,15 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 group",
                   isActive
-                    // Active: pink pill — exactly like Dribbble's active state
-                    ? "bg-[#fce4ef] text-[#ea4c89] font-semibold"
-                    // Inactive: muted, subtle hover
-                    : "text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] font-normal"
+                    ? "bg-[--accent-pale] text-[#ea4c89] font-semibold"
+                    : "text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] font-normal"
                 )}
               >
                 <item.icon
                   size={17}
                   className={cn(
                     "shrink-0 transition-colors",
-                    isActive ? "text-[#ea4c89]" : "text-[#9e9ea7] group-hover:text-[#0d0d0d]"
+                    isActive ? "text-[#ea4c89]" : "text-[--text-muted] group-hover:text-[--text-primary]"
                   )}
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />
@@ -129,6 +125,16 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
           })}
         </nav>
 
+        {/* ── Notifications ── */}
+        <div className="px-3 pb-2 border-t border-[--border] pt-2">
+          <NotificationBell variant="row" />
+        </div>
+
+        {/* ── Theme toggle ── */}
+        <div className="px-3 pb-2">
+          <ThemeToggle variant="row" />
+        </div>
+
         {/* ── Upgrade prompt (free users) ── */}
         {!isPremium && (
           <div className="mx-3 mb-3 p-4 rounded-xl bg-[#fce4ef] border border-[#f5b8d4]">
@@ -136,7 +142,7 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
               <Crown size={14} className="text-[#ea4c89]" />
               <span className="text-[#ea4c89] text-xs font-semibold">Go Premium</span>
             </div>
-            <p className="text-[#6b6b76] text-xs leading-relaxed mb-3">
+            <p className="text-[--text-secondary] text-xs leading-relaxed mb-3">
               Unlock unlimited lesson plans, assessments, and community sharing.
             </p>
             <Link
@@ -150,18 +156,18 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
         )}
 
         {/* ── User profile footer ── */}
-        <div className="px-3 pb-4 pt-3 border-t border-[#f0f0f0]">
+        <div className="px-3 pb-4 pt-3 border-t border-[--border]">
 
           {/* Premium badge */}
           {isPremium && (
-            <div className="flex items-center gap-2 px-3 py-1.5 mb-2 rounded-xl bg-[#fce4ef]">
+            <div className="flex items-center gap-2 px-3 py-1.5 mb-2 rounded-xl bg-[--accent-pale]">
               <Crown size={11} className="text-[#ea4c89] shrink-0" />
               <span className="text-[#ea4c89] text-xs font-semibold">Premium</span>
             </div>
           )}
 
           {/* User row */}
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#f8f8f8] transition-all group cursor-default">
+          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[--bg-canvas] transition-all group cursor-default">
             {session?.user?.image ? (
               <img
                 src={session.user.image}
@@ -175,10 +181,10 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
             )}
 
             <div className="flex-1 min-w-0">
-              <p className="text-[#0d0d0d] text-xs font-semibold truncate leading-tight">
+              <p className="text-[--text-primary] text-xs font-semibold truncate leading-tight">
                 {firstName} {lastName}
               </p>
-              <p className="text-[#9e9ea7] text-[10px] leading-tight mt-0.5 truncate">
+              <p className="text-[--text-muted] text-[10px] leading-tight mt-0.5 truncate">
                 {session?.user?.email ?? "Teacher"}
               </p>
             </div>
@@ -186,7 +192,7 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
               title="Sign out"
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-[#9e9ea7] hover:text-red-500 hover:bg-red-50 transition-all shrink-0"
+              className="w-7 h-7 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-red-500 hover:bg-red-50 transition-all shrink-0"
             >
               <LogOut size={13} />
             </button>

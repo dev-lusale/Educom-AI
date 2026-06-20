@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -143,7 +143,7 @@ export default function AssessmentOutput({ assessment, assessmentType, savedId, 
 
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-white border border-[#e8e8e8] text-[#6b6b76] hover:border-[#d4d4d4] hover:text-[#0d0d0d] transition-all"
+            className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-[--bg-surface] border border-[--border] text-[--text-secondary] hover:border-[--border-hover] hover:text-[--text-primary] transition-all"
           >
             <Printer size={13} /> Print
           </button>
@@ -244,9 +244,9 @@ function QuizDocument({ quiz, showAnswerKey }: { quiz: QuizData; showAnswerKey: 
           { label: "Total Marks", value: String(quiz.total_marks) },
           { label: "Difficulty",  value: quiz.difficulty },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-3">
-            <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-            <p className="text-[#0d0d0d] font-semibold text-sm capitalize">{value}</p>
+          <div key={label} className="bg-[--bg-canvas] border border-[--border] rounded-xl p-3">
+            <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+            <p className="text-[--text-primary] font-semibold text-sm capitalize">{value}</p>
           </div>
         ))}
       </div>
@@ -279,7 +279,7 @@ function QuizDocument({ quiz, showAnswerKey }: { quiz: QuizData; showAnswerKey: 
       {/* Instructions */}
       <div className="print:hidden mb-6">
         <SectionHeading title="Instructions" color="#3b82f6" />
-        <p className="text-[#6b6b76] text-sm bg-[#eff6ff] border border-[#3b82f6]/20 rounded-xl px-4 py-3">
+        <p className="text-[--text-secondary] text-sm bg-[#eff6ff] border border-[#3b82f6]/20 rounded-xl px-4 py-3">
           {quiz.instructions}
         </p>
       </div>
@@ -289,7 +289,7 @@ function QuizDocument({ quiz, showAnswerKey }: { quiz: QuizData; showAnswerKey: 
         <div key={section.name} className="mb-8">
           <div className="print:hidden mb-4">
             <SectionHeading title={section.name} color="#3b82f6" />
-            <p className="text-[#9e9ea7] text-xs mb-4">{section.description}</p>
+            <p className="text-[--text-muted] text-xs mb-4">{section.description}</p>
           </div>
           <div className="assess-section-heading print:block hidden">
             <strong>{section.name}</strong> ({section.section_marks} marks) — {section.description}
@@ -305,15 +305,15 @@ function QuizDocument({ quiz, showAnswerKey }: { quiz: QuizData; showAnswerKey: 
 
       {/* Answer Key (screen only, toggled) */}
       {showAnswerKey && quiz.answer_key && quiz.answer_key.length > 0 && (
-        <div className="print:hidden mt-6 pt-6 border-t border-[#f0f0f0]">
+        <div className="print:hidden mt-6 pt-6 border-t border-[--border]">
           <SectionHeading title="Answer Key" color="#007531" />
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {quiz.answer_key.map((a) => (
               <div key={a.question_number}
                 className="bg-[#e6f4ec] border border-[#007531]/20 rounded-xl p-3">
-                <p className="text-[#9e9ea7] text-xs mb-0.5">Q{a.question_number}</p>
+                <p className="text-[--text-muted] text-xs mb-0.5">Q{a.question_number}</p>
                 <p className="text-[#007531] font-bold text-sm">{a.answer}</p>
-                <p className="text-[#9e9ea7] text-xs">{a.marks} mark{a.marks !== 1 ? "s" : ""}</p>
+                <p className="text-[--text-muted] text-xs">{a.marks} mark{a.marks !== 1 ? "s" : ""}</p>
               </div>
             ))}
           </div>
@@ -338,9 +338,9 @@ function ExamDocument({ exam }: { exam: ExamData }) {
           { label: "Duration", value: exam.duration },
           { label: "Marks",    value: String(exam.total_marks) },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-3">
-            <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-            <p className="text-[#0d0d0d] font-semibold text-sm">{value}</p>
+          <div key={label} className="bg-[--bg-canvas] border border-[--border] rounded-xl p-3">
+            <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+            <p className="text-[--text-primary] font-semibold text-sm">{value}</p>
           </div>
         ))}
       </div>
@@ -376,7 +376,7 @@ function ExamDocument({ exam }: { exam: ExamData }) {
         <div className="bg-[#e6f4ec] border border-[#007531]/20 rounded-xl p-4">
           <ol className="space-y-1.5 list-decimal list-inside">
             {exam.instructions_to_candidates.map((ins, i) => (
-              <li key={i} className="text-[#6b6b76] text-sm">{ins}</li>
+              <li key={i} className="text-[--text-secondary] text-sm">{ins}</li>
             ))}
           </ol>
         </div>
@@ -402,7 +402,7 @@ function ExamDocument({ exam }: { exam: ExamData }) {
                 {section.marks} marks
               </span>
             </div>
-            <p className="text-[#9e9ea7] text-xs">{section.instructions}</p>
+            <p className="text-[--text-muted] text-xs">{section.instructions}</p>
           </div>
           <div className="assess-section-heading hidden print:block">
             <strong>{section.label}: {section.title}</strong> ({section.marks} marks)<br />
@@ -430,24 +430,26 @@ function MarkingSchemeDocument({ scheme }: { scheme: MarkingSchemeData }) {
         {[
           { label: "Grade",    value: scheme.grade },
           { label: "Subject",  value: scheme.subject },
+          { label: "Topic",    value: scheme.topic },
           { label: "Type",     value: scheme.exam_type },
           { label: "Marks",    value: String(scheme.total_marks) },
+          ...(scheme.term ? [{ label: "Term", value: scheme.term }] : []),
         ].map(({ label, value }) => (
-          <div key={label} className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-3">
-            <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-            <p className="text-[#0d0d0d] font-semibold text-sm">{value}</p>
+          <div key={label} className="bg-[--bg-canvas] border border-[--border] rounded-xl p-3">
+            <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+            <p className="text-[--text-primary] font-semibold text-sm">{value}</p>
           </div>
         ))}
       </div>
 
       {/* General examiner notes */}
-      {scheme.general_examiner_notes.length > 0 && (
+      {scheme.general_examiner_notes?.length > 0 && (
         <div className="print:hidden mb-6">
           <SectionHeading title="General Examiner Notes" color="#8b5cf6" />
           <div className="bg-[#f5f3ff] border border-[#8b5cf6]/20 rounded-xl p-4">
             <ul className="space-y-1.5">
               {scheme.general_examiner_notes.map((note, i) => (
-                <li key={i} className="text-[#6b6b76] text-sm flex gap-2">
+                <li key={i} className="text-[--text-secondary] text-sm flex gap-2">
                   <span className="text-[#8b5cf6] shrink-0">•</span>{note}
                 </li>
               ))}
@@ -457,71 +459,193 @@ function MarkingSchemeDocument({ scheme }: { scheme: MarkingSchemeData }) {
       )}
 
       {/* Sections */}
-      {scheme.sections.map((section) => (
+      {scheme.sections?.map((section) => (
         <div key={section.label} className="mb-8">
           <div className="print:hidden mb-4">
-            <SectionHeading title={section.label} color="#8b5cf6" />
+            <SectionHeading
+              title={section.title ? `${section.label} — ${section.title}` : section.label}
+              color="#8b5cf6"
+            />
           </div>
           <div className="assess-section-heading hidden print:block">
-            <strong>{section.label}</strong>
+            <strong>{section.label}{section.title ? ` — ${section.title}` : ""}</strong>
           </div>
 
           <div className="space-y-4">
-            {section.questions.map((q) => (
-              <div key={q.number} className="bg-white border border-[#e8e8e8] rounded-2xl p-5 shadow-sm">
-                {/* Screen view */}
-                <div className="print:hidden">
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-start gap-3">
-                      <span className="w-7 h-7 rounded-lg bg-[#f5f3ff] flex items-center justify-center text-[#8b5cf6] font-bold text-xs shrink-0 mt-0.5">
-                        {q.number}
-                      </span>
-                      <p className="text-[#0d0d0d] text-sm font-medium leading-relaxed">{q.question}</p>
-                    </div>
-                    <span className="text-xs font-semibold text-[#8b5cf6] bg-[#f5f3ff] px-2.5 py-1 rounded-full shrink-0">
-                      {q.marks} marks
-                    </span>
-                  </div>
-                  <div className="bg-[#f5f3ff] rounded-xl p-4 mt-3 border border-[#8b5cf6]/20">
-                    <p className="text-[#8b5cf6] text-xs font-semibold mb-2 uppercase tracking-wide">Expected Response</p>
-                    <p className="text-[#0d0d0d] text-sm leading-relaxed whitespace-pre-line">{q.expected_response}</p>
-                    {q.alternative_responses.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-[#8b5cf6]/20">
-                        <p className="text-[#9e9ea7] text-xs font-semibold mb-1">Also accept:</p>
-                        <ul className="space-y-0.5">
-                          {q.alternative_responses.map((alt, i) => (
-                            <li key={i} className="text-[#6b6b76] text-xs">• {alt}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {q.examiner_notes && (
-                      <div className="mt-3 pt-3 border-t border-[#8b5cf6]/20">
-                        <p className="text-[#9e9ea7] text-xs font-semibold mb-1">Examiner Notes:</p>
-                        <p className="text-[#6b6b76] text-xs">{q.examiner_notes}</p>
-                      </div>
-                    )}
-                    <p className="text-[#9e9ea7] text-xs mt-2">Mark allocation: {q.mark_allocation}</p>
-                  </div>
-                </div>
-                {/* Print view */}
-                <div className="hidden print:block">
-                  <p className="assess-ms-q"><strong>Q{q.number}.</strong> {q.question} <em>({q.marks} marks)</em></p>
-                  <p className="assess-ms-ans"><strong>Expected:</strong> {q.expected_response}</p>
-                  {q.alternative_responses.length > 0 && (
-                    <p className="assess-ms-alt"><strong>Also accept:</strong> {q.alternative_responses.join("; ")}</p>
-                  )}
-                  {q.examiner_notes && (
-                    <p className="assess-ms-note"><strong>Note:</strong> {q.examiner_notes}</p>
-                  )}
-                  <p className="assess-ms-alloc">Marks: {q.mark_allocation}</p>
-                </div>
-              </div>
+            {section.questions?.map((q) => (
+              <MarkingSchemeQuestionCard key={q.number} question={q} />
             ))}
           </div>
         </div>
       ))}
+
+      {/* Print general notes */}
+      {scheme.general_examiner_notes?.length > 0 && (
+        <div className="hidden print:block mt-6 pt-4 border-t">
+          <p className="font-bold text-sm mb-2">GENERAL EXAMINER NOTES</p>
+          <ol className="list-decimal list-inside space-y-1">
+            {scheme.general_examiner_notes.map((note, i) => (
+              <li key={i} className="text-sm">{note}</li>
+            ))}
+          </ol>
+        </div>
+      )}
     </>
+  );
+}
+
+function MarkingSchemeQuestionCard({ question: q }: { question: import("@/types/assessment").MarkingSchemeQuestion }) {
+  // Determine display values — handles both OpenRouter shape and legacy FastAPI shape
+  const marks       = q.marks ?? q.total_marks ?? 0;
+  const modelAns    = q.model_answer ?? q.expected_response ?? "";
+  const markPoints  = q.mark_points ?? [];
+  const altAccepts  = q.accept_alternatives ?? q.alternative_responses ?? [];
+  const examNote    = q.examiner_note ?? q.examiner_notes ?? "";
+  const markAlloc   = q.mark_allocation ?? "";
+  const questionTxt = q.question ?? "";
+
+  // Section A MCQ answer key style
+  const isMCQKey = !q.sub_questions && !q.mark_points && !q.model_answer && !q.expected_response && q.answer;
+
+  if (isMCQKey) {
+    return (
+      <div className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 shadow-sm">
+        <div className="print:hidden flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="w-7 h-7 rounded-lg bg-[#f5f3ff] flex items-center justify-center text-[#8b5cf6] font-bold text-xs shrink-0">
+              {q.number}
+            </span>
+            {questionTxt && <p className="text-[--text-secondary] text-sm">{questionTxt}</p>}
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <span className="text-[#007531] font-bold text-sm bg-[#e6f4ec] px-3 py-1 rounded-full">
+              {q.answer}
+            </span>
+            <span className="text-xs text-[--text-muted]">{marks} mark{marks !== 1 ? "s" : ""}</span>
+          </div>
+        </div>
+        {q.explanation && (
+          <p className="print:hidden text-[--text-muted] text-xs mt-2 ml-10">{q.explanation}</p>
+        )}
+        {/* Print */}
+        <div className="hidden print:flex justify-between text-sm">
+          <span><strong>Q{q.number}.</strong>{questionTxt ? ` ${questionTxt}` : ""}</span>
+          <span><strong>{q.answer}</strong> ({marks} mark{marks !== 1 ? "s" : ""})</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Section B/C structured or sub-question style
+  return (
+    <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-5 shadow-sm">
+      {/* Screen */}
+      <div className="print:hidden">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <div className="flex items-start gap-3">
+            <span className="w-7 h-7 rounded-lg bg-[#f5f3ff] flex items-center justify-center text-[#8b5cf6] font-bold text-xs shrink-0 mt-0.5">
+              {q.number}
+            </span>
+            {questionTxt && <p className="text-[--text-primary] text-sm font-medium leading-relaxed">{questionTxt}</p>}
+          </div>
+          <span className="text-xs font-semibold text-[#8b5cf6] bg-[#f5f3ff] px-2.5 py-1 rounded-full shrink-0">
+            {marks} marks
+          </span>
+        </div>
+
+        {/* Sub-questions */}
+        {q.sub_questions && q.sub_questions.length > 0 ? (
+          <div className="space-y-3 ml-10">
+            {q.sub_questions.map((sub) => (
+              <div key={sub.part} className="bg-[#fafafa] border border-[--border] rounded-xl p-3">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[#8b5cf6] font-bold text-xs uppercase">Part ({sub.part})</span>
+                  <span className="text-[--text-muted] text-xs">{sub.marks} marks</span>
+                </div>
+                {sub.model_answer && (
+                  <p className="text-[--text-primary] text-sm mb-2"><strong>Model:</strong> {sub.model_answer}</p>
+                )}
+                {sub.mark_points && sub.mark_points.length > 0 && (
+                  <ul className="space-y-1">
+                    {sub.mark_points.map((pt, i) => (
+                      <li key={i} className="text-[--text-secondary] text-xs flex gap-1.5">
+                        <span className="text-[#8b5cf6] shrink-0">▸</span>{pt}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {sub.accept_alternatives && sub.accept_alternatives.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-[--border]">
+                    <p className="text-[--text-muted] text-xs"><strong>Also accept:</strong> {sub.accept_alternatives.join("; ")}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-[#f5f3ff] rounded-xl p-4 mt-1 border border-[#8b5cf6]/20 ml-10">
+            {modelAns && (
+              <>
+                <p className="text-[#8b5cf6] text-xs font-semibold mb-2 uppercase tracking-wide">Model Answer</p>
+                <p className="text-[--text-primary] text-sm leading-relaxed whitespace-pre-line mb-3">{modelAns}</p>
+              </>
+            )}
+            {markPoints.length > 0 && (
+              <div className={modelAns ? "pt-3 border-t border-[#8b5cf6]/20" : ""}>
+                <p className="text-[#8b5cf6] text-xs font-semibold mb-2 uppercase tracking-wide">Mark Points</p>
+                <ul className="space-y-1">
+                  {markPoints.map((pt, i) => (
+                    <li key={i} className="text-[--text-secondary] text-sm flex gap-2">
+                      <span className="text-[#8b5cf6] shrink-0">▸</span>{pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {altAccepts.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-[#8b5cf6]/20">
+                <p className="text-[--text-muted] text-xs font-semibold mb-1">Also accept:</p>
+                <ul className="space-y-0.5">
+                  {altAccepts.map((alt, i) => (
+                    <li key={i} className="text-[--text-secondary] text-xs">• {alt}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {examNote && (
+              <div className="mt-3 pt-3 border-t border-[#8b5cf6]/20">
+                <p className="text-[--text-muted] text-xs font-semibold mb-1">Examiner Note:</p>
+                <p className="text-[--text-secondary] text-xs">{examNote}</p>
+              </div>
+            )}
+            {markAlloc && (
+              <p className="text-[--text-muted] text-xs mt-2">Mark allocation: {markAlloc}</p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Print */}
+      <div className="hidden print:block">
+        <p className="assess-ms-q">
+          <strong>Q{q.number}.</strong>{questionTxt ? ` ${questionTxt}` : ""} <em>({marks} marks)</em>
+        </p>
+        {q.sub_questions?.map((sub) => (
+          <div key={sub.part} className="ml-4 mb-2">
+            <p className="font-semibold text-sm">({sub.part}) — {sub.marks} marks</p>
+            {sub.model_answer && <p className="text-sm">Model: {sub.model_answer}</p>}
+            {sub.mark_points?.map((pt, i) => <p key={i} className="text-sm">• {pt}</p>)}
+          </div>
+        ))}
+        {!q.sub_questions && modelAns && <p className="assess-ms-ans"><strong>Expected:</strong> {modelAns}</p>}
+        {!q.sub_questions && markPoints.map((pt, i) => <p key={i} className="assess-ms-ans">• {pt}</p>)}
+        {altAccepts.length > 0 && (
+          <p className="assess-ms-alt"><strong>Also accept:</strong> {altAccepts.join("; ")}</p>
+        )}
+        {examNote && <p className="assess-ms-note"><strong>Note:</strong> {examNote}</p>}
+        {markAlloc && <p className="assess-ms-alloc">Marks: {markAlloc}</p>}
+      </div>
+    </div>
   );
 }
 
@@ -529,17 +653,17 @@ function MarkingSchemeDocument({ scheme }: { scheme: MarkingSchemeData }) {
 
 function QuestionCard({ question: q, showAnswer }: { question: import("@/types/assessment").AssessmentQuestion; showAnswer: boolean }) {
   return (
-    <div className="bg-white border border-[#e8e8e8] rounded-xl p-4 shadow-sm">
+    <div className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 shadow-sm">
       {/* Screen */}
       <div className="print:hidden">
         <div className="flex items-start justify-between gap-3 mb-2">
           <div className="flex items-start gap-3">
-            <span className="w-7 h-7 rounded-lg bg-[#f8f8f8] border border-[#e8e8e8] flex items-center justify-center text-[#6b6b76] font-bold text-xs shrink-0 mt-0.5">
+            <span className="w-7 h-7 rounded-lg bg-[--bg-canvas] border border-[--border] flex items-center justify-center text-[--text-secondary] font-bold text-xs shrink-0 mt-0.5">
               {q.number}
             </span>
-            <p className="text-[#0d0d0d] text-sm leading-relaxed">{q.question}</p>
+            <p className="text-[--text-primary] text-sm leading-relaxed">{q.question}</p>
           </div>
-          <span className="text-xs text-[#9e9ea7] font-medium shrink-0 mt-1">[{q.marks} mark{q.marks !== 1 ? "s" : ""}]</span>
+          <span className="text-xs text-[--text-muted] font-medium shrink-0 mt-1">[{q.marks} mark{q.marks !== 1 ? "s" : ""}]</span>
         </div>
 
         {/* MCQ options */}
@@ -551,7 +675,7 @@ function QuestionCard({ question: q, showAnswer }: { question: import("@/types/a
                   "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm",
                   showAnswer && opt.letter === q.answer
                     ? "bg-[#e6f4ec] text-[#007531] font-medium"
-                    : "bg-[#f8f8f8] text-[#6b6b76]"
+                    : "bg-[--bg-canvas] text-[--text-secondary]"
                 )}>
                 <span className="font-semibold w-5">{opt.letter}.</span>
                 {opt.text}
@@ -572,7 +696,7 @@ function QuestionCard({ question: q, showAnswer }: { question: import("@/types/a
                   "px-4 py-1.5 rounded-full text-sm font-medium",
                   showAnswer && q.answer?.toLowerCase() === v.toLowerCase()
                     ? "bg-[#e6f4ec] text-[#007531]"
-                    : "bg-[#f8f8f8] text-[#9e9ea7]"
+                    : "bg-[--bg-canvas] text-[--text-muted]"
                 )}>
                 {v}
               </span>
@@ -583,8 +707,8 @@ function QuestionCard({ question: q, showAnswer }: { question: import("@/types/a
         {/* Answer guide */}
         {showAnswer && q.answer_guide && (
           <div className="mt-3 ml-10 p-3 bg-[#fffbf0] border border-[#f6d860]/50 rounded-lg">
-            <p className="text-[#9e9ea7] text-xs font-semibold mb-1">Marking Guide:</p>
-            <p className="text-[#6b6b76] text-xs">{q.answer_guide}</p>
+            <p className="text-[--text-muted] text-xs font-semibold mb-1">Marking Guide:</p>
+            <p className="text-[--text-secondary] text-xs">{q.answer_guide}</p>
           </div>
         )}
       </div>
@@ -614,7 +738,7 @@ function QuestionCard({ question: q, showAnswer }: { question: import("@/types/a
 
 function SectionHeading({ title, color }: { title: string; color: string }) {
   return (
-    <h3 className="text-[#0d0d0d] font-semibold text-sm flex items-center gap-2.5">
+    <h3 className="text-[--text-primary] font-semibold text-sm flex items-center gap-2.5">
       <span className="w-1 h-5 rounded-full shrink-0" style={{ backgroundColor: color }} />
       {title}
     </h3>

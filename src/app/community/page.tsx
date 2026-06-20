@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import CommunityFeed from "@/components/community/CommunityFeed";
@@ -47,32 +47,32 @@ export default async function CommunityPage() {
           <Users size={12} />
           Teacher Community
         </div>
-        <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1 tracking-tight">
+        <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">
           Community Plans
         </h1>
-        <p className="text-[#6b6b76] text-sm max-w-xl">
+        <p className="text-[--text-secondary] text-sm max-w-xl">
           Browse lesson plans shared by fellow Zambian teachers. Cover absent colleagues instantly
           or find inspiration for your next lesson.
         </p>
 
         {/* Live stats */}
         <div className="flex flex-wrap gap-5 mt-5">
-          <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
+          <div className="flex items-center gap-2 text-sm text-[--text-secondary]">
             <BookOpen size={14} className="text-[#ea4c89]" />
             <span>
-              <strong className="text-[#0d0d0d] font-semibold">{totalShared.toLocaleString()}</strong> plans shared
+              <strong className="text-[--text-primary] font-semibold">{totalShared.toLocaleString()}</strong> plans shared
             </span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
+          <div className="flex items-center gap-2 text-sm text-[--text-secondary]">
             <Users size={14} className="text-[#007531]" />
             <span>
-              <strong className="text-[#0d0d0d] font-semibold">{totalTeachers.toLocaleString()}</strong> educators
+              <strong className="text-[--text-primary] font-semibold">{totalTeachers.toLocaleString()}</strong> educators
             </span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-[#6b6b76]">
+          <div className="flex items-center gap-2 text-sm text-[--text-secondary]">
             <Heart size={14} className="text-red-400" />
             <span>
-              <strong className="text-[#0d0d0d] font-semibold">{totalLikes.toLocaleString()}</strong> likes
+              <strong className="text-[--text-primary] font-semibold">{totalLikes.toLocaleString()}</strong> likes
             </span>
           </div>
         </div>
@@ -85,8 +85,8 @@ export default async function CommunityPage() {
             <Share2 size={16} className="text-[#007531]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">Share your lesson plans</p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">
+            <p className="text-[--text-primary] font-semibold text-sm">Share your lesson plans</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">
               Open any saved plan from your dashboard and click Share to contribute to the community.
             </p>
           </div>
@@ -103,8 +103,8 @@ export default async function CommunityPage() {
             <Crown size={16} className="text-[#ea4c89]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">Share with the community</p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">
+            <p className="text-[--text-primary] font-semibold text-sm">Share with the community</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">
               Upgrade to Premium to share plans and help colleagues cover absent teachers.
             </p>
           </div>
@@ -119,13 +119,13 @@ export default async function CommunityPage() {
         <div className="mb-7">
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp size={13} className="text-[#ea4c89]" />
-            <h2 className="text-[#0d0d0d] font-semibold text-sm">Trending Subjects</h2>
+            <h2 className="text-[--text-primary] font-semibold text-sm">Trending Subjects</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {topSubjects.map((s) => (
               <span
                 key={s.subject}
-                className="px-3 py-1.5 bg-white border border-[#e8e8e8] rounded-full text-xs text-[#6b6b76] hover:text-[#0d0d0d] hover:border-[#d4d4d4] transition-colors cursor-default shadow-card"
+                className="px-3 py-1.5 bg-[--bg-surface] border border-[--border] rounded-full text-xs text-[--text-secondary] hover:text-[--text-primary] hover:border-[--border-hover] transition-colors cursor-default shadow-card"
               >
                 {s.subject}
                 <span className="ml-1.5 text-[#ea4c89] font-semibold">{s._count.subject}</span>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -60,16 +60,16 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4 py-16">
+      <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center px-4 py-16">
         <div className="w-full max-w-md">
-          <div className="bg-white border border-[#e8e8e8] rounded-2xl p-8 shadow-card text-center space-y-4">
+          <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-8 shadow-card text-center space-y-4">
             <div className="flex justify-center">
               <div className="w-14 h-14 bg-[#fef0f0] rounded-full flex items-center justify-center">
                 <AlertCircle size={28} className="text-red-500" />
               </div>
             </div>
-            <h2 className="text-lg font-semibold text-[#0d0d0d]">Invalid reset link</h2>
-            <p className="text-[#6b6b76] text-sm">
+            <h2 className="text-lg font-semibold text-[--text-primary]">Invalid reset link</h2>
+            <p className="text-[--text-secondary] text-sm">
               This password reset link is missing or malformed.
             </p>
             <Link
@@ -85,7 +85,7 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
 
         {/* Logo */}
@@ -94,13 +94,13 @@ function ResetPasswordForm() {
             <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
-            <span className="font-bold text-xl text-[#0d0d0d] tracking-tight">Educom</span>
+            <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1.5">Set a new password</h1>
-          <p className="text-[#6b6b76] text-sm">Choose a strong password for your account.</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1.5">Set a new password</h1>
+          <p className="text-[--text-secondary] text-sm">Choose a strong password for your account.</p>
         </div>
 
-        <div className="bg-white border border-[#e8e8e8] rounded-2xl p-8 shadow-card">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-8 shadow-card">
           {done ? (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
@@ -109,8 +109,8 @@ function ResetPasswordForm() {
                 </div>
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-[#0d0d0d] mb-2">Password updated!</h2>
-                <p className="text-[#6b6b76] text-sm">
+                <h2 className="text-lg font-semibold text-[--text-primary] mb-2">Password updated!</h2>
+                <p className="text-[--text-secondary] text-sm">
                   Your password has been changed. Redirecting you to sign in…
                 </p>
               </div>
@@ -120,11 +120,11 @@ function ResetPasswordForm() {
 
               {/* New password */}
               <div>
-                <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+                <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                   New password
                 </label>
                 <div className="relative">
-                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
                   <input
                     type={showPass ? "text" : "password"}
                     value={password}
@@ -137,7 +137,7 @@ function ResetPasswordForm() {
                   <button
                     type="button"
                     onClick={() => setShowPass(!showPass)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] hover:text-[--text-primary] transition-colors"
                   >
                     {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
@@ -148,7 +148,7 @@ function ResetPasswordForm() {
                       size={12}
                       className={password.length >= 8 ? "text-[#007531]" : "text-[#e8e8e8]"}
                     />
-                    <span className={`text-xs ${password.length >= 8 ? "text-[#007531]" : "text-[#9e9ea7]"}`}>
+                    <span className={`text-xs ${password.length >= 8 ? "text-[#007531]" : "text-[--text-muted]"}`}>
                       At least 8 characters
                     </span>
                   </div>
@@ -157,11 +157,11 @@ function ResetPasswordForm() {
 
               {/* Confirm password */}
               <div>
-                <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+                <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                   Confirm new password
                 </label>
                 <div className="relative">
-                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+                  <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
                   <input
                     type={showConfirm ? "text" : "password"}
                     value={confirm}
@@ -174,7 +174,7 @@ function ResetPasswordForm() {
                   <button
                     type="button"
                     onClick={() => setShowConfirm(!showConfirm)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] hover:text-[--text-primary] transition-colors"
                   >
                     {showConfirm ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
@@ -200,7 +200,7 @@ function ResetPasswordForm() {
         </div>
 
         {!done && (
-          <p className="text-center text-sm text-[#6b6b76] mt-5">
+          <p className="text-center text-sm text-[--text-secondary] mt-5">
             Remembered it?{" "}
             <Link href="/auth/signin" className="text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold">
               Sign in
@@ -215,7 +215,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center">
+      <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
         <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
       </div>
     }>

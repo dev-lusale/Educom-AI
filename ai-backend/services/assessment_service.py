@@ -1,7 +1,7 @@
 """
 Educom AI Backend — Assessment Intelligence Service
-Handles Quiz, Exam Paper, and Marking Scheme generation using RAG + Google Gemini.
-Primary AI: Google Gemini. Falls back to Ollama if Gemini is not configured.
+Handles Quiz, Exam Paper, and Marking Scheme generation using RAG + EduCom AI.
+Primary AI: OpenRouter. Falls back to Ollama if OpenRouter is not configured.
 """
 
 import logging
@@ -53,16 +53,17 @@ class AssessmentService:
         loop = asyncio.get_event_loop()
         rag_result = await loop.run_in_executor(
             _rag_executor,
-            lambda: self.retriever.retrieve_for_lesson_plan(
+            lambda: self.retriever.retrieve_for_assessment(
                 request.grade, request.subject, request.topic,
-                user_id=request.user_id, use_user_resources=bool(request.user_id),
             ),
         )
-        curriculum_ctx = rag_result.get("curriculum_context", "")[:800]
+        curriculum_ctx  = rag_result.get("curriculum_context", "")[:2000]
+        exam_paper_ctx  = rag_result.get("exam_paper_context", "")[:1500]
+        combined_ctx    = "\n\n".join(filter(None, [exam_paper_ctx, curriculum_ctx]))
 
         ai = await self._get_ai()
         if not await ai.is_available():
-            raise RuntimeError("AI model unavailable. Please check your GEMINI_API_KEY.")
+            raise RuntimeError("AI model unavailable. Please check your OPENROUTER_API_KEY.")
 
         prompt = build_quiz_prompt(
             grade=request.grade,
@@ -73,7 +74,7 @@ class AssessmentService:
             num_short_answer=request.num_short_answer,
             num_structured=request.num_structured,
             learning_objectives=request.learning_objectives or "",
-            curriculum_context=curriculum_ctx,
+            curriculum_context=combined_ctx,
         )
 
         raw = await ai.generate_json(prompt=prompt, system_prompt=QUIZ_SYSTEM_PROMPT)
@@ -85,16 +86,17 @@ class AssessmentService:
         loop = asyncio.get_event_loop()
         rag_result = await loop.run_in_executor(
             _rag_executor,
-            lambda: self.retriever.retrieve_for_lesson_plan(
+            lambda: self.retriever.retrieve_for_assessment(
                 request.grade, request.subject, request.topic,
-                user_id=request.user_id, use_user_resources=bool(request.user_id),
             ),
         )
-        curriculum_ctx = rag_result.get("curriculum_context", "")[:800]
+        curriculum_ctx  = rag_result.get("curriculum_context", "")[:2000]
+        exam_paper_ctx  = rag_result.get("exam_paper_context", "")[:1500]
+        combined_ctx    = "\n\n".join(filter(None, [exam_paper_ctx, curriculum_ctx]))
 
         ai = await self._get_ai()
         if not await ai.is_available():
-            raise RuntimeError("AI model unavailable. Please check your GEMINI_API_KEY.")
+            raise RuntimeError("AI model unavailable. Please check your OPENROUTER_API_KEY.")
 
         prompt = build_exam_prompt(
             grade=request.grade,
@@ -106,7 +108,7 @@ class AssessmentService:
             duration_minutes=request.duration_minutes,
             include_marking_scheme=request.include_marking_scheme,
             learning_objectives=request.learning_objectives or "",
-            curriculum_context=curriculum_ctx,
+            curriculum_context=combined_ctx,
         )
 
         raw = await ai.generate_json(prompt=prompt, system_prompt=EXAM_SYSTEM_PROMPT)
@@ -118,16 +120,17 @@ class AssessmentService:
         loop = asyncio.get_event_loop()
         rag_result = await loop.run_in_executor(
             _rag_executor,
-            lambda: self.retriever.retrieve_for_lesson_plan(
+            lambda: self.retriever.retrieve_for_assessment(
                 request.grade, request.subject, request.topic,
-                user_id=request.user_id, use_user_resources=bool(request.user_id),
             ),
         )
-        curriculum_ctx = rag_result.get("curriculum_context", "")[:800]
+        curriculum_ctx  = rag_result.get("curriculum_context", "")[:2000]
+        exam_paper_ctx  = rag_result.get("exam_paper_context", "")[:1500]
+        combined_ctx    = "\n\n".join(filter(None, [exam_paper_ctx, curriculum_ctx]))
 
         ai = await self._get_ai()
         if not await ai.is_available():
-            raise RuntimeError("AI model unavailable. Please check your GEMINI_API_KEY.")
+            raise RuntimeError("AI model unavailable. Please check your OPENROUTER_API_KEY.")
 
         prompt = build_marking_scheme_prompt(
             grade=request.grade,
@@ -138,7 +141,7 @@ class AssessmentService:
             total_marks=request.total_marks,
             duration_minutes=request.duration_minutes,
             learning_objectives=request.learning_objectives or "",
-            curriculum_context=curriculum_ctx,
+            curriculum_context=combined_ctx,
         )
 
         raw = await ai.generate_json(prompt=prompt, system_prompt=MARKING_SCHEME_SYSTEM_PROMPT)

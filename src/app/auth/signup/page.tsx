@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
@@ -68,7 +68,7 @@ function SignUpForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
 
         {/* Logo */}
@@ -77,10 +77,10 @@ function SignUpForm() {
             <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
-            <span className="font-bold text-xl text-[#0d0d0d] tracking-tight">Educom</span>
+            <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1.5">Create your account</h1>
-          <p className="text-[#6b6b76] text-sm">
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1.5">Create your account</h1>
+          <p className="text-[--text-secondary] text-sm">
             {plan === "premium"
               ? <span className="text-[#ea4c89] font-semibold">Starting with Premium Plan ✦</span>
               : "Free forever. Upgrade anytime."
@@ -88,18 +88,18 @@ function SignUpForm() {
           </p>
         </div>
 
-        <div className="bg-white border border-[#e8e8e8] rounded-2xl p-7 shadow-card space-y-5">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-7 shadow-card space-y-5">
 
           {/* Google */}
           <button
             type="button"
             onClick={handleGoogle}
             disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-[#e8e8e8] rounded-xl py-3 text-sm text-[#0d0d0d] hover:bg-[#f8f8f8] hover:border-[#d4d4d4] active:bg-[#f0f0f0] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="w-full flex items-center justify-center gap-3 bg-[--bg-surface] border border-[--border] rounded-xl py-3 text-sm text-[--text-primary] hover:bg-[--bg-canvas] hover:border-[--border-hover] active:bg-[--bg-elevated] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             {googleLoading ? (
               <>
-                <Loader2 size={18} className="animate-spin text-[#9e9ea7]" />
+                <Loader2 size={18} className="animate-spin text-[--text-muted]" />
                 <span>Connecting to Google…</span>
               </>
             ) : (
@@ -116,9 +116,9 @@ function SignUpForm() {
           </button>
 
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-[#f0f0f0]" />
-            <span className="text-[#9e9ea7] text-xs">or register with email</span>
-            <div className="flex-1 h-px bg-[#f0f0f0]" />
+            <div className="flex-1 h-px bg-[--bg-elevated]" />
+            <span className="text-[--text-muted] text-xs">or register with email</span>
+            <div className="flex-1 h-px bg-[--bg-elevated]" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -128,11 +128,11 @@ function SignUpForm() {
               { field: "school", icon: Building2, label: "School (optional)", placeholder: "e.g. Kabulonga Boys Secondary", type: "text", optional: true },
             ].map(({ field, icon: Icon, label, placeholder, type, optional }) => (
               <div key={field}>
-                <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+                <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                   {label}
                 </label>
                 <div className="relative">
-                  <Icon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+                  <Icon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
                   <input
                     type={type} value={(form as Record<string, string>)[field]}
                     onChange={(e) => update(field, e.target.value)}
@@ -145,9 +145,9 @@ function SignUpForm() {
 
             {/* Password */}
             <div>
-              <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">Password</label>
+              <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">Password</label>
               <div className="relative">
-                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
                 <input
                   type={showPass ? "text" : "password"} value={form.password}
                   onChange={(e) => update("password", e.target.value)}
@@ -155,14 +155,14 @@ function SignUpForm() {
                   className="drib-input pl-10 pr-10"
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors">
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] hover:text-[--text-primary] transition-colors">
                   {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
               {form.password.length > 0 && (
                 <div className="flex items-center gap-1.5 mt-1.5">
                   <CheckCircle2 size={12} className={form.password.length >= 8 ? "text-[#007531]" : "text-[#e8e8e8]"} />
-                  <span className={`text-xs ${form.password.length >= 8 ? "text-[#007531]" : "text-[#9e9ea7]"}`}>
+                  <span className={`text-xs ${form.password.length >= 8 ? "text-[#007531]" : "text-[--text-muted]"}`}>
                     At least 8 characters
                   </span>
                 </div>
@@ -171,7 +171,7 @@ function SignUpForm() {
 
             {/* Province */}
             <div>
-              <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">Province (optional)</label>
+              <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">Province (optional)</label>
               <select value={form.province} onChange={(e) => update("province", e.target.value)}
                 className="drib-input cursor-pointer">
                 <option value="">Select province</option>
@@ -184,14 +184,14 @@ function SignUpForm() {
             </button>
           </form>
 
-          <p className="text-center text-xs text-[#9e9ea7]">
+          <p className="text-center text-xs text-[--text-muted]">
             By creating an account you agree to our{" "}
-            <Link href="/terms" className="text-[#6b6b76] hover:text-[#0d0d0d]">Terms</Link>
+            <Link href="/terms" className="text-[--text-secondary] hover:text-[--text-primary]">Terms</Link>
             {" "}and{" "}
-            <Link href="/privacy" className="text-[#6b6b76] hover:text-[#0d0d0d]">Privacy Policy</Link>.
+            <Link href="/privacy" className="text-[--text-secondary] hover:text-[--text-primary]">Privacy Policy</Link>.
           </p>
 
-          <p className="text-center text-sm text-[#6b6b76]">
+          <p className="text-center text-sm text-[--text-secondary]">
             Already have an account?{" "}
             <Link href="/auth/signin" className="text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold">
               Sign in
@@ -206,7 +206,7 @@ function SignUpForm() {
 export default function SignUpPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center">
+      <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
         <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
       </div>
     }>

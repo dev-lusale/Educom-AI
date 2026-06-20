@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import Link from "next/link";
@@ -162,8 +162,8 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
         <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-5">
           <BookOpen size={26} className="text-[#ea4c89]" />
         </div>
-        <p className="text-[#0d0d0d] font-semibold text-base mb-2">No lesson plans yet</p>
-        <p className="text-[#9e9ea7] text-sm mb-6">
+        <p className="text-[--text-primary] font-semibold text-base mb-2">No lesson plans yet</p>
+        <p className="text-[--text-muted] text-sm mb-6">
           Create your first CBC-aligned lesson plan in seconds.
         </p>
         <Link href="/lesson-planner" className="drib-btn-primary inline-flex items-center gap-2">
@@ -179,7 +179,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
       <div className="flex flex-wrap items-center gap-3 mb-5">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
-          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text"
             value={search}
@@ -190,7 +190,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] hover:text-[--text-primary] transition-colors"
             >
               <X size={13} />
             </button>
@@ -199,7 +199,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
 
         {/* Subject filter */}
         <div className="relative">
-          <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <select
             value={filterSubject}
             onChange={(e) => setFilterSubject(e.target.value)}
@@ -213,7 +213,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
 
         {/* Grade filter */}
         <div className="relative">
-          <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <select
             value={filterGrade}
             onChange={(e) => setFilterGrade(e.target.value)}
@@ -239,7 +239,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
           <button
             key={key}
             onClick={() => toggleSort(key)}
-            className="flex items-center gap-1 text-xs font-semibold text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors text-left"
+            className="flex items-center gap-1 text-xs font-semibold text-[--text-muted] hover:text-[--text-primary] transition-colors text-left"
           >
             {label}
             {sortKey === key ? (
@@ -257,7 +257,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
 
       {/* ── Result count ── */}
       {(search || filterSubject !== "All" || filterGrade !== "All") && (
-        <p className="text-xs text-[#9e9ea7] mb-3 px-1">
+        <p className="text-xs text-[--text-muted] mb-3 px-1">
           {filtered.length} result{filtered.length !== 1 ? "s" : ""}
           {" "}
           <button
@@ -272,8 +272,8 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
       {/* ── Plan list ── */}
       {filtered.length === 0 ? (
         <div className="drib-card p-10 text-center">
-          <p className="text-[#0d0d0d] font-semibold text-sm mb-1">No plans match your filters</p>
-          <p className="text-[#9e9ea7] text-xs">Try adjusting your search or filters.</p>
+          <p className="text-[--text-primary] font-semibold text-sm mb-1">No plans match your filters</p>
+          <p className="text-[--text-muted] text-xs">Try adjusting your search or filters.</p>
         </div>
       ) : (
         <div className="space-y-2.5">
@@ -296,8 +296,8 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
 
                 {/* Title + meta */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-[#0d0d0d] font-semibold text-sm truncate">{plan.topic}</p>
-                  <p className="text-[#9e9ea7] text-xs mt-0.5">
+                  <p className="text-[--text-primary] font-semibold text-sm truncate">{plan.topic}</p>
+                  <p className="text-[--text-muted] text-xs mt-0.5">
                     {plan.grade} · {plan.subject}
                     {plan.duration && (
                       <span className="ml-2 text-[#c4c4c8]">· {plan.duration} min</span>
@@ -306,7 +306,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                 </div>
 
                 {/* Date */}
-                <div className="hidden sm:flex items-center gap-1.5 text-[#9e9ea7] text-xs shrink-0">
+                <div className="hidden sm:flex items-center gap-1.5 text-[--text-muted] text-xs shrink-0">
                   <Clock size={11} />
                   {new Date(plan.createdAt).toLocaleDateString("en-ZM", {
                     day: "numeric",
@@ -320,7 +320,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                   className={
                     plan.isShared
                       ? "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#e6f4ec] text-[#007531]"
-                      : "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#f8f8f8] text-[#6b6b76]"
+                      : "shrink-0 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--bg-canvas] text-[--text-secondary]"
                   }
                 >
                   {plan.isShared ? "Published" : "Draft"}
@@ -331,7 +331,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                   <button
                     onClick={() => setOpenMenuId(isMenuOpen ? null : plan.id)}
                     disabled={isDeleting || isSharing}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9e9ea7] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all disabled:opacity-40"
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all disabled:opacity-40"
                     aria-label="Plan actions"
                   >
                     {isDeleting || isSharing ? (
@@ -342,11 +342,11 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                   </button>
 
                   {isMenuOpen && (
-                    <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-white border border-[#e8e8e8] rounded-xl shadow-card-hover overflow-hidden">
+                    <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-[--bg-surface] border border-[--border] rounded-xl shadow-card-hover overflow-hidden">
                       <Link
                         href={`/lesson-planner?edit=${plan.id}`}
                         onClick={() => setOpenMenuId(null)}
-                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors"
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors"
                       >
                         <Pencil size={13} className="text-[#ea4c89]" />
                         Edit
@@ -354,12 +354,12 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                       <button
                         onClick={() => handleShare(plan)}
                         disabled={plan.isShared}
-                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#6b6b76] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         <Share2 size={13} className="text-[#007531]" />
                         {plan.isShared ? "Shared" : "Share"}
                       </button>
-                      <div className="h-px bg-[#f0f0f0] mx-3" />
+                      <div className="h-px bg-[--bg-elevated] mx-3" />
                       <button
                         onClick={() => handleDelete(plan.id)}
                         disabled={isDeleting}

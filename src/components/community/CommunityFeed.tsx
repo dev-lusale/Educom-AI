@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { Heart, Bookmark, BookOpen, User, Filter, Search, Crown } from "lucide-react";
@@ -95,7 +95,7 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
       {/* Filters */}
       <div className="drib-card p-4 mb-7 flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -105,7 +105,7 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
         </div>
         <div className="flex gap-2.5">
           <div className="relative">
-            <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+            <Filter size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[--text-muted]" />
             <select value={grade} onChange={(e) => setGrade(e.target.value)}
               className="drib-input pl-8 cursor-pointer pr-3">
               {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
@@ -125,8 +125,8 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
             <Crown size={16} className="text-[#ea4c89]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold text-sm">Share your lesson plans</p>
-            <p className="text-[#6b6b76] text-xs mt-0.5">Upgrade to Premium to share plans and help colleagues cover absent teachers.</p>
+            <p className="text-[--text-primary] font-semibold text-sm">Share your lesson plans</p>
+            <p className="text-[--text-secondary] text-xs mt-0.5">Upgrade to Premium to share plans and help colleagues cover absent teachers.</p>
           </div>
           <Link href="/payment" className="drib-btn-primary text-xs px-4 py-2 shrink-0">Upgrade</Link>
         </div>
@@ -137,16 +137,16 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="drib-card p-5 animate-pulse">
-              <div className="h-4 bg-[#f0f0f0] rounded mb-3 w-3/4" />
-              <div className="h-3 bg-[#f8f8f8] rounded mb-2 w-1/2" />
-              <div className="h-3 bg-[#f8f8f8] rounded w-2/3" />
+              <div className="h-4 bg-[--bg-elevated] rounded mb-3 w-3/4" />
+              <div className="h-3 bg-[--bg-canvas] rounded mb-2 w-1/2" />
+              <div className="h-3 bg-[--bg-canvas] rounded w-2/3" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20">
           <BookOpen size={44} className="text-[#e8e8e8] mx-auto mb-4" />
-          <p className="text-[#9e9ea7] text-sm">No plans found. Be the first to share!</p>
+          <p className="text-[--text-muted] text-sm">No plans found. Be the first to share!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -173,12 +173,12 @@ function PlanCard({ plan, isLiked, onLike, isLoggedIn }: {
       {/* Header */}
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="text-[#0d0d0d] font-semibold text-sm leading-snug truncate group-hover:text-[#ea4c89] transition-colors">
+          <h3 className="text-[--text-primary] font-semibold text-sm leading-snug truncate group-hover:text-[#ea4c89] transition-colors">
             {plan.topic}
           </h3>
           <div className="flex items-center gap-2 mt-1.5 flex-wrap">
             <span className="text-xs px-2 py-0.5 bg-[#fce4ef] text-[#ea4c89] rounded-full font-medium">{plan.grade}</span>
-            <span className="text-xs px-2 py-0.5 bg-[#f0f0f0] text-[#6b6b76] rounded-full">{plan.subject}</span>
+            <span className="text-xs px-2 py-0.5 bg-[--bg-elevated] text-[--text-secondary] rounded-full">{plan.subject}</span>
           </div>
         </div>
         <BookOpen size={16} className="text-[#e8e8e8] shrink-0 mt-0.5" />
@@ -186,11 +186,11 @@ function PlanCard({ plan, isLiked, onLike, isLoggedIn }: {
 
       {/* Description */}
       {plan.description && (
-        <p className="text-[#9e9ea7] text-xs leading-relaxed mb-3 line-clamp-2">{plan.description}</p>
+        <p className="text-[--text-muted] text-xs leading-relaxed mb-3 line-clamp-2">{plan.description}</p>
       )}
 
       {/* Author */}
-      <div className="flex items-center gap-2 mt-auto pt-3 border-t border-[#f0f0f0]">
+      <div className="flex items-center gap-2 mt-auto pt-3 border-t border-[--border]">
         {plan.user.image ? (
           <img src={plan.user.image} alt="" className="w-6 h-6 rounded-full" />
         ) : (
@@ -199,20 +199,20 @@ function PlanCard({ plan, isLiked, onLike, isLoggedIn }: {
           </div>
         )}
         <div className="flex-1 min-w-0">
-          <p className="text-[#0d0d0d] text-xs font-semibold truncate">{plan.user.name ?? "Teacher"}</p>
-          {plan.user.school && <p className="text-[#9e9ea7] text-[10px] truncate">{plan.user.school}</p>}
+          <p className="text-[--text-primary] text-xs font-semibold truncate">{plan.user.name ?? "Teacher"}</p>
+          {plan.user.school && <p className="text-[--text-muted] text-[10px] truncate">{plan.user.school}</p>}
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={onLike}
-            className={cn("flex items-center gap-1 text-xs transition-colors", isLiked ? "text-red-500" : "text-[#9e9ea7] hover:text-red-500")}
+            className={cn("flex items-center gap-1 text-xs transition-colors", isLiked ? "text-red-500" : "text-[--text-muted] hover:text-red-500")}
           >
             <Heart size={13} className={isLiked ? "fill-red-500" : ""} />
             {plan._count.likes}
           </button>
           <button
             onClick={() => !isLoggedIn && toast.error("Sign in to save plans.")}
-            className="flex items-center gap-1 text-xs text-[#9e9ea7] hover:text-[#ea4c89] transition-colors"
+            className="flex items-center gap-1 text-xs text-[--text-muted] hover:text-[#ea4c89] transition-colors"
           >
             <Bookmark size={13} />
             {plan._count.saves}

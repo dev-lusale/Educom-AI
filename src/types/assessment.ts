@@ -66,24 +66,48 @@ export interface ExamData {
 
 // ── Marking Scheme Output ────────────────────────────────────────
 
+export interface MarkingSchemeSection {
+  label: string;
+  title?: string;
+  questions: MarkingSchemeQuestion[];
+}
+
+export interface MarkingSchemeQuestion {
+  number: number;
+  // Section A (MCQ answer key)
+  answer?: string;
+  marks?: number;
+  explanation?: string;
+  // Sections B & C (structured)
+  total_marks?: number;
+  model_answer?: string;
+  mark_points?: string[];
+  accept_alternatives?: string[];
+  examiner_note?: string;
+  sub_questions?: {
+    part: string;
+    marks: number;
+    model_answer?: string;
+    mark_points?: string[];
+    accept_alternatives?: string[];
+  }[];
+  // Legacy fields (FastAPI backend shape — kept for backwards compat)
+  question?: string;
+  expected_response?: string;
+  alternative_responses?: string[];
+  examiner_notes?: string;
+  mark_allocation?: string;
+}
+
 export interface MarkingSchemeData {
   grade: string;
   subject: string;
   topic: string;
   exam_type: string;
+  term?: string;
+  year?: string;
   total_marks: number;
-  sections: {
-    label: string;
-    questions: {
-      number: number;
-      question: string;
-      marks: number;
-      expected_response: string;
-      alternative_responses: string[];
-      examiner_notes: string;
-      mark_allocation: string;
-    }[];
-  }[];
+  sections: MarkingSchemeSection[];
   general_examiner_notes: string[];
   marking_rubric?: string;
 }

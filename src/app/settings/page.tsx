@@ -1,8 +1,10 @@
-import { auth } from "@/lib/auth";
+﻿import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/components/layout/Navbar";
 import ProfileSection from "@/components/settings/ProfileSection";
+import DangerZoneSection from "@/components/settings/DangerZoneSection";
+import ThemeSegmentedControl from "@/components/settings/ThemeSegmentedControl";
 import {
   Crown, Shield, CreditCard, Clock, CheckCircle2,
   Calendar, AlertTriangle, RefreshCw,
@@ -60,11 +62,11 @@ export default async function SettingsPage() {
   const isGoogleAccount = !!googleAccount;
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8]">
+    <div className="min-h-screen bg-[--bg-canvas] transition-colors duration-200">
       <Navbar />
       <main className="pt-20 max-w-2xl mx-auto px-4 py-10">
 
-        <h1 className="text-2xl font-bold text-[#0d0d0d] mb-7 tracking-tight">Account Settings</h1>
+        <h1 className="text-2xl font-bold text-[--text-primary] mb-7 tracking-tight">Account Settings</h1>
 
         {/* Profile */}
         <ProfileSection
@@ -84,7 +86,7 @@ export default async function SettingsPage() {
             <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
               <Crown size={16} className="text-[#ea4c89]" />
             </div>
-            <h2 className="text-[#0d0d0d] font-semibold">Subscription</h2>
+            <h2 className="text-[--text-primary] font-semibold">Subscription</h2>
           </div>
 
           {isPremium ? (
@@ -104,7 +106,7 @@ export default async function SettingsPage() {
               {subInfo.status === "EXPIRING_SOON" && subInfo.daysRemaining !== null && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 flex items-center gap-3">
                   <AlertTriangle size={15} className="text-yellow-500 shrink-0" />
-                  <p className="text-[#0d0d0d] text-sm flex-1">
+                  <p className="text-[--text-primary] text-sm flex-1">
                     Expires in <strong>{subInfo.daysRemaining} day{subInfo.daysRemaining !== 1 ? "s" : ""}</strong>. Renew now.
                   </p>
                   <Link href="/payment" className="drib-btn-primary py-1.5 px-3 text-xs flex items-center gap-1 shrink-0">
@@ -120,22 +122,22 @@ export default async function SettingsPage() {
                   { icon: CreditCard, label: "Payment Method", value: subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—" },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label}>
-                    <p className="text-[#9e9ea7] text-xs mb-1 flex items-center gap-1"><Icon size={10} /> {label}</p>
-                    <p className="text-[#0d0d0d] font-medium text-sm">{value}</p>
+                    <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Icon size={10} /> {label}</p>
+                    <p className="text-[--text-primary] font-medium text-sm">{value}</p>
                   </div>
                 ))}
                 <div>
-                  <p className="text-[#9e9ea7] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
-                  <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-500" : "text-[#0d0d0d]")}>
+                  <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
+                  <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-500" : "text-[--text-primary]")}>
                     {subInfo.daysRemaining !== null ? subInfo.daysRemaining : "∞"}
                   </p>
                 </div>
               </div>
 
               {subInfo.receiptNumber && (
-                <div className="mt-4 pt-4 border-t border-[#f0f0f0]">
-                  <p className="text-[#9e9ea7] text-xs">
-                    Receipt: <span className="text-[#0d0d0d] font-mono">{subInfo.receiptNumber}</span>
+                <div className="mt-4 pt-4 border-t border-[--border]">
+                  <p className="text-[--text-muted] text-xs">
+                    Receipt: <span className="text-[--text-primary] font-mono">{subInfo.receiptNumber}</span>
                   </p>
                 </div>
               )}
@@ -145,13 +147,13 @@ export default async function SettingsPage() {
               {subInfo.status === "EXPIRED" && (
                 <div className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4 flex items-center gap-3">
                   <AlertTriangle size={15} className="text-red-500 shrink-0" />
-                  <p className="text-[#0d0d0d] text-sm">Your Premium subscription has expired.</p>
+                  <p className="text-[--text-primary] text-sm">Your Premium subscription has expired.</p>
                 </div>
               )}
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#f0f0f0] text-[#6b6b76] inline-block mb-2">Free Plan</span>
-                  <p className="text-[#6b6b76] text-sm">Upgrade to unlock unlimited plans and community sharing.</p>
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[--bg-elevated] text-[--text-secondary] inline-block mb-2">Free Plan</span>
+                  <p className="text-[--text-secondary] text-sm">Upgrade to unlock unlimited plans and community sharing.</p>
                 </div>
                 <Link href="/payment" className="drib-btn-primary py-2.5 px-5 text-sm flex items-center gap-1.5 shrink-0 ml-4">
                   <Crown size={13} /> Upgrade
@@ -168,24 +170,24 @@ export default async function SettingsPage() {
               <div className="w-9 h-9 bg-[#eff6ff] rounded-xl flex items-center justify-center">
                 <CreditCard size={16} className="text-[#3b82f6]" />
               </div>
-              <h2 className="text-[#0d0d0d] font-semibold">Payment History</h2>
+              <h2 className="text-[--text-primary] font-semibold">Payment History</h2>
             </div>
             <div className="space-y-2.5">
               {transactions.map((t) => {
                 const style = STATUS_STYLES[t.status] ?? { text: "#6b6b76", bg: "#f0f0f0" };
                 return (
-                  <div key={t.id} className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-[#f8f8f8] hover:bg-[#f0f0f0] transition-colors">
+                  <div key={t.id} className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-[--bg-canvas] hover:bg-[--bg-elevated] transition-colors">
                     <div>
-                      <p className="text-[#0d0d0d] font-mono text-xs font-medium">{t.transactionRef}</p>
-                      <p className="text-[#9e9ea7] text-xs mt-0.5">{METHOD_LABELS[t.paymentMethod] ?? t.paymentMethod}</p>
-                      {t.receiptNumber && <p className="text-[#9e9ea7] text-[10px] mt-0.5">Receipt: {t.receiptNumber}</p>}
+                      <p className="text-[--text-primary] font-mono text-xs font-medium">{t.transactionRef}</p>
+                      <p className="text-[--text-muted] text-xs mt-0.5">{METHOD_LABELS[t.paymentMethod] ?? t.paymentMethod}</p>
+                      {t.receiptNumber && <p className="text-[--text-muted] text-[10px] mt-0.5">Receipt: {t.receiptNumber}</p>}
                     </div>
                     <div className="text-right">
-                      <p className="text-[#0d0d0d] font-semibold text-sm">K{t.amount}</p>
+                      <p className="text-[--text-primary] font-semibold text-sm">K{t.amount}</p>
                       <span className="px-2 py-0.5 rounded-full text-xs font-medium" style={{ color: style.text, backgroundColor: style.bg }}>
                         {t.status}
                       </span>
-                      <p className="text-[#9e9ea7] text-[10px] mt-1 flex items-center gap-1 justify-end">
+                      <p className="text-[--text-muted] text-[10px] mt-1 flex items-center gap-1 justify-end">
                         <Clock size={9} />
                         {new Date(t.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })}
                       </p>
@@ -198,19 +200,29 @@ export default async function SettingsPage() {
         )}
 
         {/* Security */}
-        <div className="drib-card p-6">
+        <div className="drib-card p-6 mb-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center">
               <Shield size={16} className="text-[#007531]" />
             </div>
-            <h2 className="text-[#0d0d0d] font-semibold">Security</h2>
+            <h2 className="text-[--text-primary] font-semibold">Security & Display</h2>
           </div>
-          <div className="space-y-3">
-            {/* Change password */}
-            <div className="flex items-center justify-between py-3 border-b border-[#f0f0f0]">
+          <div className="space-y-0">
+
+            {/* ── Theme Preference ── */}
+            <div className="flex items-center justify-between py-3.5 border-b border-[--border]">
               <div>
-                <p className="text-[#0d0d0d] text-sm font-medium">Password</p>
-                <p className="text-[#9e9ea7] text-xs mt-0.5">Reset your password via email</p>
+                <p className="text-[--text-primary] text-sm font-medium">Theme Preference</p>
+                <p className="text-[--text-muted] text-xs mt-0.5">Choose light, dark, or follow your system setting</p>
+              </div>
+              <ThemeSegmentedControl />
+            </div>
+
+            {/* ── Change password ── */}
+            <div className="flex items-center justify-between py-3.5 border-b border-[--border]">
+              <div>
+                <p className="text-[--text-primary] text-sm font-medium">Password</p>
+                <p className="text-[--text-muted] text-xs mt-0.5">Reset your password via email</p>
               </div>
               <Link
                 href="/auth/forgot-password"
@@ -220,11 +232,11 @@ export default async function SettingsPage() {
               </Link>
             </div>
 
-            {/* Connected account */}
-            <div className="flex items-center justify-between py-3">
+            {/* ── Connected account ── */}
+            <div className="flex items-center justify-between py-3.5">
               <div>
-                <p className="text-[#0d0d0d] text-sm font-medium">Email Address</p>
-                <p className="text-[#9e9ea7] text-xs mt-0.5">{user.email}</p>
+                <p className="text-[--text-primary] text-sm font-medium">Email Address</p>
+                <p className="text-[--text-muted] text-xs mt-0.5">{user.email}</p>
               </div>
               <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#e6f4ec] text-[#007531]">
                 <CheckCircle2 size={11} /> Verified
@@ -232,6 +244,10 @@ export default async function SettingsPage() {
             </div>
           </div>
         </div>
+
+        {/* Danger Zone */}
+        <DangerZoneSection userEmail={user.email} />
+
       </main>
     </div>
   );

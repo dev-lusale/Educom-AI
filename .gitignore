@@ -63,7 +63,15 @@ ai-backend/vector_db/chroma_store/
 # ── Uploaded files ────────────────────────────────────────────────
 ai-backend/uploads/
 
+# ── Curriculum PDFs (large binary files — upload directly to server) ─────────
+# These are ingested at runtime into ChromaDB. Keep them on the server only.
+ai-backend/curriculum_docs/exam_papers/
+ai-backend/curriculum_docs/syllabi/
+ai-backend/curriculum_docs/lesson_plans/
+ai-backend/curriculum_docs/Scheme/
+
 # ── SQLite local database ─────────────────────────────────────────
 *.db
 *.db-journal
 prisma/dev.db
+.env*

@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+﻿import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -142,8 +142,8 @@ export default async function ClassroomsPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1 tracking-tight">Classrooms</h1>
-          <p className="text-[#6b6b76] text-sm">Your lesson plans organised by grade level.</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">Classrooms</h1>
+          <p className="text-[--text-secondary] text-sm">Your lesson plans organised by grade level.</p>
         </div>
         <Link href="/lesson-planner" className="drib-btn-primary inline-flex items-center gap-2 text-sm">
           <Plus size={15} /> New Lesson Plan
@@ -162,8 +162,8 @@ export default async function ClassroomsPage() {
             <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: bg }}>
               <Icon size={18} style={{ color: accent }} />
             </div>
-            <p className="font-bold text-2xl text-[#0d0d0d] leading-tight">{value}</p>
-            <p className="text-[#9e9ea7] text-xs mt-0.5">{label}</p>
+            <p className="font-bold text-2xl text-[--text-primary] leading-tight">{value}</p>
+            <p className="text-[--text-muted] text-xs mt-0.5">{label}</p>
           </div>
         ))}
       </div>
@@ -176,8 +176,8 @@ export default async function ClassroomsPage() {
               <div className="flex items-center gap-3 mb-4">
                 <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: group.accent }} />
                 <h2 className="font-semibold text-sm" style={{ color: group.accent }}>{group.label}</h2>
-                <div className="flex-1 h-px bg-[#f0f0f0]" />
-                <span className="text-[#9e9ea7] text-xs">
+                <div className="flex-1 h-px bg-[--bg-elevated]" />
+                <span className="text-[--text-muted] text-xs">
                   {group.classrooms.filter((c) => c.isActive).length} active
                 </span>
               </div>
@@ -186,19 +186,19 @@ export default async function ClassroomsPage() {
                   <Link
                     key={classroom.grade}
                     href={`/lesson-planner?grade=${encodeURIComponent(classroom.grade)}`}
-                    className="bg-white rounded-2xl p-5 flex flex-col gap-3 border transition-all duration-200 shadow-card hover:shadow-card-hover hover:scale-[1.01] group"
+                    className="bg-[--bg-surface] rounded-2xl p-5 flex flex-col gap-3 border transition-all duration-200 shadow-card hover:shadow-card-hover hover:scale-[1.01] group"
                     style={{ borderColor: group.accentBorder }}
                   >
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: group.accentBg }}>
                       <GraduationCap size={18} style={{ color: group.accent }} />
                     </div>
                     <div>
-                      <p className="text-[#0d0d0d] font-semibold text-sm">{classroom.grade}</p>
-                      <p className="text-[#9e9ea7] text-xs mt-0.5">
+                      <p className="text-[--text-primary] font-semibold text-sm">{classroom.grade}</p>
+                      <p className="text-[--text-muted] text-xs mt-0.5">
                         {classroom.planCount} plan{classroom.planCount !== 1 ? "s" : ""}
                       </p>
                     </div>
-                    <div className="h-1 bg-[#f0f0f0] rounded-full overflow-hidden">
+                    <div className="h-1 bg-[--bg-elevated] rounded-full overflow-hidden">
                       <div
                         className="h-full rounded-full transition-all duration-700"
                         style={{
@@ -223,8 +223,8 @@ export default async function ClassroomsPage() {
           <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-5">
             <GraduationCap size={24} className="text-[#ea4c89]" />
           </div>
-          <h2 className="text-[#0d0d0d] font-semibold text-lg mb-2">No classrooms yet</h2>
-          <p className="text-[#6b6b76] text-sm max-w-sm mx-auto mb-6">
+          <h2 className="text-[--text-primary] font-semibold text-lg mb-2">No classrooms yet</h2>
+          <p className="text-[--text-secondary] text-sm max-w-sm mx-auto mb-6">
             Hi {firstName}! Create your first lesson plan and it will automatically appear here, organised by grade level.
           </p>
           <Link href="/lesson-planner" className="drib-btn-primary inline-flex items-center gap-2 text-sm">
@@ -237,19 +237,19 @@ export default async function ClassroomsPage() {
       {totalPlans > 0 && (
         <div className="mt-8 drib-card p-5">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[#0d0d0d] font-semibold">All Grade Levels</h2>
-            <span className="text-[#9e9ea7] text-xs">{totalPlans} plans total</span>
+            <h2 className="text-[--text-primary] font-semibold">All Grade Levels</h2>
+            <span className="text-[--text-muted] text-xs">{totalPlans} plans total</span>
           </div>
           <div className="space-y-3">
             {sortedPlansByGrade.map((g) => {
               const pct = Math.round((g._count.grade / totalPlans) * 100);
               return (
                 <div key={g.grade} className="flex items-center gap-3">
-                  <span className="text-[#6b6b76] text-sm w-24 shrink-0 truncate">{g.grade}</span>
-                  <div className="flex-1 h-2 bg-[#f0f0f0] rounded-full overflow-hidden">
+                  <span className="text-[--text-secondary] text-sm w-24 shrink-0 truncate">{g.grade}</span>
+                  <div className="flex-1 h-2 bg-[--bg-elevated] rounded-full overflow-hidden">
                     <div className="h-full rounded-full bg-[#ea4c89] transition-all duration-700" style={{ width: `${pct}%` }} />
                   </div>
-                  <span className="text-[#0d0d0d] text-sm font-semibold w-8 text-right shrink-0">
+                  <span className="text-[--text-primary] text-sm font-semibold w-8 text-right shrink-0">
                     {g._count.grade}
                   </span>
                 </div>
@@ -263,7 +263,7 @@ export default async function ClassroomsPage() {
       <div className="mt-6 drib-card p-5">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 size={15} className="text-[#007531]" />
-          <h2 className="text-[#0d0d0d] font-semibold text-sm">How Classrooms Work</h2>
+          <h2 className="text-[--text-primary] font-semibold text-sm">How Classrooms Work</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -276,8 +276,8 @@ export default async function ClassroomsPage() {
                 <Icon size={14} style={{ color }} />
               </div>
               <div>
-                <p className="text-[#0d0d0d] font-medium text-sm mb-0.5">{title}</p>
-                <p className="text-[#9e9ea7] text-xs leading-relaxed">{desc}</p>
+                <p className="text-[--text-primary] font-medium text-sm mb-0.5">{title}</p>
+                <p className="text-[--text-muted] text-xs leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
@@ -291,8 +291,8 @@ export default async function ClassroomsPage() {
             <Crown size={20} className="text-[#ea4c89]" />
           </div>
           <div className="flex-1">
-            <p className="text-[#0d0d0d] font-semibold mb-1">Unlimited Classrooms with Premium</p>
-            <p className="text-[#6b6b76] text-sm">
+            <p className="text-[--text-primary] font-semibold mb-1">Unlimited Classrooms with Premium</p>
+            <p className="text-[--text-secondary] text-sm">
               Free plan is limited to 5 plans per month. Upgrade for unlimited access across all grades.
             </p>
           </div>

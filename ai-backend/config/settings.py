@@ -28,6 +28,12 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False, description="Enable debug mode")
     environment: str = Field(default="production", description="Runtime environment")
 
+    # ── App ──────────────────────────────────────────────────────
+    app_url: str = Field(
+        default="https://educom-ai.vercel.app",
+        description="Public URL of the Next.js frontend (sent as HTTP-Referer to OpenRouter)",
+    )
+
     # ── CORS ─────────────────────────────────────────────────────
     allowed_origins: str = Field(
         default="http://localhost:3000",
@@ -39,17 +45,16 @@ class Settings(BaseSettings):
         """Parse comma-separated origins into a list."""
         return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
 
-    # ── Google Gemini (Primary AI Provider) ─────────────────────
-    gemini_api_key: str = Field(
+    # ── OpenRouter (Primary AI Provider) ─────────────────────────
+    openrouter_api_key: str = Field(
         default="",
-        description="Google AI Studio API key (get one free at aistudio.google.com)",
-    )
-    gemini_model: str = Field(
-        default="gemini-2.0-flash",
-        description="Gemini model to use (gemini-2.0-flash recommended)",
+        description=(
+            "OpenRouter API key — get one at https://openrouter.ai/keys. "
+            "This key MUST stay on the backend only — never expose to the frontend."
+        ),
     )
 
-    # ── Ollama (Local fallback when Gemini is not configured) ────
+    # ── Ollama (Local fallback when OpenRouter is not configured) ─
     ollama_base_url: str = Field(
         default="http://localhost:11434",
         description="Ollama server base URL",
@@ -60,7 +65,7 @@ class Settings(BaseSettings):
     )
     ollama_fallback_model: str = Field(
         default="mistral",
-        description="Fallback model if primary is unavailable",
+        description="Fallback model if primary Ollama model is unavailable",
     )
 
     # ── AI Generation ────────────────────────────────────────────
@@ -100,7 +105,7 @@ class Settings(BaseSettings):
 
     # ── RAG Settings ─────────────────────────────────────────────
     rag_top_k: int = Field(
-        default=5, description="Number of relevant chunks to retrieve"
+        default=8, description="Number of relevant chunks to retrieve"
     )
     rag_chunk_size: int = Field(
         default=1000, description="Document chunk size in characters"

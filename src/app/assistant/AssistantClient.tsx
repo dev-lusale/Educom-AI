@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
@@ -275,19 +275,19 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
     <div className="flex flex-col h-[calc(100vh-3.5rem)] md:h-screen max-w-4xl mx-auto w-full">
 
       {/* ── Header ── */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[#e8e8e8] bg-white shrink-0">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[--border] bg-[--bg-surface] shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-[#ea4c89] rounded-xl flex items-center justify-center">
             <Sparkles size={16} className="text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-[#0d0d0d] font-semibold text-sm">Educom AI Assistant</h1>
+              <h1 className="text-[--text-primary] font-semibold text-sm">Educom AI Assistant</h1>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#fce4ef] text-[#ea4c89]">
                 BETA
               </span>
             </div>
-            <p className="text-[#9e9ea7] text-xs">Your Zambian teaching companion</p>
+            <p className="text-[--text-muted] text-xs">Your Zambian teaching companion</p>
           </div>
         </div>
 
@@ -296,7 +296,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
             <button
               onClick={clearHistory}
               disabled={clearing}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs text-[#9e9ea7] hover:text-red-500 hover:bg-red-50 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs text-[--text-muted] hover:text-red-500 hover:bg-red-50 transition-all"
               title="Clear chat history"
             >
               {clearing ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
@@ -325,10 +325,10 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
             <div className="w-16 h-16 bg-[#ea4c89] rounded-2xl flex items-center justify-center mb-5">
               <Sparkles size={28} className="text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-[#0d0d0d] mb-2 text-center tracking-tight">
+            <h2 className="text-2xl font-bold text-[--text-primary] mb-2 text-center tracking-tight">
               Hello, {firstName}! 👋
             </h2>
-            <p className="text-[#6b6b76] text-sm text-center max-w-md mb-8 leading-relaxed">
+            <p className="text-[--text-secondary] text-sm text-center max-w-md mb-8 leading-relaxed">
               I&apos;m your Educom AI teaching assistant. I can help you with lesson planning,
               curriculum questions, teaching strategies, assessments, and anything else you need
               as a Zambian teacher.
@@ -345,14 +345,14 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: action.bg }}>
                     <action.icon size={15} style={{ color: action.color }} />
                   </div>
-                  <p className="text-[#0d0d0d] text-xs font-medium leading-snug group-hover:text-[#ea4c89] transition-colors">
+                  <p className="text-[--text-primary] text-xs font-medium leading-snug group-hover:text-[#ea4c89] transition-colors">
                     {action.label}
                   </p>
                 </button>
               ))}
             </div>
 
-            <p className="text-[#9e9ea7] text-xs mt-8 text-center">
+            <p className="text-[--text-muted] text-xs mt-8 text-center">
               Type a question below or click a suggestion to get started
             </p>
           </div>
@@ -372,7 +372,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
       {showScrollBtn && (
         <button
           onClick={() => scrollToBottom()}
-          className="absolute bottom-24 right-6 w-9 h-9 bg-white border border-black/[0.08] rounded-full flex items-center justify-center text-gray-500 hover:text-gray-900 transition-all shadow-md z-10"
+          className="absolute bottom-24 right-6 w-9 h-9 bg-[--bg-surface] border border-black/[0.08] rounded-full flex items-center justify-center text-gray-500 hover:text-gray-900 transition-all shadow-md z-10"
         >
           <ChevronDown size={16} />
         </button>
@@ -386,7 +386,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
               key={action.label}
               onClick={() => sendMessage(action.prompt)}
               disabled={loading}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-black/[0.06] rounded-full text-xs text-gray-500 hover:text-gray-900 hover:border-black/12 transition-all whitespace-nowrap shrink-0 disabled:opacity-50 shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[--bg-surface] border border-black/[0.06] rounded-full text-xs text-gray-500 hover:text-gray-900 hover:border-black/12 transition-all whitespace-nowrap shrink-0 disabled:opacity-50 shadow-sm"
             >
               <action.icon size={11} className={action.color} />
               {action.label}
@@ -396,8 +396,8 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
       )}
 
       {/* ── Input area ── */}
-      <div className="px-4 pb-4 pt-2 border-t border-[#e8e8e8] bg-white shrink-0">
-        <div className="flex items-end gap-3 bg-[#f8f8f8] border border-[#e8e8e8] rounded-2xl px-4 py-3 focus-within:border-[#ea4c89] transition-colors">
+      <div className="px-4 pb-4 pt-2 border-t border-[--border] bg-[--bg-surface] shrink-0">
+        <div className="flex items-end gap-3 bg-[--bg-canvas] border border-[--border] rounded-2xl px-4 py-3 focus-within:border-[#ea4c89] transition-colors">
           <textarea
             ref={inputRef}
             value={input}
@@ -406,7 +406,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
             placeholder="Ask me anything about teaching, curriculum, or lesson planning…"
             rows={1}
             disabled={loading}
-            className="flex-1 bg-transparent text-[#0d0d0d] text-sm placeholder:text-[#9e9ea7] resize-none outline-none leading-relaxed disabled:opacity-50 min-h-[1.5rem]"
+            className="flex-1 bg-transparent text-[--text-primary] text-sm placeholder:text-[--text-muted] resize-none outline-none leading-relaxed disabled:opacity-50 min-h-[1.5rem]"
             style={{ maxHeight: "160px" }}
           />
           <button
@@ -416,13 +416,13 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
               "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all",
               input.trim() && !loading
                 ? "bg-[#ea4c89] text-white hover:bg-[#d6437a]"
-                : "bg-[#f0f0f0] text-[#9e9ea7] cursor-not-allowed"
+                : "bg-[--bg-elevated] text-[--text-muted] cursor-not-allowed"
             )}
           >
             {loading ? <Loader2 size={15} className="animate-spin" /> : <Send size={14} />}
           </button>
         </div>
-        <p className="text-[#9e9ea7] text-[10px] text-center mt-2">
+        <p className="text-[--text-muted] text-[10px] text-center mt-2">
           Press Enter to send · Shift+Enter for new line · AI responses may not always be accurate
         </p>
       </div>
@@ -463,13 +463,13 @@ function MessageBubble({ message, userName }: { message: Message; userName: stri
         <div className="flex items-center gap-2 mb-1.5">
           <span className="text-[#ea4c89] text-xs font-semibold">Educom AI</span>
           {!isTyping && (
-            <span className="text-[#9e9ea7] text-[10px]">
+            <span className="text-[--text-muted] text-[10px]">
               {new Date(message.createdAt).toLocaleTimeString("en-ZM", { hour: "2-digit", minute: "2-digit" })}
             </span>
           )}
         </div>
 
-        <div className="bg-white border border-[#e8e8e8] rounded-2xl rounded-tl-sm px-4 py-3 text-[#6b6b76] text-sm shadow-card">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-2xl rounded-tl-sm px-4 py-3 text-[--text-secondary] text-sm shadow-card">
           {isTyping ? (
             <div className="flex items-center gap-1.5 py-1">
               <span className="w-2 h-2 bg-[#ea4c89]/60 rounded-full animate-bounce [animation-delay:0ms]" />

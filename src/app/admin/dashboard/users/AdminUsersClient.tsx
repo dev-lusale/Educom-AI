@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -108,8 +108,8 @@ export default function AdminUsersClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] tracking-tight">Users</h1>
-          <p className="text-[#6b6b76] text-sm mt-1">{total.toLocaleString()} registered users</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight">Users</h1>
+          <p className="text-[--text-secondary] text-sm mt-1">{total.toLocaleString()} registered users</p>
         </div>
         <button onClick={fetchUsers} className="drib-btn-outline py-2 px-4 text-sm flex items-center gap-2">
           <RefreshCw size={13} /> Refresh
@@ -119,7 +119,7 @@ export default function AdminUsersClient() {
       {/* Filters */}
       <div className="drib-card p-4 flex flex-col sm:flex-row gap-3">
         <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchUsers(); }} className="relative flex-1">
-          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, school…"
@@ -128,7 +128,7 @@ export default function AdminUsersClient() {
         </form>
         <div className="flex gap-2.5">
           <div className="relative">
-            <Filter size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+            <Filter size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-[--text-muted]" />
             <select value={planFilter} onChange={(e) => { setPlanFilter(e.target.value); setPage(1); }}
               className="drib-input pl-8 cursor-pointer">
               <option value="">All Plans</option>
@@ -155,7 +155,7 @@ export default function AdminUsersClient() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#f0f0f0] text-[#9e9ea7] text-xs">
+                <tr className="border-b border-[--border] text-[--text-muted] text-xs">
                   <th className="text-left px-5 py-3.5 font-medium">User</th>
                   <th className="text-left px-5 py-3.5 font-medium">Plan</th>
                   <th className="text-left px-5 py-3.5 font-medium">Status</th>
@@ -164,21 +164,21 @@ export default function AdminUsersClient() {
                   <th className="text-left px-5 py-3.5 font-medium">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f0f0f0]">
+              <tbody className="divide-y divide-[--border]">
                 {users.map((user) => (
-                  <tr key={user.id} className="hover:bg-[#f8f8f8] transition-colors">
+                  <tr key={user.id} className="hover:bg-[--bg-canvas] transition-colors">
                     <td className="px-5 py-3.5">
-                      <p className="text-[#0d0d0d] font-semibold text-sm">{user.name ?? "—"}</p>
-                      <p className="text-[#9e9ea7] text-xs">{user.email}</p>
-                      {user.school && <p className="text-[#9e9ea7] text-[10px]">{user.school}</p>}
+                      <p className="text-[--text-primary] font-semibold text-sm">{user.name ?? "—"}</p>
+                      <p className="text-[--text-muted] text-xs">{user.email}</p>
+                      {user.school && <p className="text-[--text-muted] text-[10px]">{user.school}</p>}
                     </td>
                     <td className="px-5 py-3.5">
                       {user.plan === "PREMIUM" ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fce4ef] text-[#ea4c89]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#ea4c89]">
                           <Crown size={10} /> Premium
                         </span>
                       ) : (
-                        <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#f0f0f0] text-[#6b6b76]">
+                        <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[--bg-elevated] text-[--text-secondary]">
                           Free
                         </span>
                       )}
@@ -191,24 +191,24 @@ export default function AdminUsersClient() {
                         {user.isActive ? "Active" : "Suspended"}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 text-[#6b6b76] font-medium">{user.lessonPlanCount}</td>
-                    <td className="px-5 py-3.5 text-[#9e9ea7] text-xs">
+                    <td className="px-5 py-3.5 text-[--text-secondary] font-medium">{user.lessonPlanCount}</td>
+                    <td className="px-5 py-3.5 text-[--text-muted] text-xs">
                       {new Date(user.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })}
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
                         <button onClick={() => loadUserDetail(user.id)}
-                          className="w-7 h-7 bg-[#f8f8f8] border border-[#e8e8e8] rounded-lg flex items-center justify-center hover:border-[#d4d4d4] transition-all"
+                          className="w-7 h-7 bg-[--bg-canvas] border border-[--border] rounded-lg flex items-center justify-center hover:border-[--border-hover] transition-all"
                           title="View details">
-                          <Eye size={12} className="text-[#6b6b76]" />
+                          <Eye size={12} className="text-[--text-secondary]" />
                         </button>
                         <div className="relative">
                           <button onClick={() => setOpenMenu(openMenu === user.id ? null : user.id)}
-                            className="w-7 h-7 bg-[#f8f8f8] border border-[#e8e8e8] rounded-lg flex items-center justify-center hover:border-[#d4d4d4] transition-all">
-                            <MoreVertical size={12} className="text-[#6b6b76]" />
+                            className="w-7 h-7 bg-[--bg-canvas] border border-[--border] rounded-lg flex items-center justify-center hover:border-[--border-hover] transition-all">
+                            <MoreVertical size={12} className="text-[--text-secondary]" />
                           </button>
                           {openMenu === user.id && (
-                            <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-[#e8e8e8] rounded-xl shadow-card-hover z-10 overflow-hidden">
+                            <div className="absolute right-0 top-full mt-1 w-48 bg-[--bg-surface] border border-[--border] rounded-xl shadow-card-hover z-10 overflow-hidden">
                               {user.isActive ? (
                                 <button onClick={() => handleAction(user.id, "suspend")} disabled={!!actionLoading}
                                   className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-red-500 hover:bg-red-50 transition-colors">
@@ -222,12 +222,12 @@ export default function AdminUsersClient() {
                               )}
                               {user.plan === "FREE" ? (
                                 <button onClick={() => handleAction(user.id, "upgrade")} disabled={!!actionLoading}
-                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[#ea4c89] hover:bg-[#fce4ef] transition-colors">
+                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[#ea4c89] hover:bg-[--accent-pale] transition-colors">
                                   <ArrowUpCircle size={12} /> Upgrade to Premium
                                 </button>
                               ) : (
                                 <button onClick={() => handleAction(user.id, "downgrade")} disabled={!!actionLoading}
-                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[#6b6b76] hover:bg-[#f8f8f8] transition-colors">
+                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[--text-secondary] hover:bg-[--bg-canvas] transition-colors">
                                   <ArrowDownCircle size={12} /> Downgrade to Free
                                 </button>
                               )}
@@ -241,7 +241,7 @@ export default function AdminUsersClient() {
               </tbody>
             </table>
             {users.length === 0 && (
-              <p className="text-[#9e9ea7] text-center py-14 text-sm">No users found.</p>
+              <p className="text-[--text-muted] text-center py-14 text-sm">No users found.</p>
             )}
           </div>
         )}
@@ -250,7 +250,7 @@ export default function AdminUsersClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[#6b6b76] text-sm">Page {page} of {pages} · {total} users</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} users</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">
@@ -267,11 +267,11 @@ export default function AdminUsersClient() {
       {/* User Detail Modal */}
       {(selectedUser || detailLoading) && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-[#e8e8e8] rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-xl">
-            <div className="flex items-center justify-between p-5 border-b border-[#f0f0f0]">
-              <h2 className="text-[#0d0d0d] font-semibold">User Details</h2>
+          <div className="bg-[--bg-surface] border border-[--border] rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-xl">
+            <div className="flex items-center justify-between p-5 border-b border-[--border]">
+              <h2 className="text-[--text-primary] font-semibold">User Details</h2>
               <button onClick={() => setSelectedUser(null)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#9e9ea7] hover:text-[#0d0d0d] hover:bg-[#f8f8f8] transition-all">
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all">
                 <X size={16} />
               </button>
             </div>
@@ -291,22 +291,22 @@ export default function AdminUsersClient() {
                     { label: "Province", value: selectedUser.province ?? "—" },
                   ].map(({ label, value }) => (
                     <div key={label}>
-                      <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-                      <p className="text-[#0d0d0d] font-medium text-sm">{value}</p>
+                      <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+                      <p className="text-[--text-primary] font-medium text-sm">{value}</p>
                     </div>
                   ))}
                   <div>
-                    <p className="text-[#9e9ea7] text-xs mb-1">Plan</p>
+                    <p className="text-[--text-muted] text-xs mb-1">Plan</p>
                     {selectedUser.plan === "PREMIUM" ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#fce4ef] text-[#ea4c89]">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#ea4c89]">
                         <Crown size={10} /> Premium ✦
                       </span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#f0f0f0] text-[#6b6b76]">Free</span>
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[--bg-elevated] text-[--text-secondary]">Free</span>
                     )}
                   </div>
                   <div>
-                    <p className="text-[#9e9ea7] text-xs mb-1">Status</p>
+                    <p className="text-[--text-muted] text-xs mb-1">Status</p>
                     <span className={cn(
                       "px-2.5 py-1 rounded-full text-xs font-semibold",
                       selectedUser.isActive ? "bg-[#e6f4ec] text-[#007531]" : "bg-red-50 text-red-500"
@@ -331,12 +331,12 @@ export default function AdminUsersClient() {
                   )}
                   {selectedUser.plan === "FREE" ? (
                     <button onClick={() => handleAction(selectedUser.id, "upgrade")} disabled={!!actionLoading}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#ea4c89] bg-[#fce4ef] hover:bg-[#f5b8d4]/30 transition-colors">
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#ea4c89] bg-[--accent-pale] hover:bg-[#f5b8d4]/30 transition-colors">
                       <ArrowUpCircle size={12} /> Upgrade to Premium
                     </button>
                   ) : (
                     <button onClick={() => handleAction(selectedUser.id, "downgrade")} disabled={!!actionLoading}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#6b6b76] bg-[#f0f0f0] hover:bg-[#e8e8e8] transition-colors">
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[--text-secondary] bg-[--bg-elevated] hover:bg-[#e8e8e8] transition-colors">
                       <ArrowDownCircle size={12} /> Downgrade to Free
                     </button>
                   )}
@@ -345,18 +345,18 @@ export default function AdminUsersClient() {
                 {/* Recent Transactions */}
                 {selectedUser.transactions.length > 0 && (
                   <div>
-                    <h3 className="text-[#0d0d0d] font-semibold text-sm mb-3">Recent Transactions</h3>
+                    <h3 className="text-[--text-primary] font-semibold text-sm mb-3">Recent Transactions</h3>
                     <div className="space-y-2">
                       {selectedUser.transactions.slice(0, 5).map((t) => {
                         const s = TX_STATUS_STYLES[t.status] ?? { text: "#6b6b76", bg: "#f0f0f0" };
                         return (
-                          <div key={t.id} className="flex items-center justify-between px-4 py-3 bg-[#f8f8f8] rounded-xl text-xs">
+                          <div key={t.id} className="flex items-center justify-between px-4 py-3 bg-[--bg-canvas] rounded-xl text-xs">
                             <div>
-                              <p className="text-[#0d0d0d] font-mono font-medium">{t.transactionRef}</p>
-                              <p className="text-[#9e9ea7]">{t.paymentMethod.replace("_", " ")}</p>
+                              <p className="text-[--text-primary] font-mono font-medium">{t.transactionRef}</p>
+                              <p className="text-[--text-muted]">{t.paymentMethod.replace("_", " ")}</p>
                             </div>
                             <div className="text-right">
-                              <p className="text-[#0d0d0d] font-semibold">K{t.amount}</p>
+                              <p className="text-[--text-primary] font-semibold">K{t.amount}</p>
                               <span className="px-1.5 py-0.5 rounded-full font-semibold" style={{ color: s.text, backgroundColor: s.bg }}>
                                 {t.status}
                               </span>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -86,8 +86,8 @@ export default function AdminTransactionsClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] tracking-tight">Transactions</h1>
-          <p className="text-[#6b6b76] text-sm mt-1">{total.toLocaleString()} total transactions</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight">Transactions</h1>
+          <p className="text-[--text-secondary] text-sm mt-1">{total.toLocaleString()} total transactions</p>
         </div>
         <div className="flex gap-2">
           <button onClick={exportCSV} className="drib-btn-outline py-2 px-4 text-sm flex items-center gap-2">
@@ -102,7 +102,7 @@ export default function AdminTransactionsClient() {
       {/* Filters */}
       <div className="drib-card p-4 flex flex-col sm:flex-row gap-3">
         <form onSubmit={(e) => { e.preventDefault(); setPage(1); fetchTransactions(); }} className="relative flex-1">
-          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by ref, receipt, user email…"
@@ -111,7 +111,7 @@ export default function AdminTransactionsClient() {
         </form>
         <div className="flex gap-2.5">
           <div className="relative">
-            <Filter size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9e9ea7]" />
+            <Filter size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-[--text-muted]" />
             <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
               className="drib-input pl-8 cursor-pointer">
               <option value="">All Status</option>
@@ -143,7 +143,7 @@ export default function AdminTransactionsClient() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#f0f0f0] text-[#9e9ea7] text-xs">
+                <tr className="border-b border-[--border] text-[--text-muted] text-xs">
                   <th className="text-left px-5 py-3.5 font-medium">Reference</th>
                   <th className="text-left px-5 py-3.5 font-medium">User</th>
                   <th className="text-left px-5 py-3.5 font-medium">Method</th>
@@ -153,24 +153,24 @@ export default function AdminTransactionsClient() {
                   <th className="text-left px-5 py-3.5 font-medium">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f0f0f0]">
+              <tbody className="divide-y divide-[--border]">
                 {transactions.map((t) => {
                   const s = STATUS_STYLES[t.status] ?? { text: "#6b6b76", bg: "#f0f0f0" };
                   return (
-                    <tr key={t.id} className="hover:bg-[#f8f8f8] transition-colors">
+                    <tr key={t.id} className="hover:bg-[--bg-canvas] transition-colors">
                       <td className="px-5 py-3.5">
-                        <p className="text-[#0d0d0d] font-mono text-xs font-medium">{t.transactionRef}</p>
-                        {t.phoneNumber && <p className="text-[#9e9ea7] text-[10px]">{t.phoneNumber}</p>}
-                        {t.bankName && <p className="text-[#9e9ea7] text-[10px]">{t.bankName}</p>}
+                        <p className="text-[--text-primary] font-mono text-xs font-medium">{t.transactionRef}</p>
+                        {t.phoneNumber && <p className="text-[--text-muted] text-[10px]">{t.phoneNumber}</p>}
+                        {t.bankName && <p className="text-[--text-muted] text-[10px]">{t.bankName}</p>}
                       </td>
                       <td className="px-5 py-3.5">
-                        <p className="text-[#0d0d0d] font-medium">{t.user.name ?? "—"}</p>
-                        <p className="text-[#9e9ea7] text-xs">{t.user.email}</p>
+                        <p className="text-[--text-primary] font-medium">{t.user.name ?? "—"}</p>
+                        <p className="text-[--text-muted] text-xs">{t.user.email}</p>
                       </td>
-                      <td className="px-5 py-3.5 text-[#6b6b76] text-xs">{METHOD_LABELS[t.paymentMethod] ?? t.paymentMethod}</td>
+                      <td className="px-5 py-3.5 text-[--text-secondary] text-xs">{METHOD_LABELS[t.paymentMethod] ?? t.paymentMethod}</td>
                       <td className="px-5 py-3.5">
-                        <span className="text-[#0d0d0d] font-semibold">K{t.amount}</span>
-                        <span className="text-[#9e9ea7] text-xs ml-1">{t.currency}</span>
+                        <span className="text-[--text-primary] font-semibold">K{t.amount}</span>
+                        <span className="text-[--text-muted] text-xs ml-1">{t.currency}</span>
                       </td>
                       <td className="px-5 py-3.5">
                         <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ color: s.text, backgroundColor: s.bg }}>
@@ -182,8 +182,8 @@ export default function AdminTransactionsClient() {
                           </p>
                         )}
                       </td>
-                      <td className="px-5 py-3.5 text-[#6b6b76] font-mono text-xs">{t.receiptNumber ?? "—"}</td>
-                      <td className="px-5 py-3.5 text-[#9e9ea7] text-xs">
+                      <td className="px-5 py-3.5 text-[--text-secondary] font-mono text-xs">{t.receiptNumber ?? "—"}</td>
+                      <td className="px-5 py-3.5 text-[--text-muted] text-xs">
                         {new Date(t.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })}
                       </td>
                     </tr>
@@ -192,7 +192,7 @@ export default function AdminTransactionsClient() {
               </tbody>
             </table>
             {transactions.length === 0 && (
-              <p className="text-[#9e9ea7] text-center py-14 text-sm">No transactions found.</p>
+              <p className="text-[--text-muted] text-center py-14 text-sm">No transactions found.</p>
             )}
           </div>
         )}
@@ -201,7 +201,7 @@ export default function AdminTransactionsClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[#6b6b76] text-sm">Page {page} of {pages} · {total} transactions</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} transactions</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">

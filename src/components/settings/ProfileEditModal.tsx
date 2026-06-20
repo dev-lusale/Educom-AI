@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { X, Loader2, Check } from "lucide-react";
@@ -85,25 +85,25 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 relative">
+      <div className="bg-[--bg-surface] rounded-2xl shadow-xl w-full max-w-sm p-6 relative">
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors"
+          className="absolute top-4 right-4 text-[--text-muted] hover:text-[--text-primary] transition-colors"
           aria-label="Close"
         >
           <X size={18} />
         </button>
 
-        <h3 className="text-[#0d0d0d] font-semibold text-base mb-1">Edit Profile</h3>
-        <p className="text-[#9e9ea7] text-xs mb-5">
+        <h3 className="text-[--text-primary] font-semibold text-base mb-1">Edit Profile</h3>
+        <p className="text-[--text-muted] text-xs mb-5">
           Complete your profile so we can personalise your experience.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <div>
-            <label className="block text-[#9e9ea7] text-xs mb-1.5" htmlFor="name">
+            <label className="block text-[--text-muted] text-xs mb-1.5" htmlFor="name">
               Full Name <span className="text-[#ea4c89]">*</span>
             </label>
             <input
@@ -113,14 +113,14 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               value={form.name}
               onChange={handleChange}
               placeholder="e.g. Moono Rundy"
-              className="w-full border border-[#e8e8e8] rounded-xl px-3.5 py-2.5 text-sm text-[#0d0d0d] placeholder:text-[#c5c5cd] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
               autoComplete="name"
             />
           </div>
 
           {/* School */}
           <div>
-            <label className="block text-[#9e9ea7] text-xs mb-1.5" htmlFor="school">
+            <label className="block text-[--text-muted] text-xs mb-1.5" htmlFor="school">
               School
             </label>
             <input
@@ -130,14 +130,14 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               value={form.school}
               onChange={handleChange}
               placeholder="e.g. Munali Secondary School"
-              className="w-full border border-[#e8e8e8] rounded-xl px-3.5 py-2.5 text-sm text-[#0d0d0d] placeholder:text-[#c5c5cd] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
               autoComplete="organization"
             />
           </div>
 
           {/* Province */}
           <div>
-            <label className="block text-[#9e9ea7] text-xs mb-1.5" htmlFor="province">
+            <label className="block text-[--text-muted] text-xs mb-1.5" htmlFor="province">
               Province
             </label>
             <select
@@ -145,7 +145,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               name="province"
               value={form.province}
               onChange={handleChange}
-              className="w-full border border-[#e8e8e8] rounded-xl px-3.5 py-2.5 text-sm text-[#0d0d0d] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition bg-white appearance-none"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition bg-[--bg-surface] appearance-none"
             >
               <option value="">Select province…</option>
               {ZAMBIA_PROVINCES.map((p) => (

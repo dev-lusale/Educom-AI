@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -135,7 +135,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8]">
+    <div className="min-h-screen bg-[--bg-canvas]">
       <Navbar />
       <main className="pt-24 pb-16 px-4 max-w-lg mx-auto">
 
@@ -144,10 +144,10 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           <div className="inline-flex items-center justify-center w-14 h-14 bg-[#fce4ef] rounded-2xl mb-4">
             <Crown size={24} className="text-[#ea4c89]" />
           </div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-2 tracking-tight">
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-2 tracking-tight">
             {isRenewal ? "Renew Premium" : "Upgrade to Premium"}
           </h1>
-          <p className="text-[#6b6b76] text-sm">
+          <p className="text-[--text-secondary] text-sm">
             {isRenewal && daysRemaining !== null && daysRemaining !== undefined && daysRemaining > 0
               ? `Hello ${userName} — your subscription expires in ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""}. Renew to keep full access.`
               : isRenewal
@@ -161,11 +161,11 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           <div>
             <p className="text-[#ea4c89] font-semibold text-sm mb-1">Premium Plan</p>
             <div className="flex items-end gap-1">
-              <span className="text-[#0d0d0d] text-3xl font-bold">K150</span>
-              <span className="text-[#9e9ea7] text-sm mb-0.5">/month</span>
+              <span className="text-[--text-primary] text-3xl font-bold">K150</span>
+              <span className="text-[--text-muted] text-sm mb-0.5">/month</span>
             </div>
           </div>
-          <ul className="text-[#6b6b76] text-xs space-y-1.5">
+          <ul className="text-[--text-secondary] text-xs space-y-1.5">
             {["Unlimited lesson plans", "Unlimited assessments & exams", "Community sharing", "PDF export", "Priority support"].map((f) => (
               <li key={f} className="flex items-center gap-1.5">
                 <CheckCircle2 size={11} className="text-[#ea4c89]" /> {f}
@@ -177,10 +177,10 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
         {/* ── Step: Select ── */}
         {step === "select" && (
           <div className="drib-card p-6">
-            <p className="text-[#9e9ea7] text-xs font-semibold uppercase tracking-wider mb-4">Choose Payment Method</p>
+            <p className="text-[--text-muted] text-xs font-semibold uppercase tracking-wider mb-4">Choose Payment Method</p>
 
             {/* Tab bar */}
-            <div className="flex border-b border-[#f0f0f0] mb-5">
+            <div className="flex border-b border-[--border] mb-5">
               {[{ key: "mobile", label: "Mobile Money" }, { key: "bank", label: "Bank Transfer" }].map((tab) => (
                 <button
                   key={tab.key}
@@ -189,7 +189,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                     "px-5 py-2.5 text-sm font-medium transition-colors relative",
                     activeTab === tab.key
                       ? "text-[#ea4c89] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#ea4c89] after:rounded-t"
-                      : "text-[#6b6b76] hover:text-[#0d0d0d]"
+                      : "text-[--text-secondary] hover:text-[--text-primary]"
                   )}
                 >
                   {tab.label}
@@ -202,11 +202,11 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               <div className="grid grid-cols-3 gap-3">
                 {METHODS.filter((m) => m.id !== "BANK_TRANSFER").map((m) => (
                   <button key={m.id} onClick={() => handleSelectMethod(m.id)}
-                    className="group flex flex-col items-center justify-center gap-2 rounded-xl p-4 bg-[#f8f8f8] border border-[#e8e8e8] hover:border-[#ea4c89]/50 hover:bg-[#fce4ef]/30 transition-all">
-                    <div className="w-13 h-13 rounded-lg overflow-hidden flex items-center justify-center bg-white p-1">
+                    className="group flex flex-col items-center justify-center gap-2 rounded-xl p-4 bg-[--bg-canvas] border border-[--border] hover:border-[#ea4c89]/50 hover:bg-[#fce4ef]/30 transition-all">
+                    <div className="w-13 h-13 rounded-lg overflow-hidden flex items-center justify-center bg-[--bg-surface] p-1">
                       <Image src={m.logo} alt={m.label} width={44} height={44} className="object-contain" />
                     </div>
-                    <span className="text-xs text-[#6b6b76] group-hover:text-[#0d0d0d] font-medium text-center leading-tight">{m.shortLabel}</span>
+                    <span className="text-xs text-[--text-secondary] group-hover:text-[--text-primary] font-medium text-center leading-tight">{m.shortLabel}</span>
                   </button>
                 ))}
               </div>
@@ -216,20 +216,20 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               <div className="grid grid-cols-1 gap-3">
                 {METHODS.filter((m) => m.id === "BANK_TRANSFER").map((m) => (
                   <button key={m.id} onClick={() => handleSelectMethod(m.id)}
-                    className="group flex items-center gap-4 rounded-xl p-4 bg-[#f8f8f8] border border-[#e8e8e8] hover:border-[#3b82f6]/50 hover:bg-[#eff6ff]/30 transition-all">
-                    <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center bg-white p-1">
+                    className="group flex items-center gap-4 rounded-xl p-4 bg-[--bg-canvas] border border-[--border] hover:border-[#3b82f6]/50 hover:bg-[#eff6ff]/30 transition-all">
+                    <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center bg-[--bg-surface] p-1">
                       <Image src={m.logo} alt={m.label} width={40} height={40} className="object-contain" />
                     </div>
                     <div className="text-left">
-                      <p className="text-[#0d0d0d] font-semibold text-sm">{m.label}</p>
-                      <p className="text-[#6b6b76] text-xs">Transfer from any Zambian bank</p>
+                      <p className="text-[--text-primary] font-semibold text-sm">{m.label}</p>
+                      <p className="text-[--text-secondary] text-xs">Transfer from any Zambian bank</p>
                     </div>
                   </button>
                 ))}
               </div>
             )}
 
-            <div className="flex items-center gap-2 mt-5 text-[#9e9ea7] text-xs justify-center">
+            <div className="flex items-center gap-2 mt-5 text-[--text-muted] text-xs justify-center">
               <Shield size={11} />
               All payments are encrypted and processed securely
             </div>
@@ -240,24 +240,24 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
         {step === "details" && selectedMethodData && (
           <div className="drib-card p-6">
             <button onClick={() => setStep("select")}
-              className="flex items-center gap-2 text-[#6b6b76] hover:text-[#0d0d0d] text-sm mb-6 transition-colors">
+              className="flex items-center gap-2 text-[--text-secondary] hover:text-[--text-primary] text-sm mb-6 transition-colors">
               <ArrowLeft size={15} /> Back to payment methods
             </button>
 
-            <div className="flex items-center gap-3 p-4 bg-[#f8f8f8] rounded-xl border border-[#e8e8e8] mb-6">
-              <div className="w-11 h-11 rounded-xl overflow-hidden flex items-center justify-center bg-white p-1">
+            <div className="flex items-center gap-3 p-4 bg-[--bg-canvas] rounded-xl border border-[--border] mb-6">
+              <div className="w-11 h-11 rounded-xl overflow-hidden flex items-center justify-center bg-[--bg-surface] p-1">
                 <Image src={selectedMethodData.logo} alt={selectedMethodData.label} width={36} height={36} className="object-contain" />
               </div>
               <div>
-                <p className="text-[#0d0d0d] font-semibold text-sm">{selectedMethodData.label}</p>
-                <p className="text-[#9e9ea7] text-xs">K150 ZMW · 30-day Premium access</p>
+                <p className="text-[--text-primary] font-semibold text-sm">{selectedMethodData.label}</p>
+                <p className="text-[--text-muted] text-xs">K150 ZMW · 30-day Premium access</p>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {isMobileMoney && (
                 <div>
-                  <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+                  <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                     {selectedMethodData.shortLabel} Phone Number
                   </label>
                   <input type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
@@ -268,14 +268,14 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               {selectedMethod === "BANK_TRANSFER" && (
                 <>
                   <div>
-                    <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">Your Bank</label>
+                    <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">Your Bank</label>
                     <select value={bankName} onChange={(e) => setBankName(e.target.value)} className="drib-input cursor-pointer" required>
                       <option value="">Select your bank</option>
                       {BANKS.map((b) => <option key={b} value={b}>{b}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-[#6b6b76] mb-1.5">Your Account Number</label>
+                    <label className="block text-xs font-medium text-[--text-secondary] mb-1.5">Your Account Number</label>
                     <input type="text" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)}
                       placeholder="Your bank account number" className="drib-input" required />
                   </div>
@@ -294,35 +294,35 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
             <div className="w-14 h-14 bg-[#fce4ef] rounded-full flex items-center justify-center mx-auto mb-4">
               <Clock size={24} className="text-[#ea4c89] animate-pulse" />
             </div>
-            <h2 className="text-[#0d0d0d] font-bold text-xl mb-2">Payment Initiated</h2>
+            <h2 className="text-[--text-primary] font-bold text-xl mb-2">Payment Initiated</h2>
 
             {result.method === "BANK_TRANSFER" ? (
               <div className="text-left mt-5">
-                <div className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-4 mb-4">
-                  <p className="text-[#6b6b76] text-sm mb-2">Bank Transfer Instructions:</p>
-                  <p className="text-[#0d0d0d] text-sm leading-relaxed">{result.instructions}</p>
+                <div className="bg-[--bg-canvas] border border-[--border] rounded-xl p-4 mb-4">
+                  <p className="text-[--text-secondary] text-sm mb-2">Bank Transfer Instructions:</p>
+                  <p className="text-[--text-primary] text-sm leading-relaxed">{result.instructions}</p>
                 </div>
-                <div className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-4 flex items-center justify-between mb-5">
+                <div className="bg-[--bg-canvas] border border-[--border] rounded-xl p-4 flex items-center justify-between mb-5">
                   <div>
-                    <p className="text-[#9e9ea7] text-xs mb-1">Reference Code</p>
+                    <p className="text-[--text-muted] text-xs mb-1">Reference Code</p>
                     <p className="text-[#ea4c89] font-mono font-semibold">{result.referenceCode}</p>
                   </div>
                   <button onClick={() => copyToClipboard(result.referenceCode ?? "")}
-                    className="flex items-center gap-1.5 text-xs text-[#6b6b76] hover:text-[#0d0d0d] transition-colors">
+                    className="flex items-center gap-1.5 text-xs text-[--text-secondary] hover:text-[--text-primary] transition-colors">
                     {copied ? <Check size={13} className="text-[#007531]" /> : <Copy size={13} />}
                     {copied ? "Copied" : "Copy"}
                   </button>
                 </div>
-                <p className="text-[#6b6b76] text-sm text-center mb-5">After completing the transfer, click below to verify.</p>
+                <p className="text-[--text-secondary] text-sm text-center mb-5">After completing the transfer, click below to verify.</p>
               </div>
             ) : (
               <div className="mt-4 mb-5">
-                <p className="text-[#6b6b76] text-sm">{result.message}</p>
-                <div className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-4 mt-4 text-left">
-                  <p className="text-[#9e9ea7] text-xs mb-1">Transaction Reference</p>
-                  <p className="text-[#0d0d0d] font-mono text-sm">{result.transactionRef}</p>
+                <p className="text-[--text-secondary] text-sm">{result.message}</p>
+                <div className="bg-[--bg-canvas] border border-[--border] rounded-xl p-4 mt-4 text-left">
+                  <p className="text-[--text-muted] text-xs mb-1">Transaction Reference</p>
+                  <p className="text-[--text-primary] font-mono text-sm">{result.transactionRef}</p>
                 </div>
-                <p className="text-[#6b6b76] text-sm mt-4">Check your phone for a payment prompt and approve it, then click verify.</p>
+                <p className="text-[--text-secondary] text-sm mt-4">Check your phone for a payment prompt and approve it, then click verify.</p>
               </div>
             )}
 
@@ -338,10 +338,10 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
             <div className="w-16 h-16 bg-[#e6f4ec] rounded-full flex items-center justify-center mx-auto mb-5">
               <CheckCircle2 size={30} className="text-[#007531]" />
             </div>
-            <h2 className="text-[#0d0d0d] font-bold text-2xl mb-2">Payment Successful!</h2>
-            <p className="text-[#6b6b76] mb-6 text-sm">Your Premium subscription is now active. Welcome to the full Educom experience!</p>
+            <h2 className="text-[--text-primary] font-bold text-2xl mb-2">Payment Successful!</h2>
+            <p className="text-[--text-secondary] mb-6 text-sm">Your Premium subscription is now active. Welcome to the full Educom experience!</p>
 
-            <div className="bg-[#f8f8f8] border border-[#e8e8e8] rounded-xl p-5 mb-6 text-left">
+            <div className="bg-[--bg-canvas] border border-[--border] rounded-xl p-5 mb-6 text-left">
               <div className="grid grid-cols-2 gap-4">
                 {[
                   { label: "Amount Paid", value: "K150 ZMW" },
@@ -350,8 +350,8 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                   { label: "Valid For", value: "30 days" },
                 ].map(({ label, value }) => (
                   <div key={label}>
-                    <p className="text-[#9e9ea7] text-xs mb-0.5">{label}</p>
-                    <p className="text-[#0d0d0d] font-semibold text-sm">{value}</p>
+                    <p className="text-[--text-muted] text-xs mb-0.5">{label}</p>
+                    <p className="text-[--text-primary] font-semibold text-sm">{value}</p>
                   </div>
                 ))}
               </div>
@@ -369,8 +369,8 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-5">
               <span className="text-3xl">✗</span>
             </div>
-            <h2 className="text-[#0d0d0d] font-bold text-2xl mb-2">Payment Failed</h2>
-            <p className="text-[#6b6b76] mb-6 text-sm">Your payment could not be processed. Please try again or contact support.</p>
+            <h2 className="text-[--text-primary] font-bold text-2xl mb-2">Payment Failed</h2>
+            <p className="text-[--text-secondary] mb-6 text-sm">Your payment could not be processed. Please try again or contact support.</p>
             <button onClick={() => { setStep("select"); setSelectedMethod(null); setResult(null); }}
               className="drib-btn-primary w-full py-3.5">
               Try Again

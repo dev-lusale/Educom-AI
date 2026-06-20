@@ -11,7 +11,10 @@ export async function GET() {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+  const sevenDaysAgo = new Date(now);
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
 
   const [
     totalUsers,
@@ -25,8 +28,8 @@ export async function GET() {
     lastMonthRevenue,
     totalRevenue,
     recentTransactions,
-    userGrowth,
     revenueByMethod,
+    rawUserGrowth,
   ] = await Promise.all([
     prisma.user.count(),
     prisma.user.count({ where: { isActive: true } }),
@@ -54,24 +57,33 @@ export async function GET() {
         user: { select: { name: true, email: true } },
       },
     }),
-    // User registrations per day for last 7 days
-    prisma.$queryRaw<{ date: string; count: number }[]>`
-      SELECT date(createdAt) as date, count(*) as count
-      FROM User
-      WHERE createdAt >= datetime('now', '-7 days')
-      GROUP BY date(createdAt)
-      ORDER BY date ASC
-    `,
-    // Revenue by payment method
+    // Revenue by payment method — Prisma groupBy works on all databases
     prisma.transaction.groupBy({
       by: ["paymentMethod"],
       where: { status: "COMPLETED" },
       _sum: { amount: true },
       _count: true,
     }),
+    // User registrations per day — PostgreSQL-compatible raw query
+    // Uses DATE_TRUNC and CAST instead of SQLite's date()/datetime()
+    prisma.$queryRaw<{ date: Date; count: bigint }[]>`
+      SELECT
+        DATE_TRUNC('day', "createdAt") AS date,
+        COUNT(*)::bigint               AS count
+      FROM "User"
+      WHERE "createdAt" >= ${sevenDaysAgo}
+      GROUP BY DATE_TRUNC('day', "createdAt")
+      ORDER BY date ASC
+    `,
   ]);
 
-  const monthlyRevenueVal = monthlyRevenue._sum.amount ?? 0;
+  // BigInt from PostgreSQL COUNT must be converted to Number for JSON serialisation
+  const userGrowth = rawUserGrowth.map((row) => ({
+    date: row.date.toISOString().split("T")[0],  // "2025-06-12"
+    count: Number(row.count),
+  }));
+
+  const monthlyRevenueVal  = monthlyRevenue._sum.amount  ?? 0;
   const lastMonthRevenueVal = lastMonthRevenue._sum.amount ?? 0;
   const revenueGrowth =
     lastMonthRevenueVal > 0
@@ -80,37 +92,37 @@ export async function GET() {
 
   return NextResponse.json({
     users: {
-      total: totalUsers,
-      active: activeUsers,
+      total:   totalUsers,
+      active:  activeUsers,
       premium: premiumUsers,
-      free: totalUsers - premiumUsers,
+      free:    totalUsers - premiumUsers,
     },
     transactions: {
-      total: totalTransactions,
+      total:     totalTransactions,
       completed: completedTransactions,
-      pending: pendingTransactions,
-      failed: failedTransactions,
+      pending:   pendingTransactions,
+      failed:    failedTransactions,
     },
     revenue: {
-      total: totalRevenue._sum.amount ?? 0,
-      thisMonth: monthlyRevenueVal,
-      lastMonth: lastMonthRevenueVal,
-      growth: Math.round(revenueGrowth * 10) / 10,
+      total:      totalRevenue._sum.amount ?? 0,
+      thisMonth:  monthlyRevenueVal,
+      lastMonth:  lastMonthRevenueVal,
+      growth:     Math.round(revenueGrowth * 10) / 10,
     },
     recentTransactions: recentTransactions.map((t) => ({
-      id: t.id,
-      ref: t.transactionRef,
-      user: t.user.name ?? t.user.email,
-      method: t.paymentMethod,
-      amount: t.amount,
-      status: t.status,
+      id:        t.id,
+      ref:       t.transactionRef,
+      user:      t.user.name ?? t.user.email,
+      method:    t.paymentMethod,
+      amount:    t.amount,
+      status:    t.status,
       createdAt: t.createdAt,
     })),
     userGrowth,
     revenueByMethod: revenueByMethod.map((r) => ({
       method: r.paymentMethod,
-      total: r._sum.amount ?? 0,
-      count: r._count,
+      total:  r._sum.amount ?? 0,
+      count:  r._count,
     })),
   });
 }

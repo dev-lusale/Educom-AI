@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
@@ -90,7 +90,7 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
 
         {/* Logo */}
@@ -99,13 +99,13 @@ function SignInForm() {
             <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
-            <span className="font-bold text-xl text-[#0d0d0d] tracking-tight">Educom</span>
+            <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] mb-1.5">Welcome back</h1>
-          <p className="text-[#6b6b76] text-sm">Sign in to your educator account</p>
+          <h1 className="text-2xl font-bold text-[--text-primary] mb-1.5">Welcome back</h1>
+          <p className="text-[--text-secondary] text-sm">Sign in to your educator account</p>
         </div>
 
-        <div className="bg-white border border-[#e8e8e8] rounded-2xl p-8 shadow-card space-y-5">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-8 shadow-card space-y-5">
 
           {/* Global error banner */}
           {formError && (
@@ -120,11 +120,11 @@ function SignInForm() {
             type="button"
             onClick={handleGoogle}
             disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-[#e8e8e8] rounded-xl py-3 text-sm text-[#0d0d0d] hover:bg-[#f8f8f8] hover:border-[#d4d4d4] active:bg-[#f0f0f0] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            className="w-full flex items-center justify-center gap-3 bg-[--bg-surface] border border-[--border] rounded-xl py-3 text-sm text-[--text-primary] hover:bg-[--bg-canvas] hover:border-[--border-hover] active:bg-[--bg-elevated] transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             {googleLoading ? (
               <>
-                <Loader2 size={18} className="animate-spin text-[#9e9ea7]" />
+                <Loader2 size={18} className="animate-spin text-[--text-muted]" />
                 <span>Connecting to Google…</span>
               </>
             ) : (
@@ -137,19 +137,19 @@ function SignInForm() {
 
           {/* Divider */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-[#f0f0f0]" />
-            <span className="text-[#9e9ea7] text-xs">or sign in with email</span>
-            <div className="flex-1 h-px bg-[#f0f0f0]" />
+            <div className="flex-1 h-px bg-[--bg-elevated]" />
+            <span className="text-[--text-muted] text-xs">or sign in with email</span>
+            <div className="flex-1 h-px bg-[--bg-elevated]" />
           </div>
 
           {/* ── Email / password form ──────────────────────────────────────── */}
           <form onSubmit={handleCredentials} className="space-y-4" noValidate>
             <div>
-              <label htmlFor="email" className="block text-xs font-medium text-[#6b6b76] mb-1.5">
+              <label htmlFor="email" className="block text-xs font-medium text-[--text-secondary] mb-1.5">
                 Email address
               </label>
               <div className="relative">
-                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] pointer-events-none" />
+                <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] pointer-events-none" />
                 <input
                   id="email"
                   type="email"
@@ -165,7 +165,7 @@ function SignInForm() {
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="password" className="block text-xs font-medium text-[#6b6b76]">
+                <label htmlFor="password" className="block text-xs font-medium text-[--text-secondary]">
                   Password
                 </label>
                 <Link
@@ -176,7 +176,7 @@ function SignInForm() {
                 </Link>
               </div>
               <div className="relative">
-                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] pointer-events-none" />
+                <Lock size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] pointer-events-none" />
                 <input
                   id="password"
                   type={showPass ? "text" : "password"}
@@ -191,7 +191,7 @@ function SignInForm() {
                   type="button"
                   onClick={() => setShowPass((v) => !v)}
                   aria-label={showPass ? "Hide password" : "Show password"}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#9e9ea7] hover:text-[#0d0d0d] transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[--text-muted] hover:text-[--text-primary] transition-colors"
                 >
                   {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
@@ -214,7 +214,7 @@ function SignInForm() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-[#6b6b76]">
+          <p className="text-center text-sm text-[--text-secondary]">
             Don&apos;t have an account?{" "}
             <Link
               href={`/auth/signup${callbackUrl !== "/dashboard" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
@@ -234,7 +234,7 @@ export default function SignInPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#f8f8f8] flex items-center justify-center">
+        <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
           <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
         </div>
       }

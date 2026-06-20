@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -55,7 +55,7 @@ export default function AdminOverviewClient() {
   }
 
   if (!stats) {
-    return <p className="text-[#9e9ea7] text-center py-20">Failed to load stats.</p>;
+    return <p className="text-[--text-muted] text-center py-20">Failed to load stats.</p>;
   }
 
   return (
@@ -63,8 +63,8 @@ export default function AdminOverviewClient() {
 
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#0d0d0d] tracking-tight">Dashboard Overview</h1>
-        <p className="text-[#6b6b76] text-sm mt-1">Platform performance at a glance</p>
+        <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight">Dashboard Overview</h1>
+        <p className="text-[--text-secondary] text-sm mt-1">Platform performance at a glance</p>
       </div>
 
       {/* KPI Cards */}
@@ -92,8 +92,8 @@ export default function AdminOverviewClient() {
               <Icon size={18} style={{ color: accent }} />
             </div>
             <div>
-              <p className="text-[#9e9ea7] text-xs">{label}</p>
-              <p className="text-[#0d0d0d] font-bold text-2xl leading-tight">{value}</p>
+              <p className="text-[--text-muted] text-xs">{label}</p>
+              <p className="text-[--text-primary] font-bold text-2xl leading-tight">{value}</p>
             </div>
           </div>
         ))}
@@ -103,11 +103,11 @@ export default function AdminOverviewClient() {
 
         {/* Recent Transactions — 2 cols */}
         <div className="xl:col-span-2 drib-card p-5">
-          <h2 className="text-[#0d0d0d] font-semibold mb-4">Recent Transactions</h2>
+          <h2 className="text-[--text-primary] font-semibold mb-4">Recent Transactions</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[#9e9ea7] text-xs border-b border-[#f0f0f0]">
+                <tr className="text-[--text-muted] text-xs border-b border-[--border]">
                   <th className="text-left pb-3 font-medium">User</th>
                   <th className="text-left pb-3 font-medium">Method</th>
                   <th className="text-left pb-3 font-medium">Amount</th>
@@ -115,27 +115,27 @@ export default function AdminOverviewClient() {
                   <th className="text-left pb-3 font-medium">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f0f0f0]">
+              <tbody className="divide-y divide-[--border]">
                 {stats.recentTransactions.map((t) => {
                   const s = STATUS_STYLES[t.status] ?? { text: "#6b6b76", bg: "#f0f0f0" };
                   return (
-                    <tr key={t.id} className="hover:bg-[#f8f8f8] transition-colors">
-                      <td className="py-3 text-[#0d0d0d] font-medium truncate max-w-[120px]">{t.user}</td>
-                      <td className="py-3 text-[#6b6b76] text-xs">{METHOD_LABELS[t.method] ?? t.method}</td>
-                      <td className="py-3 text-[#0d0d0d] font-semibold">K{t.amount}</td>
+                    <tr key={t.id} className="hover:bg-[--bg-canvas] transition-colors">
+                      <td className="py-3 text-[--text-primary] font-medium truncate max-w-[120px]">{t.user}</td>
+                      <td className="py-3 text-[--text-secondary] text-xs">{METHOD_LABELS[t.method] ?? t.method}</td>
+                      <td className="py-3 text-[--text-primary] font-semibold">K{t.amount}</td>
                       <td className="py-3">
                         <span className="px-2 py-0.5 rounded-full text-xs font-semibold" style={{ color: s.text, backgroundColor: s.bg }}>
                           {t.status}
                         </span>
                       </td>
-                      <td className="py-3 text-[#9e9ea7] text-xs">
+                      <td className="py-3 text-[--text-muted] text-xs">
                         {new Date(t.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short" })}
                       </td>
                     </tr>
                   );
                 })}
                 {stats.recentTransactions.length === 0 && (
-                  <tr><td colSpan={5} className="py-10 text-center text-[#9e9ea7] text-sm">No transactions yet.</td></tr>
+                  <tr><td colSpan={5} className="py-10 text-center text-[--text-muted] text-sm">No transactions yet.</td></tr>
                 )}
               </tbody>
             </table>
@@ -144,7 +144,7 @@ export default function AdminOverviewClient() {
 
         {/* Revenue by Method — 1 col */}
         <div className="drib-card p-5">
-          <h2 className="text-[#0d0d0d] font-semibold mb-4">Revenue by Method</h2>
+          <h2 className="text-[--text-primary] font-semibold mb-4">Revenue by Method</h2>
           {stats.revenueByMethod.length > 0 ? (
             <div className="space-y-4">
               {stats.revenueByMethod.map((r) => {
@@ -154,19 +154,19 @@ export default function AdminOverviewClient() {
                 return (
                   <div key={r.method}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[#6b6b76] text-xs">{METHOD_LABELS[r.method] ?? r.method}</span>
-                      <span className="text-[#0d0d0d] text-xs font-semibold">K{r.total.toLocaleString()}</span>
+                      <span className="text-[--text-secondary] text-xs">{METHOD_LABELS[r.method] ?? r.method}</span>
+                      <span className="text-[--text-primary] text-xs font-semibold">K{r.total.toLocaleString()}</span>
                     </div>
-                    <div className="h-1.5 bg-[#f0f0f0] rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
                       <div className="h-full bg-[#ea4c89] rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
                     </div>
-                    <p className="text-[#9e9ea7] text-[10px] mt-0.5">{r.count} transactions · {pct}%</p>
+                    <p className="text-[--text-muted] text-[10px] mt-0.5">{r.count} transactions · {pct}%</p>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <p className="text-[#9e9ea7] text-sm text-center py-8">No revenue data yet.</p>
+            <p className="text-[--text-muted] text-sm text-center py-8">No revenue data yet.</p>
           )}
         </div>
       </div>
@@ -193,9 +193,9 @@ function KpiCard({ icon: Icon, label, value, sub, accent, accentBg, growth }: {
           </div>
         )}
       </div>
-      <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-      <p className="text-[#0d0d0d] font-bold text-2xl leading-tight">{value}</p>
-      <p className="text-[#9e9ea7] text-xs mt-1">{sub}</p>
+      <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+      <p className="text-[--text-primary] font-bold text-2xl leading-tight">{value}</p>
+      <p className="text-[--text-muted] text-xs mt-1">{sub}</p>
     </div>
   );
 }

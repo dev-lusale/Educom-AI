@@ -7,12 +7,11 @@ AI-powered backend for the Educom Zambian education platform.
 | Component | Technology |
 |-----------|-----------|
 | Web Framework | FastAPI |
-| AI Model Engine | Ollama (local, offline) |
-| AI Models | Phi-3 or Mistral |
-| Prompt Management | LangChain |
+| Primary AI Provider | EduCom AI via OpenRouter (qwen/qwen3-8b, deepseek-chat) |
+| Local AI Fallback | Ollama (phi3 / mistral) |
 | Vector Database | ChromaDB |
-| Embeddings | Sentence Transformers (all-MiniLM-L6-v2) |
-| RAG Pipeline | Custom retriever + ChromaDB |
+| Embeddings | ChromaDB built-in ONNXMiniLM_L6_V2 |
+| RAG Pipeline | Custom retriever + ChromaDB semantic search |
 | Document Processing | PyPDF + python-docx |
 
 ---
@@ -26,34 +25,33 @@ cd ai-backend
 pip install -r requirements.txt
 ```
 
-### 2. Install and start Ollama
-
-Download from https://ollama.com then:
-
-```bash
-# Pull the AI model (choose one)
-ollama pull phi3
-# or
-ollama pull mistral
-
-# Start Ollama server
-ollama serve
-```
-
-### 3. Configure environment
+### 2. Configure environment
 
 ```bash
 cp .env.example .env
-# Edit .env with your settings
+# Edit .env — set OPENROUTER_API_KEY (get one free at https://openrouter.ai/keys)
 ```
 
-### 4. Start the backend
+### 3. Start the backend
 
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 5. Connect the frontend
+On first start, the backend automatically ingests all PDFs in `curriculum_docs/` into ChromaDB.
+Poll `GET /api/curriculum/ingest-status` to watch progress.
+
+### 4. (Optional) Local Ollama fallback
+
+If `OPENROUTER_API_KEY` is not set, the backend falls back to a local Ollama instance:
+
+```bash
+# Install from https://ollama.com, then:
+ollama pull phi3
+ollama serve
+```
+
+### 5. Connect the Next.js frontend
 
 Add to your Educom `.env.local`:
 
@@ -197,9 +195,10 @@ curl -X POST http://localhost:8000/api/curriculum/ingest-directory
 
 The system is designed to always return a valid response:
 
-1. **Ollama available + curriculum loaded** → Full AI generation with RAG context
-2. **Ollama available + no curriculum** → AI generation without RAG context
-3. **Ollama unavailable** → Template-based generation (same quality as original frontend builder)
+1. **OpenRouter available + curriculum loaded** → Full AI generation with RAG context (exam papers + syllabi)
+2. **OpenRouter available + no curriculum** → AI generation without RAG context
+3. **OpenRouter down, Ollama available** → Local AI generation with RAG context
+4. **All AI unavailable** → Template-based generation (same quality as original frontend builder)
 
 This means the frontend never breaks, even if the AI backend is down.
 

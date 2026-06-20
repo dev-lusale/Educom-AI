@@ -188,7 +188,6 @@ async def lifespan(app: FastAPI):
 
             needs_ingest = (
                 current_hash != previous_hash
-                or already_indexed < len(all_doc_files) * 3   # safety net
             )
 
             if not needs_ingest:

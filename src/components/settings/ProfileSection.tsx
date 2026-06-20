@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { User, Pencil } from "lucide-react";
@@ -47,7 +47,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
             <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
               <User size={16} className="text-[#ea4c89]" />
             </div>
-            <h2 className="text-[#0d0d0d] font-semibold">Profile</h2>
+            <h2 className="text-[--text-primary] font-semibold">Profile</h2>
           </div>
 
           {/* Only Google (OAuth) accounts see the Edit button */}
@@ -67,10 +67,10 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
           <div className="mb-4 flex items-start gap-3 bg-[#fffbf0] border border-[#f6d860] rounded-xl px-4 py-3">
             <span className="text-base leading-none mt-0.5">✏️</span>
             <div className="flex-1 min-w-0">
-              <p className="text-[#0d0d0d] text-xs font-medium">
+              <p className="text-[--text-primary] text-xs font-medium">
                 Complete your profile
               </p>
-              <p className="text-[#9e9ea7] text-xs mt-0.5">
+              <p className="text-[--text-muted] text-xs mt-0.5">
                 Add your{" "}
                 {missingFields.join(", ")}{" "}
                 to personalise your experience.
@@ -88,8 +88,8 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {fields.map(({ label, value }) => (
             <div key={label}>
-              <p className="text-[#9e9ea7] text-xs mb-1">{label}</p>
-              <p className="text-[#0d0d0d] font-medium text-sm">{value}</p>
+              <p className="text-[--text-muted] text-xs mb-1">{label}</p>
+              <p className="text-[--text-primary] font-medium text-sm">{value}</p>
             </div>
           ))}
         </div>

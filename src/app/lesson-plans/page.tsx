@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+﻿import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -31,10 +31,10 @@ export default async function LessonPlansPage() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0d0d0d] tracking-tight mb-1">
+          <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight mb-1">
             My Lesson Plans
           </h1>
-          <p className="text-[#6b6b76] text-sm">
+          <p className="text-[--text-secondary] text-sm">
             {serialised.length === 0
               ? "No plans yet — create your first one."
               : `${serialised.length} plan${serialised.length !== 1 ? "s" : ""} in your library`}

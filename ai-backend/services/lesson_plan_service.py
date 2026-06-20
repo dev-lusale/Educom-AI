@@ -1,7 +1,7 @@
 """
 Educom AI Backend — Lesson Plan Service
 Orchestrates the full RAG + AI generation pipeline for lesson plans.
-Primary AI: Google Gemini. Falls back to template builder if AI is unavailable.
+Primary AI: OpenRouter. Falls back to template builder if AI is unavailable.
 """
 
 import logging
@@ -59,11 +59,11 @@ class LessonPlanService:
         self.retriever = get_retriever()
 
     async def _get_ai(self):
-        """Resolve AI provider: Gemini (primary) or Ollama (fallback)."""
+        """Resolve AI provider: OpenRouter (primary) or Ollama (fallback)."""
         return await get_ai_service()
 
     async def generate_lesson_plan(self, request: LessonPlanRequest) -> LessonPlanData:
-        """Generate a complete lesson plan using RAG + Google Gemini."""
+        """Generate a complete lesson plan using RAG + EduCom AI (OpenRouter)."""
         grade = request.grade
         subject = request.subject
         topic = request.topic
@@ -91,7 +91,7 @@ class LessonPlanService:
             ),
         )
 
-        # Step 2: Resolve AI provider (Gemini → Ollama fallback)
+        # Step 2: Resolve AI provider (OpenRouter → Ollama fallback)
         ai = await self._get_ai()
         ai_available = await ai.is_available()
 
@@ -110,10 +110,10 @@ class LessonPlanService:
             )
 
         # Step 3: Build prompt with RAG context
-        # Gemini has a much larger context window — allow more RAG content
-        curriculum_ctx = rag_result.get("curriculum_context", "")[:1200]
-        example_ctx    = rag_result.get("example_context", "")[:400]
-        user_ctx       = rag_result.get("user_context", "")[:400]
+        # OpenRouter models have large context windows — use generous RAG allowances
+        curriculum_ctx = rag_result.get("curriculum_context", "")[:3000]
+        example_ctx    = rag_result.get("example_context", "")[:800]
+        user_ctx       = rag_result.get("user_context", "")[:600]
 
         prompt = build_lesson_plan_prompt(
             grade=grade,
@@ -264,7 +264,7 @@ class LessonPlanService:
         """Generate a term scheme of work."""
         ai = await self._get_ai()
         if not await ai.is_available():
-            raise RuntimeError("AI model is not available. Check your GEMINI_API_KEY.")
+            raise RuntimeError("AI model is not available. Check your OPENROUTER_API_KEY.")
 
         prompt = build_scheme_of_work_prompt(
             grade=request.grade,
@@ -286,7 +286,7 @@ class LessonPlanService:
         """Generate an assessment with questions and marking guide."""
         ai = await self._get_ai()
         if not await ai.is_available():
-            raise RuntimeError("AI model is not available. Check your GEMINI_API_KEY.")
+            raise RuntimeError("AI model is not available. Check your OPENROUTER_API_KEY.")
 
         prompt = build_assessment_prompt(
             grade=request.grade,

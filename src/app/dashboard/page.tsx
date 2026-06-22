@@ -163,7 +163,7 @@ export default async function DashboardPage() {
         <StatCard
           icon={Users}
           label="Students Managed"
-          value={studentCount || "�"}
+          value={studentCount || ""}
           accent="#007531"
           accentBg="#e6f4ec"
         />
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
         <StatCard
           icon={BarChart2}
           label="Completion Rate"
-          value={planCount > 0 ? `${completionRate}%` : "�"}
+          value={planCount > 0 ? `${completionRate}%` : ""}
           accent="#8b5cf6"
           accentBg="#f5f3ff"
           isText

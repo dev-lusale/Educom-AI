@@ -184,7 +184,7 @@ function SignInForm() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  placeholder="��������"
+                  placeholder="......"
                   className="drib-input pl-10 pr-10"
                 />
                 <button
@@ -206,7 +206,7 @@ function SignInForm() {
               {loading ? (
                 <>
                   <Loader2 size={17} className="animate-spin" />
-                  Signing in�
+                  Signing in
                 </>
               ) : (
                 "Sign In"

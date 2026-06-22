@@ -49,12 +49,12 @@ export default function NotificationBell({ variant = "icon" }: NotificationBellP
   const sendWelcomeNotification = useCallback(() => {
     if (typeof window === "undefined" || Notification.permission !== "granted") return;
     try {
-      new Notification("EduCom AI — Notifications On", {
+      new Notification("EduCom AI ï¿½ Notifications On", {
         body: "You'll be notified when your lesson plans and assessments are ready.",
         icon: "/favicon.ico",
       });
     } catch {
-      // silent — some browsers (e.g. Chrome on Android) need a service worker
+      // silent ï¿½ some browsers (e.g. Chrome on Android) need a service worker
     }
   }, []);
 
@@ -94,7 +94,7 @@ export default function NotificationBell({ variant = "icon" }: NotificationBellP
       }
     }
 
-    // Granted — activate
+    // Granted ï¿½ activate
     setEnabled(true);
     try { localStorage.setItem("educom_notifications", "true"); } catch {}
     setPulse(true);
@@ -123,7 +123,7 @@ export default function NotificationBell({ variant = "icon" }: NotificationBellP
           disabled={isNoSupport}
           title={
             isNoSupport ? "Not supported in this browser"
-            : isBlocked  ? "Blocked — open site settings to allow"
+            : isBlocked  ? "Blocked ï¿½ open site settings to allow"
             : isOn       ? "Click to turn off notifications"
             :              "Click to turn on notifications"
           }
@@ -172,8 +172,8 @@ export default function NotificationBell({ variant = "icon" }: NotificationBellP
         aria-label={isOn ? "Turn off notifications" : "Turn on notifications"}
         title={
           isNoSupport ? "Not supported"
-          : isBlocked  ? "Blocked — open browser settings"
-          : isOn       ? "Notifications on — click to turn off"
+          : isBlocked  ? "Blocked ï¿½ open browser settings"
+          : isOn       ? "Notifications on ï¿½ click to turn off"
           :              "Click to enable notifications"
         }
         className={cn(

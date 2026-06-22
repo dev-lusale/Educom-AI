@@ -60,7 +60,7 @@ export default async function DashboardPage() {
   ).size;
 
   const plansWithEnrollment = recentPlansForStats.filter(
-    (p) => p.enrollment && p.enrollment !== "—" && p.enrollment.trim() !== ""
+    (p) => p.enrollment && p.enrollment !== "ï¿½" && p.enrollment.trim() !== ""
   ).length;
   const completionRate =
     planCount > 0
@@ -163,7 +163,7 @@ export default async function DashboardPage() {
         <StatCard
           icon={Users}
           label="Students Managed"
-          value={studentCount || "—"}
+          value={studentCount || "ï¿½"}
           accent="#007531"
           accentBg="#e6f4ec"
         />
@@ -177,7 +177,7 @@ export default async function DashboardPage() {
         <StatCard
           icon={BarChart2}
           label="Completion Rate"
-          value={planCount > 0 ? `${completionRate}%` : "—"}
+          value={planCount > 0 ? `${completionRate}%` : "ï¿½"}
           accent="#8b5cf6"
           accentBg="#f5f3ff"
           isText
@@ -207,7 +207,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <MetaField icon={Calendar} label="Start Date" value={subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" }) : "—"} />
+            <MetaField icon={Calendar} label="Start Date" value={subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" }) : "ï¿½"} />
             <MetaField icon={Calendar} label="Expiry Date" value={new Date(subInfo.endDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })} />
             <div>
               <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
@@ -215,7 +215,7 @@ export default async function DashboardPage() {
                 {subInfo.daysRemaining ?? "8"}
               </p>
             </div>
-            <MetaField icon={CreditCard} label="Payment" value={subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—"} />
+            <MetaField icon={CreditCard} label="Payment" value={subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "ï¿½"} />
           </div>
           {subInfo.receiptNumber && (
             <div className="mt-3 pt-3 border-t border-[--border]">
@@ -261,7 +261,7 @@ export default async function DashboardPage() {
       {/* -- Main two-column layout -- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* Recent Plans — 2 cols */}
+        {/* Recent Plans ï¿½ 2 cols */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[--text-primary] font-semibold text-base">Recent Lesson Plans</h2>
@@ -290,7 +290,7 @@ export default async function DashboardPage() {
               </span>
             </div>
             <p className="text-white/55 text-xs leading-relaxed">
-              Hi {firstName}! Ask anything — lesson ideas, CBC guidance, teaching strategies.
+              Hi {firstName}! Ask anything ï¿½ lesson ideas, CBC guidance, teaching strategies.
             </p>
             <Link
               href="/assistant"

@@ -100,7 +100,7 @@ function SignUpForm() {
             {googleLoading ? (
               <>
                 <Loader2 size={18} className="animate-spin text-[--text-muted]" />
-                <span>Connecting to Google…</span>
+                <span>Connecting to Googleï¿½</span>
               </>
             ) : (
               <>

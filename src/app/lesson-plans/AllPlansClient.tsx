@@ -135,7 +135,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           lessonPlanId: plan.id,
-          title: `${plan.grade} ${plan.subject} – ${plan.topic}`,
+          title: `${plan.grade} ${plan.subject} ï¿½ ${plan.topic}`,
           grade: plan.grade,
           subject: plan.subject,
           topic: plan.topic,
@@ -184,7 +184,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by topic, subject or grade…"
+            placeholder="Search by topic, subject or gradeï¿½"
             className="drib-input pl-9 pr-9"
           />
           {search && (
@@ -298,9 +298,9 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                 <div className="flex-1 min-w-0">
                   <p className="text-[--text-primary] font-semibold text-sm truncate">{plan.topic}</p>
                   <p className="text-[--text-muted] text-xs mt-0.5">
-                    {plan.grade} · {plan.subject}
+                    {plan.grade} ï¿½ {plan.subject}
                     {plan.duration && (
-                      <span className="ml-2 text-[#c4c4c8]">· {plan.duration} min</span>
+                      <span className="ml-2 text-[#c4c4c8]">ï¿½ {plan.duration} min</span>
                     )}
                   </p>
                 </div>

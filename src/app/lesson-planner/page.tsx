@@ -31,7 +31,7 @@ export default function LessonPlannerPage() {
 
   if (status === "unauthenticated") {
     router.replace("/auth/signin?callbackUrl=/lesson-planner");
-    // Return spinner while redirect fires — prevents flash of content
+    // Return spinner while redirect fires ï¿½ prevents flash of content
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 size={32} className="animate-spin text-[#00A344]" />

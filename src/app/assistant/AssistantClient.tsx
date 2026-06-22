@@ -88,17 +88,17 @@ function renderContent(text: string) {
     }
 
     // Bullet list
-    if (line.match(/^[•\-\*]\s/)) {
+    if (line.match(/^[ï¿½\-\*]\s/)) {
       const items: string[] = [];
-      while (i < lines.length && lines[i].match(/^[•\-\*]\s/)) {
-        items.push(lines[i].replace(/^[•\-\*]\s/, ""));
+      while (i < lines.length && lines[i].match(/^[ï¿½\-\*]\s/)) {
+        items.push(lines[i].replace(/^[ï¿½\-\*]\s/, ""));
         i++;
       }
       elements.push(
         <ul key={i} className="list-none space-y-1 my-2">
           {items.map((item, j) => (
             <li key={j} className="flex items-start gap-2">
-              <span className="text-zambia-gold mt-1 shrink-0">•</span>
+              <span className="text-zambia-gold mt-1 shrink-0">ï¿½</span>
               <span dangerouslySetInnerHTML={{ __html: inlineFormat(item) }} />
             </li>
           ))}
@@ -403,7 +403,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="Ask me anything about teaching, curriculum, or lesson planning…"
+            placeholder="Ask me anything about teaching, curriculum, or lesson planningï¿½"
             rows={1}
             disabled={loading}
             className="flex-1 bg-transparent text-[--text-primary] text-sm placeholder:text-[--text-muted] resize-none outline-none leading-relaxed disabled:opacity-50 min-h-[1.5rem]"
@@ -423,7 +423,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
           </button>
         </div>
         <p className="text-[--text-muted] text-[10px] text-center mt-2">
-          Press Enter to send · Shift+Enter for new line · AI responses may not always be accurate
+          Press Enter to send ï¿½ Shift+Enter for new line ï¿½ AI responses may not always be accurate
         </p>
       </div>
     </div>

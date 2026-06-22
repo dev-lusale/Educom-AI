@@ -152,7 +152,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
       if (data.chunksCreated > 0) {
         toast.success(`Learned! ${data.chunksCreated} knowledge chunks indexed from "${selectedFile.name}".`);
       } else {
-        toast(`"${selectedFile.name}" saved — AI indexing will complete shortly.`, { icon: "?" });
+        toast(`"${selectedFile.name}" saved ï¿½ AI indexing will complete shortly.`, { icon: "?" });
       }
 
       resetForm();
@@ -201,7 +201,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         <div>
           <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">My Resources</h1>
           <p className="text-[--text-secondary] text-sm">
-            Upload teaching materials — the AI learns from them and uses them when you generate lesson plans and assessments.
+            Upload teaching materials ï¿½ the AI learns from them and uses them when you generate lesson plans and assessments.
           </p>
         </div>
         <button
@@ -317,7 +317,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h2 className="text-[--text-primary] font-semibold">Upload Resource</h2>
-                <p className="text-[--text-muted] text-xs mt-0.5">PDF, DOCX, or TXT — max {MAX_FILE_MB} MB</p>
+                <p className="text-[--text-muted] text-xs mt-0.5">PDF, DOCX, or TXT ï¿½ max {MAX_FILE_MB} MB</p>
               </div>
               <button onClick={resetForm} className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all">
                 <X size={16} />
@@ -338,7 +338,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
               >
                 <Upload size={26} className="text-[--text-muted] mx-auto mb-3" />
                 <p className="text-[--text-primary] font-semibold text-sm mb-1">Drop your file here or click to browse</p>
-                <p className="text-[--text-muted] text-xs">PDF, DOCX, TXT — up to {MAX_FILE_MB} MB</p>
+                <p className="text-[--text-muted] text-xs">PDF, DOCX, TXT ï¿½ up to {MAX_FILE_MB} MB</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -384,7 +384,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="e.g. Form 3 Chemistry notes — Term 2"
+                  placeholder="e.g. Form 3 Chemistry notes ï¿½ Term 2"
                   className={inp}
                   maxLength={200}
                 />
@@ -409,7 +409,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
                 className="flex-1 drib-btn-primary flex items-center justify-center gap-2 text-sm py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {uploading ? (
-                  <><Loader2 size={14} className="animate-spin" /> Learning…</>
+                  <><Loader2 size={14} className="animate-spin" /> Learningï¿½</>
                 ) : (
                   <><Brain size={14} /> Upload &amp; Teach AI</>
                 )}
@@ -461,7 +461,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
               onClick={() => setShowUploadForm(true)}
               className="drib-btn-primary inline-flex items-center gap-2 text-sm"
             >
-              <Brain size={14} /> Teach the AI — Upload Now
+              <Brain size={14} /> Teach the AI ï¿½ Upload Now
             </button>
             <Link href="/lesson-planner" className="drib-btn-outline inline-flex items-center gap-2 text-sm">
               <Sparkles size={14} /> Generate a Lesson Plan

@@ -24,7 +24,7 @@ function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // Safe callbackUrl — only allow relative paths to prevent open redirects
+  // Safe callbackUrl ï¿½ only allow relative paths to prevent open redirects
   const rawCallback = params.get("callbackUrl") ?? "/dashboard";
   const callbackUrl = rawCallback.startsWith("/") ? rawCallback : "/dashboard";
 
@@ -54,7 +54,7 @@ function SignInForm() {
       setFormError("Google sign-in failed. Please try again.");
       setGoogleLoading(false);
     }
-    // Note: do NOT reset googleLoading here — the page redirects away.
+    // Note: do NOT reset googleLoading here ï¿½ the page redirects away.
     // If we reset it, there's a flash before the redirect completes.
   }
 
@@ -125,7 +125,7 @@ function SignInForm() {
             {googleLoading ? (
               <>
                 <Loader2 size={18} className="animate-spin text-[--text-muted]" />
-                <span>Connecting to Google…</span>
+                <span>Connecting to Googleï¿½</span>
               </>
             ) : (
               <>
@@ -184,7 +184,7 @@ function SignInForm() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  placeholder="••••••••"
+                  placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                   className="drib-input pl-10 pr-10"
                 />
                 <button
@@ -206,7 +206,7 @@ function SignInForm() {
               {loading ? (
                 <>
                   <Loader2 size={17} className="animate-spin" />
-                  Signing in…
+                  Signing inï¿½
                 </>
               ) : (
                 "Sign In"

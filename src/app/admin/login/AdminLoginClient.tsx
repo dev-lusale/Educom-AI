@@ -74,7 +74,7 @@ export default function AdminLoginClient() {
                 <input
                   type="password" value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
                   className="drib-input pl-10"
                   required autoComplete="current-password"
                 />
@@ -87,7 +87,7 @@ export default function AdminLoginClient() {
               className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3 mt-2"
             >
               {loading
-                ? <><Loader2 size={16} className="animate-spin" /> Signing in…</>
+                ? <><Loader2 size={16} className="animate-spin" /> Signing inï¿½</>
                 : <><Shield size={16} /> Sign In to Admin Panel</>
               }
             </button>

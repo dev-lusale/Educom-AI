@@ -57,10 +57,10 @@ export default function Footer() {
 
         <div className="border-t border-[--border] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[--text-muted] text-xs">
-            © {new Date().getFullYear()} Educom. Built for Zambian educators.
+            ï¿½ {new Date().getFullYear()} Educom. Built for Zambian educators.
           </p>
           <p className="text-[--text-muted] text-xs">
-            Aligned with TCZ · CBC · ECZ · 2022–2026 Strategic Plan
+            Aligned with TCZ ï¿½ CBC ï¿½ ECZ ï¿½ 2022ï¿½2026 Strategic Plan
           </p>
         </div>
       </div>

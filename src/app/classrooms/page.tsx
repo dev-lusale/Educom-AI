@@ -77,7 +77,7 @@ export default async function ClassroomsPage() {
 
   const isPremium = subInfo.plan === "PREMIUM";
 
-  // Migrate old Grade 8–12 labels to the current CBC Form system
+  // Migrate old Grade 8ï¿½12 labels to the current CBC Form system
   const GRADE_MIGRATION: Record<string, string> = {
     "Grade 8":  "Form 1",
     "Grade 9":  "Form 2",

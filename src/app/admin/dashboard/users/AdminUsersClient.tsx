@@ -122,7 +122,7 @@ export default function AdminUsersClient() {
           <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, email, school…"
+            placeholder="Search by name, email, schoolï¿½"
             className="drib-input pl-10"
           />
         </form>
@@ -168,7 +168,7 @@ export default function AdminUsersClient() {
                 {users.map((user) => (
                   <tr key={user.id} className="hover:bg-[--bg-canvas] transition-colors">
                     <td className="px-5 py-3.5">
-                      <p className="text-[--text-primary] font-semibold text-sm">{user.name ?? "—"}</p>
+                      <p className="text-[--text-primary] font-semibold text-sm">{user.name ?? "ï¿½"}</p>
                       <p className="text-[--text-muted] text-xs">{user.email}</p>
                       {user.school && <p className="text-[--text-muted] text-[10px]">{user.school}</p>}
                     </td>
@@ -250,7 +250,7 @@ export default function AdminUsersClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} users</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} ï¿½ {total} users</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">
@@ -285,10 +285,10 @@ export default function AdminUsersClient() {
                 {/* Profile grid */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: "Name", value: selectedUser.name ?? "—" },
+                    { label: "Name", value: selectedUser.name ?? "ï¿½" },
                     { label: "Email", value: selectedUser.email },
-                    { label: "School", value: selectedUser.school ?? "—" },
-                    { label: "Province", value: selectedUser.province ?? "—" },
+                    { label: "School", value: selectedUser.school ?? "ï¿½" },
+                    { label: "Province", value: selectedUser.province ?? "ï¿½" },
                   ].map(({ label, value }) => (
                     <div key={label}>
                       <p className="text-[--text-muted] text-xs mb-1">{label}</p>

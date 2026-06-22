@@ -24,7 +24,7 @@ const METHOD_LABELS: Record<string, string> = {
 
 const CHART_COLORS = ["#00A344", "#007531", "#3b82f6", "#8b5cf6"];
 
-// Tooltip style — reads CSS variables at runtime so it works in both light and dark mode
+// Tooltip style ï¿½ reads CSS variables at runtime so it works in both light and dark mode
 const getTooltipStyle = () => ({
   backgroundColor: "var(--bg-surface)",
   border: "1px solid var(--border)",

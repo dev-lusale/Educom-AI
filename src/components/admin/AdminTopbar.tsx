@@ -16,7 +16,7 @@ export default function AdminTopbar({ adminName }: Props) {
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Theme toggle — light/dark/system */}
+        {/* Theme toggle ï¿½ light/dark/system */}
         <ThemeToggle variant="icon" />
 
         {/* Bell */}

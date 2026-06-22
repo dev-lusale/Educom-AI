@@ -101,7 +101,7 @@ export default function AdminOverviewClient() {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-        {/* Recent Transactions — 2 cols */}
+        {/* Recent Transactions ï¿½ 2 cols */}
         <div className="xl:col-span-2 drib-card p-5">
           <h2 className="text-[--text-primary] font-semibold mb-4">Recent Transactions</h2>
           <div className="overflow-x-auto">
@@ -142,7 +142,7 @@ export default function AdminOverviewClient() {
           </div>
         </div>
 
-        {/* Revenue by Method — 1 col */}
+        {/* Revenue by Method ï¿½ 1 col */}
         <div className="drib-card p-5">
           <h2 className="text-[--text-primary] font-semibold mb-4">Revenue by Method</h2>
           {stats.revenueByMethod.length > 0 ? (
@@ -160,7 +160,7 @@ export default function AdminOverviewClient() {
                     <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
                       <div className="h-full bg-[#00A344] rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
                     </div>
-                    <p className="text-[--text-muted] text-[10px] mt-0.5">{r.count} transactions · {pct}%</p>
+                    <p className="text-[--text-muted] text-[10px] mt-0.5">{r.count} transactions ï¿½ {pct}%</p>
                   </div>
                 );
               })}

@@ -80,7 +80,7 @@ export default function AdminLogsClient() {
                         const parsed = JSON.parse(log.details);
                         return (
                           <p className="text-[--text-muted] text-xs mt-0.5">
-                            {Object.entries(parsed).map(([k, v]) => `${k}: ${v}`).join(" · ")}
+                            {Object.entries(parsed).map(([k, v]) => `${k}: ${v}`).join(" ï¿½ ")}
                           </p>
                         );
                       } catch {
@@ -109,7 +109,7 @@ export default function AdminLogsClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} logs</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} ï¿½ {total} logs</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">

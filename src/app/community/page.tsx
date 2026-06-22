@@ -8,7 +8,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CommunityPage() {
-  // -- Auth gate — must be signed in to view community ----------------------
+  // -- Auth gate ï¿½ must be signed in to view community ----------------------
   const session = await auth().catch(() => null);
   if (!session?.user) {
     redirect("/auth/signin?callbackUrl=/community");
@@ -17,7 +17,7 @@ export default async function CommunityPage() {
 
   const isPremium = session.user?.plan === "PREMIUM";
 
-  // Wrap all DB calls — if DB is unavailable, render with zeros
+  // Wrap all DB calls ï¿½ if DB is unavailable, render with zeros
   let totalShared = 0, totalTeachers = 0, totalLikes = 0;
   let topSubjects: { subject: string; _count: { subject: number } }[] = [];
 
@@ -35,7 +35,7 @@ export default async function CommunityPage() {
       }),
     ]);
   } catch {
-    // DB unavailable — page still renders with empty stats
+    // DB unavailable ï¿½ page still renders with empty stats
   }
 
   return (

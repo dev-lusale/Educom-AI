@@ -147,7 +147,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               onChange={handleChange}
               className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] focus:outline-none focus:ring-2 focus:ring-[#00A344]/30 focus:border-[#00A344] transition bg-[--bg-surface] appearance-none"
             >
-              <option value="">Select province…</option>
+              <option value="">Select provinceï¿½</option>
               {ZAMBIA_PROVINCES.map((p) => (
                 <option key={p} value={p}>
                   {p}
@@ -184,7 +184,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
                 </>
               ) : isPending ? (
                 <>
-                  <Loader2 size={14} className="animate-spin" /> Saving…
+                  <Loader2 size={14} className="animate-spin" /> Savingï¿½
                 </>
               ) : (
                 "Save Changes"

@@ -14,7 +14,7 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[--bg-surface] border-b border-[--border]">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo — goes to /dashboard if logged in, / if not */}
+        {/* Logo ï¿½ goes to /dashboard if logged in, / if not */}
         <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-2.5 group">
           <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center">
             <GraduationCap size={18} className="text-white" />

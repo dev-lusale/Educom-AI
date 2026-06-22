@@ -65,7 +65,7 @@ export default async function AnalyticsPage() {
     "Form 5", "Form 6",
   ];
 
-  // Migrate old Grade 8–12 labels to the current CBC Form system
+  // Migrate old Grade 8ï¿½12 labels to the current CBC Form system
   const GRADE_MIGRATION: Record<string, string> = {
     "Grade 8":  "Form 1",
     "Grade 9":  "Form 2",
@@ -158,7 +158,7 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 drib-card p-5">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[--text-primary] font-semibold">Activity — Last 7 Days</h2>
+            <h2 className="text-[--text-primary] font-semibold">Activity ï¿½ Last 7 Days</h2>
             <span className="text-[--text-muted] text-xs">Plans per day</span>
           </div>
           <div className="flex items-end gap-2 h-36">
@@ -269,7 +269,7 @@ export default async function AnalyticsPage() {
                   </div>
                   <div className="min-w-0">
                     <p className="text-[--text-primary] text-sm font-medium truncate">{plan.topic}</p>
-                    <p className="text-[--text-muted] text-xs">{plan.subject} · {plan.grade}</p>
+                    <p className="text-[--text-muted] text-xs">{plan.subject} ï¿½ {plan.grade}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 text-[--text-muted] text-xs shrink-0 ml-4">

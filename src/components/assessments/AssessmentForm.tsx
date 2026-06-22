@@ -8,8 +8,8 @@ import { Loader2, Plus, X } from "lucide-react";
 
 const ALL_GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1ï¿½4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5ï¿½7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
@@ -18,8 +18,8 @@ const ALL_GRADE_GROUPS = [
 // Exam / marking scheme: all grades from ECE through Sixth Form
 const SECONDARY_GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1ï¿½4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5ï¿½7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
@@ -376,7 +376,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
             <textarea
               value={learningObjectives}
               onChange={(e) => setLearningObjectives(e.target.value)}
-              placeholder="e.g. Learners should be able to explain the process of photosynthesis and identify the reactants and products…"
+              placeholder="e.g. Learners should be able to explain the process of photosynthesis and identify the reactants and productsï¿½"
               rows={3}
               className={cn(inp, "resize-none")}
             />
@@ -506,10 +506,10 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
         {loading ? (
           <>
             <Loader2 size={16} className="animate-spin" />
-            Generating {assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam" : "Marking Scheme"}…
+            Generating {assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam" : "Marking Scheme"}ï¿½
           </>
         ) : !isPremium ? (
-          "Premium Required — Upgrade to Generate"
+          "Premium Required ï¿½ Upgrade to Generate"
         ) : (
           `Generate ${assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam Paper" : "Marking Scheme"}`
         )}

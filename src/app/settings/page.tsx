@@ -117,9 +117,9 @@ export default async function SettingsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: Calendar, label: "Start Date", value: subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "—" },
+                  { icon: Calendar, label: "Start Date", value: subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "ï¿½" },
                   { icon: Calendar, label: "Expiry Date", value: subInfo.endDate ? new Date(subInfo.endDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "No expiry" },
-                  { icon: CreditCard, label: "Payment Method", value: subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—" },
+                  { icon: CreditCard, label: "Payment Method", value: subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "ï¿½" },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label}>
                     <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Icon size={10} /> {label}</p>

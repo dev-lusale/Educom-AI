@@ -18,7 +18,7 @@ interface ProfileSectionProps {
 export default function ProfileSection({ user }: ProfileSectionProps) {
   const [showModal, setShowModal] = useState(false);
 
-  // Fields that are still blank — used to decide whether to nudge the user
+  // Fields that are still blank ï¿½ used to decide whether to nudge the user
   const missingFields = [
     !user.name && "Full Name",
     !user.school && "School",
@@ -26,10 +26,10 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
   ].filter(Boolean) as string[];
 
   const fields = [
-    { label: "Full Name", value: user.name ?? "—" },
+    { label: "Full Name", value: user.name ?? "ï¿½" },
     { label: "Email", value: user.email },
-    { label: "School", value: user.school ?? "—" },
-    { label: "Province", value: user.province ?? "—" },
+    { label: "School", value: user.school ?? "ï¿½" },
+    { label: "Province", value: user.province ?? "ï¿½" },
     {
       label: "Member Since",
       value: new Date(user.createdAt).toLocaleDateString("en-ZM", {

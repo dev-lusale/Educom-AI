@@ -33,8 +33,8 @@ const GRADES = [
 // Labels for optgroups in the select
 const GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1ï¿½4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5ï¿½7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
@@ -355,7 +355,7 @@ export default function LessonPlanForm({
         {loading ? (
           <>
             <Loader2 size={16} className="animate-spin" />
-            Generating lesson plan…
+            Generating lesson planï¿½
           </>
         ) : (
           "Generate Lesson Plan"

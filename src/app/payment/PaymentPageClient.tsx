@@ -149,10 +149,10 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           </h1>
           <p className="text-[--text-secondary] text-sm">
             {isRenewal && daysRemaining !== null && daysRemaining !== undefined && daysRemaining > 0
-              ? `Hello ${userName} — your subscription expires in ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""}. Renew to keep full access.`
+              ? `Hello ${userName} ï¿½ your subscription expires in ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""}. Renew to keep full access.`
               : isRenewal
-              ? `Hello ${userName} — your subscription has expired. Renew to restore premium access.`
-              : `Hello ${userName} — unlock unlimited lesson plans, community sharing, and more.`}
+              ? `Hello ${userName} ï¿½ your subscription has expired. Renew to restore premium access.`
+              : `Hello ${userName} ï¿½ unlock unlimited lesson plans, community sharing, and more.`}
           </p>
         </div>
 
@@ -250,7 +250,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               </div>
               <div>
                 <p className="text-[--text-primary] font-semibold text-sm">{selectedMethodData.label}</p>
-                <p className="text-[--text-muted] text-xs">K150 ZMW · 30-day Premium access</p>
+                <p className="text-[--text-muted] text-xs">K150 ZMW ï¿½ 30-day Premium access</p>
               </div>
             </div>
 
@@ -282,7 +282,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                 </>
               )}
               <button type="submit" disabled={loading} className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-base">
-                {loading ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : <><Zap size={17} /> Pay K150 Now</>}
+                {loading ? <><Loader2 size={17} className="animate-spin" /> Processingï¿½</> : <><Zap size={17} /> Pay K150 Now</>}
               </button>
             </form>
           </div>
@@ -327,7 +327,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
             )}
 
             <button onClick={handleVerify} disabled={verifying} className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3.5">
-              {verifying ? <><Loader2 size={17} className="animate-spin" /> Verifying…</> : <><CheckCircle2 size={17} /> Verify Payment</>}
+              {verifying ? <><Loader2 size={17} className="animate-spin" /> Verifyingï¿½</> : <><CheckCircle2 size={17} /> Verify Payment</>}
             </button>
           </div>
         )}
@@ -346,7 +346,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                 {[
                   { label: "Amount Paid", value: "K150 ZMW" },
                   { label: "Plan", value: "Premium" },
-                  { label: "Receipt Number", value: result?.receiptNumber ?? "—" },
+                  { label: "Receipt Number", value: result?.receiptNumber ?? "ï¿½" },
                   { label: "Valid For", value: "30 days" },
                 ].map(({ label, value }) => (
                   <div key={label}>

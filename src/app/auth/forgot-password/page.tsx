@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
                 className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3"
               >
                 {loading ? (
-                  <><Loader2 size={16} className="animate-spin" /> Sending link…</>
+                  <><Loader2 size={16} className="animate-spin" /> Sending linkï¿½</>
                 ) : (
                   "Send Reset Link"
                 )}

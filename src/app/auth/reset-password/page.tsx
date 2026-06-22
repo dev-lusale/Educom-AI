@@ -111,7 +111,7 @@ function ResetPasswordForm() {
               <div>
                 <h2 className="text-lg font-semibold text-[--text-primary] mb-2">Password updated!</h2>
                 <p className="text-[--text-secondary] text-sm">
-                  Your password has been changed. Redirecting you to sign in…
+                  Your password has been changed. Redirecting you to sign inï¿½
                 </p>
               </div>
             </div>
@@ -190,7 +190,7 @@ function ResetPasswordForm() {
                 className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50"
               >
                 {loading ? (
-                  <><Loader2 size={16} className="animate-spin" /> Updating…</>
+                  <><Loader2 size={16} className="animate-spin" /> Updatingï¿½</>
                 ) : (
                   "Update Password"
                 )}

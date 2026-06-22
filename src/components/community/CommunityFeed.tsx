@@ -99,7 +99,7 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
           <input
             type="text" value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by topic, subject, grade…"
+            placeholder="Search by topic, subject, gradeï¿½"
             className="drib-input pl-10"
           />
         </div>

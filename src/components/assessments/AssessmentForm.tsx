@@ -1,15 +1,15 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Loader2, Plus, X } from "lucide-react";
 
-// ── Grade groups ──────────────────────────────────────────────────────────────
+// -- Grade groups --------------------------------------------------------------
 
 const ALL_GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1�4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5�7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
@@ -18,14 +18,14 @@ const ALL_GRADE_GROUPS = [
 // Exam / marking scheme: all grades from ECE through Sixth Form
 const SECONDARY_GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1�4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5�7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
 ];
 
-// ── Subjects ──────────────────────────────────────────────────────────────────
+// -- Subjects ------------------------------------------------------------------
 
 const SUBJECTS = [
   "Mathematics", "English Language", "Science", "Social Studies",
@@ -38,7 +38,7 @@ const SUBJECTS = [
   "Computer Studies", "French",
 ];
 
-// ── Assessment type cards ─────────────────────────────────────────────────────
+// -- Assessment type cards -----------------------------------------------------
 
 const ASSESSMENT_TYPES = [
   {
@@ -76,7 +76,7 @@ const EXAM_TYPES = [
 
 const TERMS = ["Term 1", "Term 2", "Term 3"];
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------------
 
 export interface AssessmentFormValues {
   assessment_type: "quiz" | "exam" | "marking_scheme";
@@ -104,7 +104,7 @@ interface Props {
   defaultTeacherName?: string;
 }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// -- Component -----------------------------------------------------------------
 
 export default function AssessmentForm({ onGenerate, loading, isPremium }: Props) {
   const [assessmentType, setAssessmentType] = useState<AssessmentFormValues["assessment_type"]>("quiz");
@@ -135,7 +135,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
   const [durationMinutes,      setDurationMinutes]      = useState(120);
   const [includeMarkingScheme, setIncludeMarkingScheme] = useState(true);
 
-  // ── Topic helpers ────────────────────────────────────────────────────────────
+  // -- Topic helpers ------------------------------------------------------------
 
   function addTopic() {
     const t = topicInput.trim();
@@ -153,13 +153,13 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
     if (e.key === "Enter") { e.preventDefault(); addTopic(); }
   }
 
-  // ── Derived topic string sent to the API ─────────────────────────────────────
+  // -- Derived topic string sent to the API -------------------------------------
   // For exam/marking_scheme: join all topics; fall back to topicInput if list is empty
   const examTopicString = topics.length > 0
     ? topics.join(", ")
     : topicInput.trim();
 
-  // ── Submit ───────────────────────────────────────────────────────────────────
+  // -- Submit -------------------------------------------------------------------
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -197,10 +197,10 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
   return (
     <form onSubmit={handleSubmit} className="drib-card p-6 space-y-6">
 
-      {/* ── Assessment Type Selector ── */}
+      {/* -- Assessment Type Selector -- */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <span className="w-1.5 h-4 rounded-full bg-[#ea4c89] shrink-0" />
+          <span className="w-1.5 h-4 rounded-full bg-[#00A344] shrink-0" />
           <p className="text-[--text-primary] text-sm font-semibold">Assessment Type</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -216,7 +216,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
               className={cn(
                 "flex flex-col items-start gap-1.5 rounded-xl p-4 border-2 text-left transition-all",
                 assessmentType === t.id
-                  ? "border-[#ea4c89] bg-[#fce4ef]/40"
+                  ? "border-[#00A344] bg-[#e6f4ec]/40"
                   : "border-[--border] bg-[--bg-surface] hover:border-[--border-hover]"
               )}
             >
@@ -234,7 +234,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
 
       <div className="border-t border-[--border]" />
 
-      {/* ── Curriculum Details ── */}
+      {/* -- Curriculum Details -- */}
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="w-1.5 h-4 rounded-full bg-[#007531] shrink-0" />
@@ -247,7 +247,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={lbl}>
-                Grade <span className="text-[#ea4c89]">*</span>
+                Grade <span className="text-[#00A344]">*</span>
               </label>
               <select
                 value={grade}
@@ -270,7 +270,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
 
             <div>
               <label className={lbl}>
-                Subject <span className="text-[#ea4c89]">*</span>
+                Subject <span className="text-[#00A344]">*</span>
               </label>
               <select
                 value={subject}
@@ -286,11 +286,11 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
             </div>
           </div>
 
-          {/* ── Quiz: single topic ── */}
+          {/* -- Quiz: single topic -- */}
           {assessmentType === "quiz" && (
             <div>
               <label className={lbl}>
-                Topic <span className="text-[#ea4c89]">*</span>
+                Topic <span className="text-[#00A344]">*</span>
               </label>
               <input
                 type="text"
@@ -303,7 +303,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
             </div>
           )}
 
-          {/* ── Exam / Marking Scheme: multi-topic ── */}
+          {/* -- Exam / Marking Scheme: multi-topic -- */}
           {isExamOrScheme && (
             <div>
               <label className={lbl}>
@@ -345,7 +345,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
                       <button
                         type="button"
                         onClick={() => removeTopic(i)}
-                        className="w-6 h-6 rounded-full bg-[#fce4ef] flex items-center justify-center text-[#ea4c89] hover:bg-[#f8c8d9] transition-colors shrink-0 ml-3"
+                        className="w-6 h-6 rounded-full bg-[#e6f4ec] flex items-center justify-center text-[#00A344] hover:bg-[#bbf7d0] transition-colors shrink-0 ml-3"
                         aria-label={`Remove topic ${i + 1}`}
                       >
                         <X size={12} />
@@ -376,7 +376,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
             <textarea
               value={learningObjectives}
               onChange={(e) => setLearningObjectives(e.target.value)}
-              placeholder="e.g. Learners should be able to explain the process of photosynthesis and identify the reactants and products…"
+              placeholder="e.g. Learners should be able to explain the process of photosynthesis and identify the reactants and products�"
               rows={3}
               className={cn(inp, "resize-none")}
             />
@@ -387,7 +387,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
 
       <div className="border-t border-[--border]" />
 
-      {/* ── Quiz-specific options ── */}
+      {/* -- Quiz-specific options -- */}
       {assessmentType === "quiz" && (
         <div>
           <div className="flex items-center gap-2 mb-4">
@@ -439,7 +439,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
         </div>
       )}
 
-      {/* ── Exam / Marking Scheme options ── */}
+      {/* -- Exam / Marking Scheme options -- */}
       {isExamOrScheme && (
         <div>
           <div className="flex items-center gap-2 mb-4">
@@ -481,7 +481,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
                   id="include_ms"
                   checked={includeMarkingScheme}
                   onChange={(e) => setIncludeMarkingScheme(e.target.checked)}
-                  className="w-4 h-4 accent-[#ea4c89] cursor-pointer"
+                  className="w-4 h-4 accent-[#00A344] cursor-pointer"
                 />
                 <label htmlFor="include_ms" className="text-xs text-[--text-secondary] cursor-pointer">
                   Include marking scheme
@@ -492,7 +492,7 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
         </div>
       )}
 
-      {/* ── Submit ── */}
+      {/* -- Submit -- */}
       <button
         type="submit"
         disabled={!canSubmit}
@@ -500,16 +500,16 @@ export default function AssessmentForm({ onGenerate, loading, isPremium }: Props
           "w-full py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2",
           !canSubmit
             ? "bg-[--bg-elevated] text-[--text-muted] cursor-not-allowed"
-            : "bg-[#ea4c89] text-white hover:bg-[#d6437a] active:scale-[0.99]"
+            : "bg-[#00A344] text-white hover:bg-[#007531] active:scale-[0.99]"
         )}
       >
         {loading ? (
           <>
             <Loader2 size={16} className="animate-spin" />
-            Generating {assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam" : "Marking Scheme"}…
+            Generating {assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam" : "Marking Scheme"}�
           </>
         ) : !isPremium ? (
-          "Premium Required — Upgrade to Generate"
+          "Premium Required � Upgrade to Generate"
         ) : (
           `Generate ${assessmentType === "quiz" ? "Quiz" : assessmentType === "exam" ? "Exam Paper" : "Marking Scheme"}`
         )}

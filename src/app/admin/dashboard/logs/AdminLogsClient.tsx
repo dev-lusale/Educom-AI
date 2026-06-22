@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Loader2, RefreshCw, FileText } from "lucide-react";
@@ -50,7 +50,7 @@ export default function AdminLogsClient() {
       <div className="drib-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={26} className="animate-spin text-[#ea4c89]" />
+            <Loader2 size={26} className="animate-spin text-[#00A344]" />
           </div>
         ) : logs.length === 0 ? (
           <div className="text-center py-20">
@@ -67,7 +67,7 @@ export default function AdminLogsClient() {
                   <div className="flex-1 min-w-0">
                     {/* Action pill + name */}
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#ea4c89]">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#00A344]">
                         {log.action}
                       </span>
                       <span className="text-[--text-muted] text-xs">by {log.admin.name}</span>
@@ -80,7 +80,7 @@ export default function AdminLogsClient() {
                         const parsed = JSON.parse(log.details);
                         return (
                           <p className="text-[--text-muted] text-xs mt-0.5">
-                            {Object.entries(parsed).map(([k, v]) => `${k}: ${v}`).join(" Â· ")}
+                            {Object.entries(parsed).map(([k, v]) => `${k}: ${v}`).join(" · ")}
                           </p>
                         );
                       } catch {
@@ -109,7 +109,7 @@ export default function AdminLogsClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} Â· {total} logs</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} logs</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">

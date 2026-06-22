@@ -55,7 +55,7 @@ export default function ThemeToggle({ variant = "icon", className }: ThemeToggle
         className={cn(
           "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all group",
           isDark && mounted
-            ? "text-[#ea4c89] font-semibold"
+            ? "text-[#00A344] font-semibold"
             : "text-[--text-secondary] hover:text-[--text-primary] font-normal",
           "hover:bg-[--bg-canvas]",
           className
@@ -68,7 +68,7 @@ export default function ThemeToggle({ variant = "icon", className }: ThemeToggle
             className={cn(
               "transition-colors",
               isDark && mounted
-                ? "text-[#ea4c89]"
+                ? "text-[#00A344]"
                 : "text-[--text-muted] group-hover:text-[--text-primary]"
             )}
           />
@@ -78,7 +78,7 @@ export default function ThemeToggle({ variant = "icon", className }: ThemeToggle
         <span className={cn(
           "text-[10px] font-semibold px-1.5 py-0.5 rounded-full transition-colors",
           isDark && mounted
-            ? "bg-[--accent-pale] text-[#ea4c89]"
+            ? "bg-[--accent-pale] text-[#00A344]"
             : "bg-[--bg-canvas] text-[--text-muted]"
         )}>
           {!mounted ? "…" : theme === "light" ? "L" : theme === "dark" ? "D" : "A"}
@@ -96,8 +96,8 @@ export default function ThemeToggle({ variant = "icon", className }: ThemeToggle
       className={cn(
         "relative w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200",
         isDark && mounted
-          ? "bg-[--accent-pale] border border-[#ea4c89]/30 hover:border-[#ea4c89]/50"
-          : "bg-[--bg-canvas] border border-[--border] hover:border-[#ea4c89]/30",
+          ? "bg-[--accent-pale] border border-[#00A344]/30 hover:border-[#00A344]/50"
+          : "bg-[--bg-canvas] border border-[--border] hover:border-[#00A344]/30",
         className
       )}
     >
@@ -105,7 +105,7 @@ export default function ThemeToggle({ variant = "icon", className }: ThemeToggle
         size={15}
         className={cn(
           "transition-colors",
-          isDark && mounted ? "text-[#ea4c89]" : "text-[--text-muted]"
+          isDark && mounted ? "text-[#00A344]" : "text-[--text-muted]"
         )}
       />
     </button>

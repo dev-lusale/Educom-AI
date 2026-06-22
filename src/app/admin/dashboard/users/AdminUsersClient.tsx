@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -122,7 +122,7 @@ export default function AdminUsersClient() {
           <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, email, schoolâ€¦"
+            placeholder="Search by name, email, school…"
             className="drib-input pl-10"
           />
         </form>
@@ -149,7 +149,7 @@ export default function AdminUsersClient() {
       <div className="drib-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={26} className="animate-spin text-[#ea4c89]" />
+            <Loader2 size={26} className="animate-spin text-[#00A344]" />
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -168,13 +168,13 @@ export default function AdminUsersClient() {
                 {users.map((user) => (
                   <tr key={user.id} className="hover:bg-[--bg-canvas] transition-colors">
                     <td className="px-5 py-3.5">
-                      <p className="text-[--text-primary] font-semibold text-sm">{user.name ?? "â€”"}</p>
+                      <p className="text-[--text-primary] font-semibold text-sm">{user.name ?? "—"}</p>
                       <p className="text-[--text-muted] text-xs">{user.email}</p>
                       {user.school && <p className="text-[--text-muted] text-[10px]">{user.school}</p>}
                     </td>
                     <td className="px-5 py-3.5">
                       {user.plan === "PREMIUM" ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#ea4c89]">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#00A344]">
                           <Crown size={10} /> Premium
                         </span>
                       ) : (
@@ -222,7 +222,7 @@ export default function AdminUsersClient() {
                               )}
                               {user.plan === "FREE" ? (
                                 <button onClick={() => handleAction(user.id, "upgrade")} disabled={!!actionLoading}
-                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[#ea4c89] hover:bg-[--accent-pale] transition-colors">
+                                  className="w-full flex items-center gap-2 px-4 py-2.5 text-xs text-[#00A344] hover:bg-[--accent-pale] transition-colors">
                                   <ArrowUpCircle size={12} /> Upgrade to Premium
                                 </button>
                               ) : (
@@ -250,7 +250,7 @@ export default function AdminUsersClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} Â· {total} users</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} users</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">
@@ -278,17 +278,17 @@ export default function AdminUsersClient() {
 
             {detailLoading ? (
               <div className="flex items-center justify-center py-16">
-                <Loader2 size={26} className="animate-spin text-[#ea4c89]" />
+                <Loader2 size={26} className="animate-spin text-[#00A344]" />
               </div>
             ) : selectedUser && (
               <div className="p-5 space-y-5">
                 {/* Profile grid */}
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: "Name", value: selectedUser.name ?? "â€”" },
+                    { label: "Name", value: selectedUser.name ?? "—" },
                     { label: "Email", value: selectedUser.email },
-                    { label: "School", value: selectedUser.school ?? "â€”" },
-                    { label: "Province", value: selectedUser.province ?? "â€”" },
+                    { label: "School", value: selectedUser.school ?? "—" },
+                    { label: "Province", value: selectedUser.province ?? "—" },
                   ].map(({ label, value }) => (
                     <div key={label}>
                       <p className="text-[--text-muted] text-xs mb-1">{label}</p>
@@ -298,8 +298,8 @@ export default function AdminUsersClient() {
                   <div>
                     <p className="text-[--text-muted] text-xs mb-1">Plan</p>
                     {selectedUser.plan === "PREMIUM" ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#ea4c89]">
-                        <Crown size={10} /> Premium âœ¦
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-[--accent-pale] text-[#00A344]">
+                        <Crown size={10} /> Premium ?
                       </span>
                     ) : (
                       <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[--bg-elevated] text-[--text-secondary]">Free</span>
@@ -331,7 +331,7 @@ export default function AdminUsersClient() {
                   )}
                   {selectedUser.plan === "FREE" ? (
                     <button onClick={() => handleAction(selectedUser.id, "upgrade")} disabled={!!actionLoading}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#ea4c89] bg-[--accent-pale] hover:bg-[#f5b8d4]/30 transition-colors">
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-[#00A344] bg-[--accent-pale] hover:bg-[#86efac]/30 transition-colors">
                       <ArrowUpCircle size={12} /> Upgrade to Premium
                     </button>
                   ) : (

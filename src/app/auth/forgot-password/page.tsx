@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 group mb-6">
-            <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#00A344] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
             <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
@@ -57,8 +57,8 @@ export default function ForgotPasswordPage() {
           {sent ? (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <div className="w-14 h-14 bg-[#fce4ef] rounded-full flex items-center justify-center">
-                  <CheckCircle2 size={28} className="text-[#ea4c89]" />
+                <div className="w-14 h-14 bg-[#e6f4ec] rounded-full flex items-center justify-center">
+                  <CheckCircle2 size={28} className="text-[#00A344]" />
                 </div>
               </div>
               <div>
@@ -72,7 +72,7 @@ export default function ForgotPasswordPage() {
                 Didn't receive it? Check your spam folder or{" "}
                 <button
                   onClick={() => setSent(false)}
-                  className="text-[#ea4c89] hover:text-[#d6437a] font-medium transition-colors"
+                  className="text-[#00A344] hover:text-[#007531] font-medium transition-colors"
                 >
                   try again
                 </button>.
@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
                 className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3"
               >
                 {loading ? (
-                  <><Loader2 size={16} className="animate-spin" /> Sending link…</>
+                  <><Loader2 size={16} className="animate-spin" /> Sending link�</>
                 ) : (
                   "Send Reset Link"
                 )}
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
         <p className="text-center text-sm text-[--text-secondary] mt-5">
           <Link
             href="/auth/signin"
-            className="inline-flex items-center gap-1.5 text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold"
+            className="inline-flex items-center gap-1.5 text-[#00A344] hover:text-[#007531] transition-colors font-semibold"
           >
             <ArrowLeft size={14} />
             Back to sign in

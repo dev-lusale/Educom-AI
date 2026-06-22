@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -49,7 +49,7 @@ export default function AdminOverviewClient() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={28} className="animate-spin text-[#00A344]" />
       </div>
     );
   }
@@ -72,7 +72,7 @@ export default function AdminOverviewClient() {
         <KpiCard icon={Users}      label="Total Users"    value={stats.users.total.toLocaleString()}
           sub={`${stats.users.active} active`} accent="#3b82f6" accentBg="#eff6ff" />
         <KpiCard icon={Crown}      label="Premium Users"  value={stats.users.premium.toLocaleString()}
-          sub={`${stats.users.free} on free plan`} accent="#ea4c89" accentBg="#fce4ef" />
+          sub={`${stats.users.free} on free plan`} accent="#00A344" accentBg="#e6f4ec" />
         <KpiCard icon={TrendingUp} label="Total Revenue"  value={`K${stats.revenue.total.toLocaleString()}`}
           sub={`K${stats.revenue.thisMonth.toLocaleString()} this month`} accent="#007531" accentBg="#e6f4ec"
           growth={stats.revenue.growth} />
@@ -101,7 +101,7 @@ export default function AdminOverviewClient() {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-        {/* Recent Transactions â€” 2 cols */}
+        {/* Recent Transactions — 2 cols */}
         <div className="xl:col-span-2 drib-card p-5">
           <h2 className="text-[--text-primary] font-semibold mb-4">Recent Transactions</h2>
           <div className="overflow-x-auto">
@@ -142,7 +142,7 @@ export default function AdminOverviewClient() {
           </div>
         </div>
 
-        {/* Revenue by Method â€” 1 col */}
+        {/* Revenue by Method — 1 col */}
         <div className="drib-card p-5">
           <h2 className="text-[--text-primary] font-semibold mb-4">Revenue by Method</h2>
           {stats.revenueByMethod.length > 0 ? (
@@ -158,9 +158,9 @@ export default function AdminOverviewClient() {
                       <span className="text-[--text-primary] text-xs font-semibold">K{r.total.toLocaleString()}</span>
                     </div>
                     <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#ea4c89] rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
+                      <div className="h-full bg-[#00A344] rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
                     </div>
-                    <p className="text-[--text-muted] text-[10px] mt-0.5">{r.count} transactions Â· {pct}%</p>
+                    <p className="text-[--text-muted] text-[10px] mt-0.5">{r.count} transactions · {pct}%</p>
                   </div>
                 );
               })}

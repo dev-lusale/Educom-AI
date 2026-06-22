@@ -1,4 +1,4 @@
-﻿import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -36,9 +36,9 @@ const GRADE_GROUPS = [
   },
   {
     label: "Junior Secondary",
-    accent: "#ea4c89",
-    accentBg: "#fce4ef",
-    accentBorder: "#f5b8d4",
+    accent: "#00A344",
+    accentBg: "#e6f4ec",
+    accentBorder: "#86efac",
     grades: ["Form 1", "Form 2"],
   },
   {
@@ -77,7 +77,7 @@ export default async function ClassroomsPage() {
 
   const isPremium = subInfo.plan === "PREMIUM";
 
-  // Migrate old Grade 8–12 labels to the current CBC Form system
+  // Migrate old Grade 8�12 labels to the current CBC Form system
   const GRADE_MIGRATION: Record<string, string> = {
     "Grade 8":  "Form 1",
     "Grade 9":  "Form 2",
@@ -153,7 +153,7 @@ export default async function ClassroomsPage() {
       {/* Summary stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { icon: Users2, label: "Active Classrooms", value: totalActiveGrades, accent: "#ea4c89", bg: "#fce4ef" },
+          { icon: Users2, label: "Active Classrooms", value: totalActiveGrades, accent: "#00A344", bg: "#e6f4ec" },
           { icon: BookOpen, label: "Total Plans", value: totalPlans, accent: "#007531", bg: "#e6f4ec" },
           { icon: Users, label: "Plans Shared", value: sharedPlans, accent: "#3b82f6", bg: "#eff6ff" },
           { icon: BarChart2, label: "Grades Covered", value: totalActiveGrades, accent: "#8b5cf6", bg: "#f5f3ff" },
@@ -220,8 +220,8 @@ export default async function ClassroomsPage() {
         </div>
       ) : (
         <div className="drib-card p-14 text-center">
-          <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-5">
-            <GraduationCap size={24} className="text-[#ea4c89]" />
+          <div className="w-14 h-14 bg-[#e6f4ec] rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <GraduationCap size={24} className="text-[#00A344]" />
           </div>
           <h2 className="text-[--text-primary] font-semibold text-lg mb-2">No classrooms yet</h2>
           <p className="text-[--text-secondary] text-sm max-w-sm mx-auto mb-6">
@@ -247,7 +247,7 @@ export default async function ClassroomsPage() {
                 <div key={g.grade} className="flex items-center gap-3">
                   <span className="text-[--text-secondary] text-sm w-24 shrink-0 truncate">{g.grade}</span>
                   <div className="flex-1 h-2 bg-[--bg-elevated] rounded-full overflow-hidden">
-                    <div className="h-full rounded-full bg-[#ea4c89] transition-all duration-700" style={{ width: `${pct}%` }} />
+                    <div className="h-full rounded-full bg-[#00A344] transition-all duration-700" style={{ width: `${pct}%` }} />
                   </div>
                   <span className="text-[--text-primary] text-sm font-semibold w-8 text-right shrink-0">
                     {g._count.grade}
@@ -267,7 +267,7 @@ export default async function ClassroomsPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { icon: BookOpen, title: "Auto-organised", desc: "Plans are grouped by the grade you select when creating them.", color: "#ea4c89", bg: "#fce4ef" },
+            { icon: BookOpen, title: "Auto-organised", desc: "Plans are grouped by the grade you select when creating them.", color: "#00A344", bg: "#e6f4ec" },
             { icon: Users, title: "Share with colleagues", desc: "Share plans from any classroom to the community for other teachers.", color: "#3b82f6", bg: "#eff6ff" },
             { icon: BarChart2, title: "Track progress", desc: "See which grades you cover most and identify planning gaps.", color: "#8b5cf6", bg: "#f5f3ff" },
           ].map(({ icon: Icon, title, desc, color, bg }) => (
@@ -286,9 +286,9 @@ export default async function ClassroomsPage() {
 
       {/* Premium upsell */}
       {!isPremium && (
-        <div className="mt-6 drib-card p-6 flex items-center gap-5 bg-gradient-to-r from-[#fce4ef]/40 to-white border-[#f5b8d4]">
-          <div className="w-11 h-11 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Crown size={20} className="text-[#ea4c89]" />
+        <div className="mt-6 drib-card p-6 flex items-center gap-5 bg-gradient-to-r from-[#e6f4ec]/40 to-white border-[#86efac]">
+          <div className="w-11 h-11 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={20} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold mb-1">Unlimited Classrooms with Premium</p>

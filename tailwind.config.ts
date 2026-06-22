@@ -22,9 +22,9 @@ const config: Config = {
         },
         // Dribbble-inspired dashboard palette
         dribbble: {
-          pink: "#ea4c89",
-          "pink-light": "#f082ac",
-          "pink-pale": "#fce4ef",
+          green: "#00A344",
+          "green-light": "#00c455",
+          "green-pale": "#e6f4ec",
           canvas: "#f8f8f8",
           surface: "#ffffff",
           border: "#e8e8e8",
@@ -44,7 +44,7 @@ const config: Config = {
         "gold-gradient": "linear-gradient(135deg, #EF7D00 0%, #F59332 100%)",
         "emerald-gradient": "linear-gradient(135deg, #007531 0%, #00A344 100%)",
         "card-gradient": "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
-        "pink-gradient": "linear-gradient(135deg, #ea4c89 0%, #f082ac 100%)",
+        "green-gradient": "linear-gradient(135deg, #00A344 0%, #00c455 100%)",
       },
       boxShadow: {
         gold: "0 0 30px rgba(239,125,0,0.15)",
@@ -55,7 +55,7 @@ const config: Config = {
         // Dribbble-style subtle shadows
         card: "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)",
         "card-hover": "0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04)",
-        "pink-sm": "0 2px 8px rgba(234,76,137,0.2)",
+        "green-sm": "0 2px 8px rgba(0,163,68,0.2)",
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out",

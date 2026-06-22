@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -23,7 +23,7 @@ export default function AssessmentsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Map assessment type → dedicated OpenRouter-powered API route
+  // Map assessment type ? dedicated OpenRouter-powered API route
   const ENDPOINT: Record<string, string> = {
     quiz:           "/api/quiz-generator",
     exam:           "/api/exam-generator",
@@ -87,17 +87,17 @@ export default function AssessmentsPage() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-8">
-      {/* ── Header ── */}
+      {/* -- Header -- */}
       <div className="mb-8 print:hidden">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
-            <ClipboardList size={17} className="text-[#ea4c89]" />
+          <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center">
+            <ClipboardList size={17} className="text-[#00A344]" />
           </div>
           <h1 className="text-2xl font-bold text-[--text-primary] tracking-tight">
             Assessment Intelligence
           </h1>
           {isPremium && (
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#fce4ef] text-[#ea4c89] flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#e6f4ec] text-[#00A344] flex items-center gap-1">
               <Crown size={10} /> Premium
             </span>
           )}
@@ -125,11 +125,11 @@ export default function AssessmentsPage() {
         </div>
       </div>
 
-      {/* ── Premium gate banner ── */}
+      {/* -- Premium gate banner -- */}
       {!isPremium && (
-        <div className="drib-card p-5 mb-6 flex items-start gap-4 border-l-4 border-l-[#ea4c89] print:hidden">
-          <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Lock size={16} className="text-[#ea4c89]" />
+        <div className="drib-card p-5 mb-6 flex items-start gap-4 border-l-4 border-l-[#00A344] print:hidden">
+          <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Lock size={16} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold text-sm">Premium Feature</p>
@@ -144,7 +144,7 @@ export default function AssessmentsPage() {
         </div>
       )}
 
-      {/* ── Form ── */}
+      {/* -- Form -- */}
       <div className="print:hidden">
         <AssessmentForm
           onGenerate={handleGenerate}
@@ -154,22 +154,22 @@ export default function AssessmentsPage() {
         />
       </div>
 
-      {/* ── Error ── */}
+      {/* -- Error -- */}
       {error && (
         <div className="mt-5 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm print:hidden flex items-start gap-3">
-          <span className="text-red-500 shrink-0">⚠</span>
+          <span className="text-red-500 shrink-0">?</span>
           <div>
             {error}
             {error.includes("Premium") && (
-              <Link href="/payment" className="ml-2 text-[#ea4c89] font-medium hover:underline">
-                Upgrade now →
+              <Link href="/payment" className="ml-2 text-[#00A344] font-medium hover:underline">
+                Upgrade now ?
               </Link>
             )}
           </div>
         </div>
       )}
 
-      {/* ── Output ── */}
+      {/* -- Output -- */}
       {assessment && (
         <AssessmentOutput
           assessment={assessment}

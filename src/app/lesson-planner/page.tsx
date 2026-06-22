@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -18,27 +18,27 @@ export default function LessonPlannerPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ── Auth gate ─────────────────────────────────────────────────────────────
+  // -- Auth gate -------------------------------------------------------------
   // Show a full-page spinner while NextAuth hydrates the session.
   // Once resolved, redirect unauthenticated visitors to sign-in.
   if (status === "loading") {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 size={32} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={32} className="animate-spin text-[#00A344]" />
       </div>
     );
   }
 
   if (status === "unauthenticated") {
     router.replace("/auth/signin?callbackUrl=/lesson-planner");
-    // Return spinner while redirect fires — prevents flash of content
+    // Return spinner while redirect fires � prevents flash of content
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 size={32} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={32} className="animate-spin text-[#00A344]" />
       </div>
     );
   }
-  // ── End auth gate ─────────────────────────────────────────────────────────
+  // -- End auth gate ---------------------------------------------------------
 
   async function handleGenerate(values: FormValues) {
     setLoading(true);

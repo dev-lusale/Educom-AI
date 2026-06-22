@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import { X, Loader2, Check } from "lucide-react";
@@ -104,7 +104,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
           {/* Full Name */}
           <div>
             <label className="block text-[--text-muted] text-xs mb-1.5" htmlFor="name">
-              Full Name <span className="text-[#ea4c89]">*</span>
+              Full Name <span className="text-[#00A344]">*</span>
             </label>
             <input
               id="name"
@@ -113,7 +113,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               value={form.name}
               onChange={handleChange}
               placeholder="e.g. Moono Rundy"
-              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#00A344]/30 focus:border-[#00A344] transition"
               autoComplete="name"
             />
           </div>
@@ -130,7 +130,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               value={form.school}
               onChange={handleChange}
               placeholder="e.g. Munali Secondary School"
-              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] placeholder:text-[--text-muted] focus:outline-none focus:ring-2 focus:ring-[#00A344]/30 focus:border-[#00A344] transition"
               autoComplete="organization"
             />
           </div>
@@ -145,9 +145,9 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
               name="province"
               value={form.province}
               onChange={handleChange}
-              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] focus:outline-none focus:ring-2 focus:ring-[#ea4c89]/30 focus:border-[#ea4c89] transition bg-[--bg-surface] appearance-none"
+              className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-sm text-[--text-primary] focus:outline-none focus:ring-2 focus:ring-[#00A344]/30 focus:border-[#00A344] transition bg-[--bg-surface] appearance-none"
             >
-              <option value="">Select provinceâ€¦</option>
+              <option value="">Select province…</option>
               {ZAMBIA_PROVINCES.map((p) => (
                 <option key={p} value={p}>
                   {p}
@@ -184,7 +184,7 @@ export default function ProfileEditModal({ current, onClose }: ProfileEditModalP
                 </>
               ) : isPending ? (
                 <>
-                  <Loader2 size={14} className="animate-spin" /> Savingâ€¦
+                  <Loader2 size={14} className="animate-spin" /> Saving…
                 </>
               ) : (
                 "Save Changes"

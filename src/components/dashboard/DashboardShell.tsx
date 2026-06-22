@@ -19,7 +19,7 @@ export default function DashboardShell({ children }: Props) {
       {/* ── Mobile top bar ── */}
       <header className="md:hidden sticky top-0 z-50 h-14 bg-[--bg-surface] border-b border-[--border] flex items-center justify-between px-4 shrink-0 transition-colors duration-200">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center">
             <GraduationCap size={16} className="text-white" />
           </div>
           <span className="font-semibold text-[--text-primary] text-base tracking-tight">Educom</span>

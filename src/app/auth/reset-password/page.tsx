@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -91,7 +91,7 @@ function ResetPasswordForm() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 group mb-6">
-            <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#00A344] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
             <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
@@ -104,14 +104,14 @@ function ResetPasswordForm() {
           {done ? (
             <div className="text-center space-y-4">
               <div className="flex justify-center">
-                <div className="w-14 h-14 bg-[#fce4ef] rounded-full flex items-center justify-center">
-                  <CheckCircle2 size={28} className="text-[#ea4c89]" />
+                <div className="w-14 h-14 bg-[#e6f4ec] rounded-full flex items-center justify-center">
+                  <CheckCircle2 size={28} className="text-[#00A344]" />
                 </div>
               </div>
               <div>
                 <h2 className="text-lg font-semibold text-[--text-primary] mb-2">Password updated!</h2>
                 <p className="text-[--text-secondary] text-sm">
-                  Your password has been changed. Redirecting you to sign inâ€¦
+                  Your password has been changed. Redirecting you to sign in…
                 </p>
               </div>
             </div>
@@ -190,7 +190,7 @@ function ResetPasswordForm() {
                 className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50"
               >
                 {loading ? (
-                  <><Loader2 size={16} className="animate-spin" /> Updatingâ€¦</>
+                  <><Loader2 size={16} className="animate-spin" /> Updating…</>
                 ) : (
                   "Update Password"
                 )}
@@ -202,7 +202,7 @@ function ResetPasswordForm() {
         {!done && (
           <p className="text-center text-sm text-[--text-secondary] mt-5">
             Remembered it?{" "}
-            <Link href="/auth/signin" className="text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold">
+            <Link href="/auth/signin" className="text-[#00A344] hover:text-[#007531] transition-colors font-semibold">
               Sign in
             </Link>
           </p>
@@ -216,7 +216,7 @@ export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
-        <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={28} className="animate-spin text-[#00A344]" />
       </div>
     }>
       <ResetPasswordForm />

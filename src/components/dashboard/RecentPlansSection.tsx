@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -89,7 +89,7 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           lessonPlanId: plan.id,
-          title: `${plan.grade} ${plan.subject} â€“ ${plan.topic}`,
+          title: `${plan.grade} ${plan.subject} – ${plan.topic}`,
           grade: plan.grade,
           subject: plan.subject,
           topic: plan.topic,
@@ -114,8 +114,8 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
   if (plans.length === 0) {
     return (
       <div className="drib-card p-12 text-center">
-        <div className="w-12 h-12 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <BookOpen size={22} className="text-[#ea4c89]" />
+        <div className="w-12 h-12 bg-[#e6f4ec] rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <BookOpen size={22} className="text-[#00A344]" />
         </div>
         <p className="text-[--text-primary] font-semibold text-sm mb-1">No lesson plans yet</p>
         <p className="text-[--text-muted] text-xs mb-5">
@@ -146,15 +146,15 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
             }`}
           >
             {/* Icon */}
-            <div className="w-10 h-10 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-              <BookOpen size={17} className="text-[#ea4c89]" />
+            <div className="w-10 h-10 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+              <BookOpen size={17} className="text-[#00A344]" />
             </div>
 
             {/* Title + meta */}
             <div className="flex-1 min-w-0">
               <p className="text-[--text-primary] font-semibold text-sm truncate">{plan.topic}</p>
               <p className="text-[--text-muted] text-xs mt-0.5">
-                {plan.grade} Â· {plan.subject}
+                {plan.grade} · {plan.subject}
               </p>
             </div>
 
@@ -178,7 +178,7 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
               {plan.isShared ? "Published" : "Draft"}
             </span>
 
-            {/* Three-dot menu â€” each item has its own data-menu-container */}
+            {/* Three-dot menu — each item has its own data-menu-container */}
             <div className="relative shrink-0" data-menu-container>
               <button
                 onClick={() => setOpenMenuId(isMenuOpen ? null : plan.id)}
@@ -200,7 +200,7 @@ export default function RecentPlansSection({ plans: initialPlans, isPremium }: P
                     onClick={() => setOpenMenuId(null)}
                     className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors"
                   >
-                    <Pencil size={13} className="text-[#ea4c89]" />
+                    <Pencil size={13} className="text-[#00A344]" />
                     Edit
                   </Link>
                   <button

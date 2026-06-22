@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { Heart, Bookmark, BookOpen, User, Filter, Search, Crown } from "lucide-react";
@@ -99,7 +99,7 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
           <input
             type="text" value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by topic, subject, grade…"
+            placeholder="Search by topic, subject, grade�"
             className="drib-input pl-10"
           />
         </div>
@@ -120,9 +120,9 @@ export default function CommunityFeed({ userId, isPremium }: Props) {
 
       {/* Premium CTA for free users */}
       {userId && !isPremium && (
-        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#ea4c89]">
-          <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Crown size={16} className="text-[#ea4c89]" />
+        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#00A344]">
+          <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={16} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold text-sm">Share your lesson plans</p>
@@ -173,11 +173,11 @@ function PlanCard({ plan, isLiked, onLike, isLoggedIn }: {
       {/* Header */}
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="flex-1 min-w-0">
-          <h3 className="text-[--text-primary] font-semibold text-sm leading-snug truncate group-hover:text-[#ea4c89] transition-colors">
+          <h3 className="text-[--text-primary] font-semibold text-sm leading-snug truncate group-hover:text-[#00A344] transition-colors">
             {plan.topic}
           </h3>
           <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-            <span className="text-xs px-2 py-0.5 bg-[#fce4ef] text-[#ea4c89] rounded-full font-medium">{plan.grade}</span>
+            <span className="text-xs px-2 py-0.5 bg-[#e6f4ec] text-[#00A344] rounded-full font-medium">{plan.grade}</span>
             <span className="text-xs px-2 py-0.5 bg-[--bg-elevated] text-[--text-secondary] rounded-full">{plan.subject}</span>
           </div>
         </div>
@@ -212,7 +212,7 @@ function PlanCard({ plan, isLiked, onLike, isLoggedIn }: {
           </button>
           <button
             onClick={() => !isLoggedIn && toast.error("Sign in to save plans.")}
-            className="flex items-center gap-1 text-xs text-[--text-muted] hover:text-[#ea4c89] transition-colors"
+            className="flex items-center gap-1 text-xs text-[--text-muted] hover:text-[#00A344] transition-colors"
           >
             <Bookmark size={13} />
             {plan._count.saves}

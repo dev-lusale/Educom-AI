@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
@@ -74,7 +74,7 @@ function SignUpForm() {
         {/* Logo */}
         <div className="text-center mb-7">
           <Link href="/" className="inline-flex items-center gap-2.5 group mb-5">
-            <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#00A344] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
             <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
@@ -82,7 +82,7 @@ function SignUpForm() {
           <h1 className="text-2xl font-bold text-[--text-primary] mb-1.5">Create your account</h1>
           <p className="text-[--text-secondary] text-sm">
             {plan === "premium"
-              ? <span className="text-[#ea4c89] font-semibold">Starting with Premium Plan ✦</span>
+              ? <span className="text-[#00A344] font-semibold">Starting with Premium Plan ?</span>
               : "Free forever. Upgrade anytime."
             }
           </p>
@@ -100,7 +100,7 @@ function SignUpForm() {
             {googleLoading ? (
               <>
                 <Loader2 size={18} className="animate-spin text-[--text-muted]" />
-                <span>Connecting to Google…</span>
+                <span>Connecting to Google�</span>
               </>
             ) : (
               <>
@@ -193,7 +193,7 @@ function SignUpForm() {
 
           <p className="text-center text-sm text-[--text-secondary]">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold">
+            <Link href="/auth/signin" className="text-[#00A344] hover:text-[#007531] transition-colors font-semibold">
               Sign in
             </Link>
           </p>
@@ -207,7 +207,7 @@ export default function SignUpPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
-        <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={28} className="animate-spin text-[#00A344]" />
       </div>
     }>
       <SignUpForm />

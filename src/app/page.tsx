@@ -23,8 +23,8 @@ export default async function LandingPage() {
 
       {/* ── Hero ── */}
       <section className="relative pt-28 pb-24 px-4 overflow-hidden bg-[--bg-canvas]">
-        {/* Subtle pink bloom */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#ea4c89]/6 blur-[100px] pointer-events-none" />
+        {/* Subtle green bloom */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#00A344]/6 blur-[100px] pointer-events-none" />
         {/* Hero image strip */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <Image src={heroBg} alt="" fill priority className="object-cover object-center opacity-10" quality={80} />
@@ -38,7 +38,7 @@ export default async function LandingPage() {
           <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-[--text-primary] leading-[1.08] tracking-tight mb-6 animate-fade-in">
             The Platform Built for
             <br />
-            <span className="text-[#ea4c89]">Zambian Educators</span>
+            <span className="text-[#00A344]">Zambian Educators</span>
           </h1>
 
           <p className="text-[--text-secondary] text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -124,12 +124,12 @@ export default async function LandingPage() {
             </div>
 
             {/* Premium */}
-            <div className="relative bg-[#0d0d0d] rounded-2xl p-7 flex flex-col border border-[#ea4c89]/30">
+            <div className="relative bg-[#0d0d0d] rounded-2xl p-7 flex flex-col border border-[#00A344]/30">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="px-4 py-1 rounded-full text-xs font-semibold bg-[#ea4c89] text-white">Most Popular</span>
+                <span className="px-4 py-1 rounded-full text-xs font-semibold bg-[#00A344] text-white">Most Popular</span>
               </div>
               <div className="mb-6">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#ea4c89]/15 text-[#f082ac] mb-4">Premium Plan</span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#00A344]/15 text-[#00c455] mb-4">Premium Plan</span>
                 <div className="flex items-end gap-1.5 mt-2">
                   <span className="text-5xl font-bold text-white">K150</span>
                   <span className="text-white/50 mb-1.5 text-sm">/month</span>
@@ -139,7 +139,7 @@ export default async function LandingPage() {
               <ul className="space-y-3 flex-1 mb-7">
                 {PREMIUM_FEATURES.map((f, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                    <CheckCircle2 size={15} className="text-[#ea4c89] mt-0.5 shrink-0" />
+                    <CheckCircle2 size={15} className="text-[#00A344] mt-0.5 shrink-0" />
                     {f}
                   </li>
                 ))}
@@ -155,8 +155,8 @@ export default async function LandingPage() {
       {/* ── CTA ── */}
       <section className="py-24 px-4 bg-[--bg-surface]">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <GraduationCap size={26} className="text-[#ea4c89]" />
+          <div className="w-14 h-14 bg-[#e6f4ec] rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <GraduationCap size={26} className="text-[#00A344]" />
           </div>
           <h2 className="text-4xl font-bold text-[--text-primary] mb-4 tracking-tight">
             Ready to Transform Your Teaching?
@@ -177,11 +177,11 @@ export default async function LandingPage() {
 }
 
 const FEATURES = [
-  { icon: BookOpen, iconBg: "#fce4ef", iconColor: "#ea4c89", title: "CBC Lesson Plan Generator", desc: "Generate complete, TCZ-compliant lesson plans in seconds. Covers all grades and subjects with the 3-step model." },
+  { icon: BookOpen, iconBg: "#e6f4ec", iconColor: "#00A344", title: "CBC Lesson Plan Generator", desc: "Generate complete, TCZ-compliant lesson plans in seconds. Covers all grades and subjects with the 3-step model." },
   { icon: Users, iconBg: "#e6f4ec", iconColor: "#007531", title: "Teacher Community", desc: "Share your lesson plans with colleagues. Cover absent teachers instantly by accessing the community library." },
   { icon: Shield, iconBg: "#eff6ff", iconColor: "#3b82f6", title: "Secure & Private", desc: "Your plans are yours. Control what you share and what stays private. Enterprise-grade security." },
   { icon: Sparkles, iconBg: "#f5f3ff", iconColor: "#8b5cf6", title: "ECZ-Aligned Homework", desc: "Every lesson plan includes homework tasks structured to match ECZ examination formats for each grade." },
-  { icon: Globe, iconBg: "#fce4ef", iconColor: "#ea4c89", title: "All 10 Provinces", desc: "Built for Zambia. Locally relevant teaching aids, Zambian languages, and provincial context throughout." },
+  { icon: Globe, iconBg: "#e6f4ec", iconColor: "#00A344", title: "All 10 Provinces", desc: "Built for Zambia. Locally relevant teaching aids, Zambian languages, and provincial context throughout." },
   { icon: GraduationCap, iconBg: "#e6f4ec", iconColor: "#007531", title: "Professional Growth", desc: "Track your lesson history, build a portfolio, and demonstrate your commitment to quality teaching." },
 ];
 

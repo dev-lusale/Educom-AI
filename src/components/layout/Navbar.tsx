@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
@@ -14,12 +14,12 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[--bg-surface] border-b border-[--border]">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        {/* Logo — goes to /dashboard if logged in, / if not */}
+        {/* Logo � goes to /dashboard if logged in, / if not */}
         <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center">
             <GraduationCap size={18} className="text-white" />
           </div>
-          <span className="font-bold text-lg text-[--text-primary] group-hover:text-[#ea4c89] transition-colors tracking-tight">
+          <span className="font-bold text-lg text-[--text-primary] group-hover:text-[#00A344] transition-colors tracking-tight">
             Educom
           </span>
         </Link>
@@ -50,13 +50,13 @@ export default function Navbar() {
                 {session.user.image ? (
                   <img src={session.user.image} alt="" className="w-7 h-7 rounded-full" />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-[#ea4c89] flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full bg-[#00A344] flex items-center justify-center text-white text-xs font-bold">
                     {session.user.name?.[0]?.toUpperCase() ?? "T"}
                   </div>
                 )}
                 <span className="text-sm text-[--text-primary] max-w-[120px] truncate font-medium">{session.user.name}</span>
                 {session.user.plan === "PREMIUM" && (
-                  <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#fce4ef] text-[#ea4c89]">PRO</span>
+                  <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#e6f4ec] text-[#00A344]">PRO</span>
                 )}
                 <ChevronDown size={14} className={cn("text-[--text-muted] transition-transform", userMenuOpen && "rotate-180")} />
               </button>

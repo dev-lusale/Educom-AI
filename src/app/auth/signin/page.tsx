@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { GraduationCap, Mail, Lock, Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
-// ── Google SVG icon ───────────────────────────────────────────────────────────
+// -- Google SVG icon -----------------------------------------------------------
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -19,12 +19,12 @@ function GoogleIcon() {
   );
 }
 
-// ── Main form ─────────────────────────────────────────────────────────────────
+// -- Main form -----------------------------------------------------------------
 function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // Safe callbackUrl — only allow relative paths to prevent open redirects
+  // Safe callbackUrl � only allow relative paths to prevent open redirects
   const rawCallback = params.get("callbackUrl") ?? "/dashboard";
   const callbackUrl = rawCallback.startsWith("/") ? rawCallback : "/dashboard";
 
@@ -35,7 +35,7 @@ function SignInForm() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
-  // ── Google OAuth ────────────────────────────────────────────────────────────
+  // -- Google OAuth ------------------------------------------------------------
   async function handleGoogle() {
     if (googleLoading) return;
     setGoogleLoading(true);
@@ -54,11 +54,11 @@ function SignInForm() {
       setFormError("Google sign-in failed. Please try again.");
       setGoogleLoading(false);
     }
-    // Note: do NOT reset googleLoading here — the page redirects away.
+    // Note: do NOT reset googleLoading here � the page redirects away.
     // If we reset it, there's a flash before the redirect completes.
   }
 
-  // ── Email / password ────────────────────────────────────────────────────────
+  // -- Email / password --------------------------------------------------------
   async function handleCredentials(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -96,7 +96,7 @@ function SignInForm() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
-            <div className="w-10 h-10 bg-[#ea4c89] rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#00A344] rounded-xl flex items-center justify-center">
               <GraduationCap size={20} className="text-white" />
             </div>
             <span className="font-bold text-xl text-[--text-primary] tracking-tight">Educom</span>
@@ -115,7 +115,7 @@ function SignInForm() {
             </div>
           )}
 
-          {/* ── Google button ─────────────────────────────────────────────── */}
+          {/* -- Google button ----------------------------------------------- */}
           <button
             type="button"
             onClick={handleGoogle}
@@ -125,7 +125,7 @@ function SignInForm() {
             {googleLoading ? (
               <>
                 <Loader2 size={18} className="animate-spin text-[--text-muted]" />
-                <span>Connecting to Google…</span>
+                <span>Connecting to Google�</span>
               </>
             ) : (
               <>
@@ -142,7 +142,7 @@ function SignInForm() {
             <div className="flex-1 h-px bg-[--bg-elevated]" />
           </div>
 
-          {/* ── Email / password form ──────────────────────────────────────── */}
+          {/* -- Email / password form ---------------------------------------- */}
           <form onSubmit={handleCredentials} className="space-y-4" noValidate>
             <div>
               <label htmlFor="email" className="block text-xs font-medium text-[--text-secondary] mb-1.5">
@@ -170,7 +170,7 @@ function SignInForm() {
                 </label>
                 <Link
                   href="/auth/forgot-password"
-                  className="text-xs text-[#ea4c89] hover:text-[#d6437a] transition-colors font-medium"
+                  className="text-xs text-[#00A344] hover:text-[#007531] transition-colors font-medium"
                 >
                   Forgot password?
                 </Link>
@@ -184,7 +184,7 @@ function SignInForm() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  placeholder="••••••••"
+                  placeholder="��������"
                   className="drib-input pl-10 pr-10"
                 />
                 <button
@@ -206,7 +206,7 @@ function SignInForm() {
               {loading ? (
                 <>
                   <Loader2 size={17} className="animate-spin" />
-                  Signing in…
+                  Signing in�
                 </>
               ) : (
                 "Sign In"
@@ -218,7 +218,7 @@ function SignInForm() {
             Don&apos;t have an account?{" "}
             <Link
               href={`/auth/signup${callbackUrl !== "/dashboard" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
-              className="text-[#ea4c89] hover:text-[#d6437a] transition-colors font-semibold"
+              className="text-[#00A344] hover:text-[#007531] transition-colors font-semibold"
             >
               Create one free
             </Link>
@@ -229,13 +229,13 @@ function SignInForm() {
   );
 }
 
-// ── Page export ────────────────────────────────────────────────────────────────
+// -- Page export ----------------------------------------------------------------
 export default function SignInPage() {
   return (
     <Suspense
       fallback={
         <div className="min-h-screen bg-[--bg-canvas] flex items-center justify-center">
-          <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
+          <Loader2 size={28} className="animate-spin text-[#00A344]" />
         </div>
       }
     >

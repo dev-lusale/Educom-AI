@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
@@ -23,15 +23,15 @@ interface Props {
   userPlan: string;
 }
 
-// ── Quick-action prompts ──────────────────────────────────────────────────────
+// -- Quick-action prompts ------------------------------------------------------
 
 const QUICK_ACTIONS = [
   {
     icon: BookOpen,
     label: "Lesson plan ideas",
     prompt: "Can you suggest some engaging lesson plan ideas for teaching fractions to Grade 5 learners?",
-    color: "#ea4c89",
-    bg: "#fce4ef",
+    color: "#00A344",
+    bg: "#e6f4ec",
   },
   {
     icon: ClipboardList,
@@ -58,8 +58,8 @@ const QUICK_ACTIONS = [
     icon: GraduationCap,
     label: "Teaching strategies",
     prompt: "What learner-centered teaching strategies work best for Science in upper primary?",
-    color: "#ea4c89",
-    bg: "#fce4ef",
+    color: "#00A344",
+    bg: "#e6f4ec",
   },
   {
     icon: FileText,
@@ -70,7 +70,7 @@ const QUICK_ACTIONS = [
   },
 ];
 
-// ── Markdown-lite renderer ────────────────────────────────────────────────────
+// -- Markdown-lite renderer ----------------------------------------------------
 
 function renderContent(text: string) {
   // Split into lines and process
@@ -88,17 +88,17 @@ function renderContent(text: string) {
     }
 
     // Bullet list
-    if (line.match(/^[•\-\*]\s/)) {
+    if (line.match(/^[�\-\*]\s/)) {
       const items: string[] = [];
-      while (i < lines.length && lines[i].match(/^[•\-\*]\s/)) {
-        items.push(lines[i].replace(/^[•\-\*]\s/, ""));
+      while (i < lines.length && lines[i].match(/^[�\-\*]\s/)) {
+        items.push(lines[i].replace(/^[�\-\*]\s/, ""));
         i++;
       }
       elements.push(
         <ul key={i} className="list-none space-y-1 my-2">
           {items.map((item, j) => (
             <li key={j} className="flex items-start gap-2">
-              <span className="text-zambia-gold mt-1 shrink-0">•</span>
+              <span className="text-zambia-gold mt-1 shrink-0">�</span>
               <span dangerouslySetInnerHTML={{ __html: inlineFormat(item) }} />
             </li>
           ))}
@@ -144,7 +144,7 @@ function inlineFormat(text: string): string {
     .replace(/`(.+?)`/g, '<code class="bg-black/[0.06] px-1 py-0.5 rounded text-xs font-mono">$1</code>');
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// -- Main component ------------------------------------------------------------
 
 export default function AssistantClient({ initialMessages, userName, userPlan }: Props) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -274,16 +274,16 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
   return (
     <div className="flex flex-col h-[calc(100vh-3.5rem)] md:h-screen max-w-4xl mx-auto w-full">
 
-      {/* ── Header ── */}
+      {/* -- Header -- */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-[--border] bg-[--bg-surface] shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-[#ea4c89] rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-[#00A344] rounded-xl flex items-center justify-center">
             <Sparkles size={16} className="text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-[--text-primary] font-semibold text-sm">Educom AI Assistant</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#fce4ef] text-[#ea4c89]">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#e6f4ec] text-[#00A344]">
                 BETA
               </span>
             </div>
@@ -313,7 +313,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
         </div>
       </div>
 
-      {/* ── Messages area ── */}
+      {/* -- Messages area -- */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
@@ -322,11 +322,11 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
         {isEmpty ? (
           /* Welcome screen */
           <div className="flex flex-col items-center justify-center min-h-full py-8">
-            <div className="w-16 h-16 bg-[#ea4c89] rounded-2xl flex items-center justify-center mb-5">
+            <div className="w-16 h-16 bg-[#00A344] rounded-2xl flex items-center justify-center mb-5">
               <Sparkles size={28} className="text-white" />
             </div>
             <h2 className="text-2xl font-bold text-[--text-primary] mb-2 text-center tracking-tight">
-              Hello, {firstName}! 👋
+              Hello, {firstName}! ??
             </h2>
             <p className="text-[--text-secondary] text-sm text-center max-w-md mb-8 leading-relaxed">
               I&apos;m your Educom AI teaching assistant. I can help you with lesson planning,
@@ -345,7 +345,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: action.bg }}>
                     <action.icon size={15} style={{ color: action.color }} />
                   </div>
-                  <p className="text-[--text-primary] text-xs font-medium leading-snug group-hover:text-[#ea4c89] transition-colors">
+                  <p className="text-[--text-primary] text-xs font-medium leading-snug group-hover:text-[#00A344] transition-colors">
                     {action.label}
                   </p>
                 </button>
@@ -378,7 +378,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
         </button>
       )}
 
-      {/* ── Quick actions strip (when chat has messages) ── */}
+      {/* -- Quick actions strip (when chat has messages) -- */}
       {!isEmpty && (
         <div className="px-4 pb-2 flex gap-2 overflow-x-auto shrink-0 scrollbar-hide">
           {QUICK_ACTIONS.slice(0, 4).map((action) => (
@@ -395,15 +395,15 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
         </div>
       )}
 
-      {/* ── Input area ── */}
+      {/* -- Input area -- */}
       <div className="px-4 pb-4 pt-2 border-t border-[--border] bg-[--bg-surface] shrink-0">
-        <div className="flex items-end gap-3 bg-[--bg-canvas] border border-[--border] rounded-2xl px-4 py-3 focus-within:border-[#ea4c89] transition-colors">
+        <div className="flex items-end gap-3 bg-[--bg-canvas] border border-[--border] rounded-2xl px-4 py-3 focus-within:border-[#00A344] transition-colors">
           <textarea
             ref={inputRef}
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="Ask me anything about teaching, curriculum, or lesson planning…"
+            placeholder="Ask me anything about teaching, curriculum, or lesson planning�"
             rows={1}
             disabled={loading}
             className="flex-1 bg-transparent text-[--text-primary] text-sm placeholder:text-[--text-muted] resize-none outline-none leading-relaxed disabled:opacity-50 min-h-[1.5rem]"
@@ -415,7 +415,7 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
             className={cn(
               "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all",
               input.trim() && !loading
-                ? "bg-[#ea4c89] text-white hover:bg-[#d6437a]"
+                ? "bg-[#00A344] text-white hover:bg-[#007531]"
                 : "bg-[--bg-elevated] text-[--text-muted] cursor-not-allowed"
             )}
           >
@@ -423,14 +423,14 @@ export default function AssistantClient({ initialMessages, userName, userPlan }:
           </button>
         </div>
         <p className="text-[--text-muted] text-[10px] text-center mt-2">
-          Press Enter to send · Shift+Enter for new line · AI responses may not always be accurate
+          Press Enter to send � Shift+Enter for new line � AI responses may not always be accurate
         </p>
       </div>
     </div>
   );
 }
 
-// ── Message bubble ────────────────────────────────────────────────────────────
+// -- Message bubble ------------------------------------------------------------
 
 function MessageBubble({ message, userName }: { message: Message; userName: string }) {
   const isUser = message.role === "user";
@@ -455,13 +455,13 @@ function MessageBubble({ message, userName }: { message: Message; userName: stri
   return (
     <div className="flex items-start gap-3">
       {/* Avatar */}
-      <div className="w-8 h-8 bg-[#ea4c89] rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+      <div className="w-8 h-8 bg-[#00A344] rounded-xl flex items-center justify-center shrink-0 mt-0.5">
         <Sparkles size={14} className="text-white" />
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1.5">
-          <span className="text-[#ea4c89] text-xs font-semibold">Educom AI</span>
+          <span className="text-[#00A344] text-xs font-semibold">Educom AI</span>
           {!isTyping && (
             <span className="text-[--text-muted] text-[10px]">
               {new Date(message.createdAt).toLocaleTimeString("en-ZM", { hour: "2-digit", minute: "2-digit" })}
@@ -472,9 +472,9 @@ function MessageBubble({ message, userName }: { message: Message; userName: stri
         <div className="bg-[--bg-surface] border border-[--border] rounded-2xl rounded-tl-sm px-4 py-3 text-[--text-secondary] text-sm shadow-card">
           {isTyping ? (
             <div className="flex items-center gap-1.5 py-1">
-              <span className="w-2 h-2 bg-[#ea4c89]/60 rounded-full animate-bounce [animation-delay:0ms]" />
-              <span className="w-2 h-2 bg-[#ea4c89]/60 rounded-full animate-bounce [animation-delay:150ms]" />
-              <span className="w-2 h-2 bg-[#ea4c89]/60 rounded-full animate-bounce [animation-delay:300ms]" />
+              <span className="w-2 h-2 bg-[#00A344]/60 rounded-full animate-bounce [animation-delay:0ms]" />
+              <span className="w-2 h-2 bg-[#00A344]/60 rounded-full animate-bounce [animation-delay:150ms]" />
+              <span className="w-2 h-2 bg-[#00A344]/60 rounded-full animate-bounce [animation-delay:300ms]" />
             </div>
           ) : (
             <div className="space-y-0.5">{renderContent(message.content)}</div>

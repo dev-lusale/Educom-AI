@@ -1,4 +1,4 @@
-﻿import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import CommunityFeed from "@/components/community/CommunityFeed";
@@ -8,16 +8,16 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function CommunityPage() {
-  // ── Auth gate — must be signed in to view community ──────────────────────
+  // -- Auth gate � must be signed in to view community ----------------------
   const session = await auth().catch(() => null);
   if (!session?.user) {
     redirect("/auth/signin?callbackUrl=/community");
   }
-  // ── End auth gate ─────────────────────────────────────────────────────────
+  // -- End auth gate ---------------------------------------------------------
 
   const isPremium = session.user?.plan === "PREMIUM";
 
-  // Wrap all DB calls — if DB is unavailable, render with zeros
+  // Wrap all DB calls � if DB is unavailable, render with zeros
   let totalShared = 0, totalTeachers = 0, totalLikes = 0;
   let topSubjects: { subject: string; _count: { subject: number } }[] = [];
 
@@ -35,15 +35,15 @@ export default async function CommunityPage() {
       }),
     ]);
   } catch {
-    // DB unavailable — page still renders with empty stats
+    // DB unavailable � page still renders with empty stats
   }
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-8">
 
-      {/* ── Header ── */}
+      {/* -- Header -- */}
       <div className="mb-8">
-        <div className="inline-flex items-center gap-1.5 bg-[#fce4ef] rounded-full px-3 py-1.5 text-xs font-medium text-[#ea4c89] mb-4">
+        <div className="inline-flex items-center gap-1.5 bg-[#e6f4ec] rounded-full px-3 py-1.5 text-xs font-medium text-[#00A344] mb-4">
           <Users size={12} />
           Teacher Community
         </div>
@@ -58,7 +58,7 @@ export default async function CommunityPage() {
         {/* Live stats */}
         <div className="flex flex-wrap gap-5 mt-5">
           <div className="flex items-center gap-2 text-sm text-[--text-secondary]">
-            <BookOpen size={14} className="text-[#ea4c89]" />
+            <BookOpen size={14} className="text-[#00A344]" />
             <span>
               <strong className="text-[--text-primary] font-semibold">{totalShared.toLocaleString()}</strong> plans shared
             </span>
@@ -78,7 +78,7 @@ export default async function CommunityPage() {
         </div>
       </div>
 
-      {/* ── Share / Upsell banner ── */}
+      {/* -- Share / Upsell banner -- */}
       {isPremium ? (
         <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#007531]">
           <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
@@ -92,15 +92,15 @@ export default async function CommunityPage() {
           </div>
           <Link
             href="/dashboard"
-            className="text-[#ea4c89] text-xs hover:text-[#d6437a] font-medium shrink-0 transition-colors"
+            className="text-[#00A344] text-xs hover:text-[#007531] font-medium shrink-0 transition-colors"
           >
-            Go to Dashboard →
+            Go to Dashboard ?
           </Link>
         </div>
       ) : (
-        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#ea4c89]">
-          <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Crown size={16} className="text-[#ea4c89]" />
+        <div className="drib-card p-5 mb-7 flex items-center gap-4 border-l-4 border-l-[#00A344]">
+          <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={16} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold text-sm">Share with the community</p>
@@ -114,11 +114,11 @@ export default async function CommunityPage() {
         </div>
       )}
 
-      {/* ── Trending subjects ── */}
+      {/* -- Trending subjects -- */}
       {topSubjects.length > 0 && (
         <div className="mb-7">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={13} className="text-[#ea4c89]" />
+            <TrendingUp size={13} className="text-[#00A344]" />
             <h2 className="text-[--text-primary] font-semibold text-sm">Trending Subjects</h2>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -128,7 +128,7 @@ export default async function CommunityPage() {
                 className="px-3 py-1.5 bg-[--bg-surface] border border-[--border] rounded-full text-xs text-[--text-secondary] hover:text-[--text-primary] hover:border-[--border-hover] transition-colors cursor-default shadow-card"
               >
                 {s.subject}
-                <span className="ml-1.5 text-[#ea4c89] font-semibold">{s._count.subject}</span>
+                <span className="ml-1.5 text-[#00A344] font-semibold">{s._count.subject}</span>
               </span>
             ))}
           </div>

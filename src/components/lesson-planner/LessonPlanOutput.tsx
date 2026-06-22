@@ -91,7 +91,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
               <CheckCircle2 size={14} /> Saved to your library
             </span>
           ) : (
-            <Link href="/auth/signin" className="text-[#ea4c89] hover:underline font-medium">
+            <Link href="/auth/signin" className="text-[#00A344] hover:underline font-medium">
               Sign in to save this plan
             </Link>
           )}
@@ -110,7 +110,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
             ) : (
               <Link
                 href="/payment"
-                className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-[#fce4ef] text-[#ea4c89] border border-[#ea4c89]/20 hover:bg-[#f5b8d4]/30 transition-all font-medium"
+                className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-[#e6f4ec] text-[#00A344] border border-[#00A344]/20 hover:bg-[#bbf7d0]/40 transition-all font-medium"
               >
                 <Crown size={14} /> Upgrade to Share
               </Link>
@@ -189,8 +189,8 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
           ══════════════════════════════════════════════════════════════════ */}
       <div id="lesson-plan-print" className="lp-doc">
 
-        {/* ── Screen header — pink accent bar ── */}
-        <div className="bg-[#ea4c89] px-6 py-5 rounded-t-2xl print:hidden">
+        {/* ── Screen header — green accent bar ── */}
+        <div className="bg-[#00A344] px-6 py-5 rounded-t-2xl print:hidden">
           <div className="flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
@@ -319,8 +319,8 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
               <CompCard
                 title="Critical Thinking"
                 items={plan.competencies.criticalThinking}
-                accent="#ea4c89"
-                bg="#fce4ef"
+                accent="#00A344"
+                bg="#e6f4ec"
               />
               <CompCard
                 title="Communication"
@@ -339,7 +339,7 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
 
           {/* ── SCREEN: Teaching Aids ── */}
           <div className="print:hidden mb-6">
-            <SectionHeading title="Teaching Aids" accent="#ea4c89" />
+            <SectionHeading title="Teaching Aids" accent="#00A344" />
             <div className="flex flex-wrap gap-2">
               {plan.teachingAids.map((aid, i) => (
                 <span
@@ -354,12 +354,12 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
 
           {/* ── SCREEN: 3-Step Plan ── */}
           <div className="print:hidden mb-6">
-            <SectionHeading title="The 3-Step Lesson Plan" accent="#ea4c89" />
+            <SectionHeading title="The 3-Step Lesson Plan" accent="#00A344" />
             <div className="space-y-4">
               {plan.steps.map((step) => {
                 const stepColors = [
-                  { accent: "#ea4c89", bg: "#fce4ef", border: "#f5b8d4" },
-                  { accent: "#007531", bg: "#e6f4ec", border: "#86efac" },
+                  { accent: "#00A344", bg: "#e6f4ec", border: "#86efac" },
+                  { accent: "#007531", bg: "#dcfce7", border: "#bbf7d0" },
                   { accent: "#3b82f6", bg: "#eff6ff", border: "#bfdbfe" },
                 ];
                 const col = stepColors[(step.stepNumber - 1) % stepColors.length];
@@ -413,14 +413,14 @@ export default function LessonPlanOutput({ plan, savedPlanId, isPremium, isLogge
 
           {/* ── SCREEN: Homework ── */}
           <div className="print:hidden">
-            <SectionHeading title="Homework & ECZ Alignment" accent="#ea4c89" />
+            <SectionHeading title="Homework & ECZ Alignment" accent="#00A344" />
             <div className="bg-[--bg-surface] border border-[--border] rounded-2xl p-5 shadow-card">
               <p className="text-[--text-primary] leading-relaxed whitespace-pre-line text-sm mb-4">
                 {plan.homework.description}
               </p>
               <div className="pt-4 border-t border-[--border]">
                 <p className="text-xs text-[--text-secondary]">
-                  <span className="font-semibold text-[#ea4c89]">ECZ Alignment: </span>
+                  <span className="font-semibold text-[#00A344]">ECZ Alignment: </span>
                   {plan.homework.eczAlignment}
                 </p>
               </div>

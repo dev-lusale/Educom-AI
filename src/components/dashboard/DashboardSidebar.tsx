@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -72,23 +72,23 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
           "md:sticky md:top-0 md:h-screen",
         )}
       >
-        {/* ── Logo ── */}
+        {/* -- Logo -- */}
         <div className="px-5 pt-6 pb-5 border-b border-[--border]">
           <Link
             href="/dashboard"
             onClick={onClose}
             className="flex items-center gap-2.5 group"
           >
-            <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#d6437a] transition-colors">
+            <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#007531] transition-colors">
               <GraduationCap size={16} className="text-white" />
             </div>
-            <span className="font-bold text-[--text-primary] text-base tracking-tight group-hover:text-[#ea4c89] transition-colors">
+            <span className="font-bold text-[--text-primary] text-base tracking-tight group-hover:text-[#00A344] transition-colors">
               Educom
             </span>
           </Link>
         </div>
 
-        {/* ── Navigation ── */}
+        {/* -- Navigation -- */}
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           {NAV_ITEMS.map((item, i) => {
             const isActive =
@@ -104,7 +104,7 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 group",
                   isActive
-                    ? "bg-[--accent-pale] text-[#ea4c89] font-semibold"
+                    ? "bg-[--accent-pale] text-[#00A344] font-semibold"
                     : "text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] font-normal"
                 )}
               >
@@ -112,42 +112,42 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
                   size={17}
                   className={cn(
                     "shrink-0 transition-colors",
-                    isActive ? "text-[#ea4c89]" : "text-[--text-muted] group-hover:text-[--text-primary]"
+                    isActive ? "text-[#00A344]" : "text-[--text-muted] group-hover:text-[--text-primary]"
                   )}
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />
                 <span className="flex-1 leading-tight">{item.label}</span>
                 {isActive && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#ea4c89] shrink-0" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#00A344] shrink-0" />
                 )}
               </Link>
             );
           })}
         </nav>
 
-        {/* ── Notifications ── */}
+        {/* -- Notifications -- */}
         <div className="px-3 pb-2 border-t border-[--border] pt-2">
           <NotificationBell variant="row" />
         </div>
 
-        {/* ── Theme toggle ── */}
+        {/* -- Theme toggle -- */}
         <div className="px-3 pb-2">
           <ThemeToggle variant="row" />
         </div>
 
-        {/* ── Upgrade prompt (free users) ── */}
+        {/* -- Upgrade prompt (free users) -- */}
         {!isPremium && (
-          <div className="mx-3 mb-3 p-4 rounded-xl bg-[#fce4ef] border border-[#f5b8d4]">
+          <div className="mx-3 mb-3 p-4 rounded-xl bg-[#e6f4ec] border border-[#86efac]">
             <div className="flex items-center gap-2 mb-2">
-              <Crown size={14} className="text-[#ea4c89]" />
-              <span className="text-[#ea4c89] text-xs font-semibold">Go Premium</span>
+              <Crown size={14} className="text-[#00A344]" />
+              <span className="text-[#00A344] text-xs font-semibold">Go Premium</span>
             </div>
             <p className="text-[--text-secondary] text-xs leading-relaxed mb-3">
               Unlock unlimited lesson plans, assessments, and community sharing.
             </p>
             <Link
               href="/payment"
-              className="flex items-center justify-between w-full bg-[#ea4c89] text-white text-xs font-semibold rounded-lg px-3 py-2 hover:bg-[#d6437a] transition-colors"
+              className="flex items-center justify-between w-full bg-[#00A344] text-white text-xs font-semibold rounded-lg px-3 py-2 hover:bg-[#007531] transition-colors"
             >
               <span>Upgrade now</span>
               <ChevronRight size={12} />
@@ -155,14 +155,14 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
           </div>
         )}
 
-        {/* ── User profile footer ── */}
+        {/* -- User profile footer -- */}
         <div className="px-3 pb-4 pt-3 border-t border-[--border]">
 
           {/* Premium badge */}
           {isPremium && (
             <div className="flex items-center gap-2 px-3 py-1.5 mb-2 rounded-xl bg-[--accent-pale]">
-              <Crown size={11} className="text-[#ea4c89] shrink-0" />
-              <span className="text-[#ea4c89] text-xs font-semibold">Premium</span>
+              <Crown size={11} className="text-[#00A344] shrink-0" />
+              <span className="text-[#00A344] text-xs font-semibold">Premium</span>
             </div>
           )}
 
@@ -175,7 +175,7 @@ export default function DashboardSidebar({ isOpen, onClose }: Props) {
                 className="w-8 h-8 rounded-full object-cover shrink-0 ring-2 ring-[#e8e8e8]"
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-[#ea4c89] flex items-center justify-center text-white text-xs font-bold shrink-0">
+              <div className="w-8 h-8 rounded-full bg-[#00A344] flex items-center justify-center text-white text-xs font-bold shrink-0">
                 {initials}
               </div>
             )}

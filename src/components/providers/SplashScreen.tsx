@@ -43,11 +43,11 @@ export default function SplashScreen() {
           width: 88,
           height: 88,
           borderRadius: 22,
-          background: "linear-gradient(145deg, #f06299, #ea4c89)",
+          background: "linear-gradient(145deg, #f06299, #00A344)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 8px 32px rgba(234,76,137,0.35)",
+          boxShadow: "0 8px 32px rgba(0,163,68,0.35)",
           marginBottom: 20,
         }}
       >
@@ -87,8 +87,8 @@ export default function SplashScreen() {
             inset: 0,
             borderRadius: "50%",
             border: "3px solid transparent",
-            borderTopColor: "#ea4c89",
-            borderRightColor: "rgba(234,76,137,0.3)",
+            borderTopColor: "#00A344",
+            borderRightColor: "rgba(0,163,68,0.3)",
             animation: "educom-spin 0.9s linear infinite",
           }}
         />

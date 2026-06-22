@@ -54,7 +54,7 @@ export async function sendPasswordResetEmail(
             <td align="center" style="padding-bottom:28px;">
               <table cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background:#ea4c89;border-radius:12px;width:40px;height:40px;text-align:center;vertical-align:middle;">
+                  <td style="background:#00A344;border-radius:12px;width:40px;height:40px;text-align:center;vertical-align:middle;">
                     <span style="color:#fff;font-size:20px;font-weight:bold;line-height:40px;">E</span>
                   </td>
                   <td style="padding-left:10px;font-size:20px;font-weight:700;color:#0d0d0d;letter-spacing:-0.5px;vertical-align:middle;">
@@ -80,7 +80,7 @@ export async function sendPasswordResetEmail(
                 <tr>
                   <td align="center" style="padding:8px 0 28px;">
                     <a href="${resetUrl}"
-                       style="display:inline-block;background:#ea4c89;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 32px;border-radius:10px;">
+                       style="display:inline-block;background:#00A344;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 32px;border-radius:10px;">
                       Reset Password
                     </a>
                   </td>

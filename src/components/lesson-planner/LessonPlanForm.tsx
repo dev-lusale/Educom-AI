@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -33,8 +33,8 @@ const GRADES = [
 // Labels for optgroups in the select
 const GRADE_GROUPS = [
   { label: "Early Childhood Education", grades: ["ECE Level 1", "ECE Level 2", "ECE Level 3", "ECE Level 4"] },
-  { label: "Lower Primary (Grades 1–4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
-  { label: "Upper Primary (Grades 5–7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
+  { label: "Lower Primary (Grades 1�4)",  grades: ["Grade 1", "Grade 2", "Grade 3", "Grade 4"] },
+  { label: "Upper Primary (Grades 5�7)",  grades: ["Grade 5", "Grade 6", "Grade 7"] },
   { label: "Junior Secondary",            grades: ["Form 1", "Form 2"] },
   { label: "Senior Secondary",            grades: ["Form 3", "Form 4"] },
   { label: "Sixth Form",                  grades: ["Form 5", "Form 6"] },
@@ -151,10 +151,10 @@ export default function LessonPlanForm({
   return (
     <form onSubmit={handleSubmit} className="drib-card p-6 space-y-6">
 
-      {/* ── School Info ── */}
+      {/* -- School Info -- */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <span className="w-1.5 h-4 rounded-full bg-[#ea4c89] shrink-0" />
+          <span className="w-1.5 h-4 rounded-full bg-[#00A344] shrink-0" />
           <p className="text-[--text-primary] text-sm font-semibold">School Information</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -247,7 +247,7 @@ export default function LessonPlanForm({
 
       <div className="border-t border-[--border]" />
 
-      {/* ── Lesson Details ── */}
+      {/* -- Lesson Details -- */}
       <div>
         <div className="flex items-center gap-2 mb-4">
           <span className="w-1.5 h-4 rounded-full bg-[#007531] shrink-0" />
@@ -256,7 +256,7 @@ export default function LessonPlanForm({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className={lbl}>
-              Grade <span className="text-[#ea4c89]">*</span>
+              Grade <span className="text-[#00A344]">*</span>
             </label>
             <select
               value={grade}
@@ -276,7 +276,7 @@ export default function LessonPlanForm({
           </div>
           <div>
             <label className={lbl}>
-              Subject <span className="text-[#ea4c89]">*</span>
+              Subject <span className="text-[#00A344]">*</span>
             </label>
             <select
               value={subject}
@@ -290,7 +290,7 @@ export default function LessonPlanForm({
           </div>
           <div className="sm:col-span-2">
             <label className={lbl}>
-              Lesson Title <span className="text-[#ea4c89]">*</span>
+              Lesson Title <span className="text-[#00A344]">*</span>
             </label>
             <input
               type="text" value={lessonTitle}
@@ -302,7 +302,7 @@ export default function LessonPlanForm({
           </div>
           <div className="sm:col-span-2">
             <label className={lbl}>
-              Topic <span className="text-[#ea4c89]">*</span>
+              Topic <span className="text-[#00A344]">*</span>
             </label>
             <input
               type="text" value={topic}
@@ -349,13 +349,13 @@ export default function LessonPlanForm({
           "w-full py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2",
           loading || !grade || !subject || !lessonTitle || !topic
             ? "bg-[--bg-elevated] text-[--text-muted] cursor-not-allowed"
-            : "bg-[#ea4c89] text-white hover:bg-[#d6437a] active:scale-[0.99]"
+            : "bg-[#00A344] text-white hover:bg-[#007531] active:scale-[0.99]"
         )}
       >
         {loading ? (
           <>
             <Loader2 size={16} className="animate-spin" />
-            Generating lesson plan…
+            Generating lesson plan�
           </>
         ) : (
           "Generate Lesson Plan"

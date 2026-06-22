@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { Loader2, TrendingUp, Users, Crown, CreditCard } from "lucide-react";
@@ -22,9 +22,9 @@ const METHOD_LABELS: Record<string, string> = {
   BANK_TRANSFER: "Bank",
 };
 
-const CHART_COLORS = ["#ea4c89", "#007531", "#3b82f6", "#8b5cf6"];
+const CHART_COLORS = ["#00A344", "#007531", "#3b82f6", "#8b5cf6"];
 
-// Tooltip style — reads CSS variables at runtime so it works in both light and dark mode
+// Tooltip style � reads CSS variables at runtime so it works in both light and dark mode
 const getTooltipStyle = () => ({
   backgroundColor: "var(--bg-surface)",
   border: "1px solid var(--border)",
@@ -48,7 +48,7 @@ export default function AdminAnalyticsClient() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 size={28} className="animate-spin text-[#ea4c89]" />
+        <Loader2 size={28} className="animate-spin text-[#00A344]" />
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function AdminAnalyticsClient() {
 
   const planData = [
     { name: "Free",    value: stats.users.free,    color: "#e8e8e8" },
-    { name: "Premium", value: stats.users.premium, color: "#ea4c89" },
+    { name: "Premium", value: stats.users.premium, color: "#00A344" },
   ];
 
   const txStatusData = [
@@ -93,7 +93,7 @@ export default function AdminAnalyticsClient() {
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
         {[
           { icon: Users,      label: "Total Users",    value: stats.users.total,                  accent: "#3b82f6", bg: "#eff6ff" },
-          { icon: Crown,      label: "Premium Users",  value: stats.users.premium,                accent: "#ea4c89", bg: "#fce4ef" },
+          { icon: Crown,      label: "Premium Users",  value: stats.users.premium,                accent: "#00A344", bg: "#e6f4ec" },
           { icon: TrendingUp, label: "Total Revenue",  value: `K${stats.revenue.total.toLocaleString()}`, accent: "#007531", bg: "#e6f4ec" },
           { icon: CreditCard, label: "Completed Txns", value: stats.transactions.completed,       accent: "#8b5cf6", bg: "#f5f3ff" },
         ].map(({ icon: Icon, label, value, accent, bg }) => (
@@ -119,8 +119,8 @@ export default function AdminAnalyticsClient() {
                 <XAxis dataKey="date" tick={{ fill: "var(--text-muted)", fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "var(--text-muted)", fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <Tooltip contentStyle={getTooltipStyle()} />
-                <Line type="monotone" dataKey="users" stroke="#ea4c89" strokeWidth={2.5}
-                  dot={{ fill: "#ea4c89", r: 4 }} activeDot={{ r: 6 }} />
+                <Line type="monotone" dataKey="users" stroke="#00A344" strokeWidth={2.5}
+                  dot={{ fill: "#00A344", r: 4 }} activeDot={{ r: 6 }} />
               </LineChart>
             </ResponsiveContainer>
           ) : (
@@ -227,7 +227,7 @@ export default function AdminAnalyticsClient() {
           </div>
           <div>
             <p className="text-[--text-secondary] text-sm mb-1">This Month</p>
-            <p className="font-bold text-3xl" style={{ color: "#ea4c89" }}>K{stats.revenue.thisMonth.toLocaleString()}</p>
+            <p className="font-bold text-3xl" style={{ color: "#00A344" }}>K{stats.revenue.thisMonth.toLocaleString()}</p>
           </div>
           <div>
             <p className="text-[--text-secondary] text-sm mb-1">Last Month</p>

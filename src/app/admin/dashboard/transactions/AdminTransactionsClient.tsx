@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import { useEffect, useState, useCallback } from "react";
 import {
@@ -105,7 +105,7 @@ export default function AdminTransactionsClient() {
           <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[--text-muted]" />
           <input
             type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by ref, receipt, user emailâ€¦"
+            placeholder="Search by ref, receipt, user email…"
             className="drib-input pl-10"
           />
         </form>
@@ -137,7 +137,7 @@ export default function AdminTransactionsClient() {
       <div className="drib-card overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 size={26} className="animate-spin text-[#ea4c89]" />
+            <Loader2 size={26} className="animate-spin text-[#00A344]" />
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -164,7 +164,7 @@ export default function AdminTransactionsClient() {
                         {t.bankName && <p className="text-[--text-muted] text-[10px]">{t.bankName}</p>}
                       </td>
                       <td className="px-5 py-3.5">
-                        <p className="text-[--text-primary] font-medium">{t.user.name ?? "â€”"}</p>
+                        <p className="text-[--text-primary] font-medium">{t.user.name ?? "—"}</p>
                         <p className="text-[--text-muted] text-xs">{t.user.email}</p>
                       </td>
                       <td className="px-5 py-3.5 text-[--text-secondary] text-xs">{METHOD_LABELS[t.paymentMethod] ?? t.paymentMethod}</td>
@@ -182,7 +182,7 @@ export default function AdminTransactionsClient() {
                           </p>
                         )}
                       </td>
-                      <td className="px-5 py-3.5 text-[--text-secondary] font-mono text-xs">{t.receiptNumber ?? "â€”"}</td>
+                      <td className="px-5 py-3.5 text-[--text-secondary] font-mono text-xs">{t.receiptNumber ?? "—"}</td>
                       <td className="px-5 py-3.5 text-[--text-muted] text-xs">
                         {new Date(t.createdAt).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })}
                       </td>
@@ -201,7 +201,7 @@ export default function AdminTransactionsClient() {
       {/* Pagination */}
       {pages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} Â· {total} transactions</p>
+          <p className="text-[--text-secondary] text-sm">Page {page} of {pages} · {total} transactions</p>
           <div className="flex gap-2">
             <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
               className="drib-btn-outline py-2 px-3 text-sm disabled:opacity-40">

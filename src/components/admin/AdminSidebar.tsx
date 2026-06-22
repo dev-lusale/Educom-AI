@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -48,12 +48,12 @@ export default function AdminSidebar({ adminName, adminEmail, isOpen, onClose }:
         {/* Logo */}
         <div className="px-5 pt-6 pb-5 border-b border-[--border]">
           <Link href="/admin/dashboard" onClick={onClose} className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#d6437a] transition-colors">
+            <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#007531] transition-colors">
               <GraduationCap size={16} className="text-white" />
             </div>
             <div>
-              <p className="font-bold text-[--text-primary] text-sm tracking-tight leading-tight group-hover:text-[#ea4c89] transition-colors">Educom</p>
-              <p className="text-[#ea4c89] text-[10px] font-semibold">Admin Panel</p>
+              <p className="font-bold text-[--text-primary] text-sm tracking-tight leading-tight group-hover:text-[#00A344] transition-colors">Educom</p>
+              <p className="text-[#00A344] text-[10px] font-semibold">Admin Panel</p>
             </div>
           </Link>
         </div>
@@ -72,7 +72,7 @@ export default function AdminSidebar({ adminName, adminEmail, isOpen, onClose }:
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 group",
                   isActive
-                    ? "bg-[--accent-pale] text-[#ea4c89] font-semibold"
+                    ? "bg-[--accent-pale] text-[#00A344] font-semibold"
                     : "text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas]"
                 )}
               >
@@ -80,12 +80,12 @@ export default function AdminSidebar({ adminName, adminEmail, isOpen, onClose }:
                   size={16}
                   className={cn(
                     "shrink-0",
-                    isActive ? "text-[#ea4c89]" : "text-[--text-muted] group-hover:text-[--text-primary]"
+                    isActive ? "text-[#00A344]" : "text-[--text-muted] group-hover:text-[--text-primary]"
                   )}
                   strokeWidth={isActive ? 2.2 : 1.8}
                 />
                 <span className="flex-1">{item.label}</span>
-                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#ea4c89] shrink-0" />}
+                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-[#00A344] shrink-0" />}
               </Link>
             );
           })}
@@ -95,13 +95,13 @@ export default function AdminSidebar({ adminName, adminEmail, isOpen, onClose }:
         <div className="px-3 pb-4 pt-3 border-t border-[--border]">
           {/* Admin role badge */}
           <div className="flex items-center gap-2 px-3 py-1.5 mb-2 rounded-xl bg-[--accent-pale]">
-            <Shield size={11} className="text-[#ea4c89] shrink-0" />
-            <span className="text-[#ea4c89] text-xs font-semibold">Administrator</span>
+            <Shield size={11} className="text-[#00A344] shrink-0" />
+            <span className="text-[#00A344] text-xs font-semibold">Administrator</span>
           </div>
 
           {/* Admin user row */}
           <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[--bg-canvas] transition-all cursor-default">
-            <div className="w-8 h-8 rounded-full bg-[#ea4c89] flex items-center justify-center text-white text-xs font-bold shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#00A344] flex items-center justify-center text-white text-xs font-bold shrink-0">
               {adminName[0]?.toUpperCase() ?? "A"}
             </div>
             <div className="flex-1 min-w-0">

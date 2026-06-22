@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useRef, useCallback } from "react";
 import {
@@ -11,7 +11,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 
-// ── Constants ─────────────────────────────────────────────────────────────────
+// -- Constants -----------------------------------------------------------------
 
 const MAX_FILE_MB   = 5;
 const FREE_MAX_FILES = 3;
@@ -32,7 +32,7 @@ const GRADES = [
   "Form 1", "Form 2", "Form 3", "Form 4", "Form 5", "Form 6",
 ];
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------------
 
 interface Resource {
   id: string;
@@ -53,7 +53,7 @@ interface Props {
   userName: string;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------------
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -75,7 +75,7 @@ function FileTypeIcon({ type }: { type: string }) {
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
+// -- Main Component ------------------------------------------------------------
 
 export default function ResourcesClient({ initialResources, isPremium, userName }: Props) {
   const [resources,      setResources]      = useState<Resource[]>(initialResources);
@@ -95,7 +95,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
   const uploadCount  = resources.length;
   const atFreeLimit  = !isPremium && uploadCount >= FREE_MAX_FILES;
 
-  // ── File selection ──────────────────────────────────────────────────────────
+  // -- File selection ----------------------------------------------------------
 
   const handleFileSelect = useCallback((file: File) => {
     const ext = "." + (file.name.split(".").pop()?.toLowerCase() ?? "");
@@ -122,7 +122,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
     if (file) handleFileSelect(file);
   }, [handleFileSelect]);
 
-  // ── Upload ──────────────────────────────────────────────────────────────────
+  // -- Upload ------------------------------------------------------------------
 
   async function handleUpload() {
     if (!selectedFile) return;
@@ -152,7 +152,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
       if (data.chunksCreated > 0) {
         toast.success(`Learned! ${data.chunksCreated} knowledge chunks indexed from "${selectedFile.name}".`);
       } else {
-        toast(`"${selectedFile.name}" saved — AI indexing will complete shortly.`, { icon: "⏳" });
+        toast(`"${selectedFile.name}" saved � AI indexing will complete shortly.`, { icon: "?" });
       }
 
       resetForm();
@@ -170,7 +170,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
-  // ── Delete ──────────────────────────────────────────────────────────────────
+  // -- Delete ------------------------------------------------------------------
 
   async function handleDelete(id: string, name: string) {
     if (!confirm(`Delete "${name}"?\n\nThis will remove it from your library and the AI will no longer use it.`)) return;
@@ -196,12 +196,12 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
   return (
     <main className="px-6 py-8 max-w-7xl mx-auto">
 
-      {/* ── Header ── */}
+      {/* -- Header -- */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
         <div>
           <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">My Resources</h1>
           <p className="text-[--text-secondary] text-sm">
-            Upload teaching materials — the AI learns from them and uses them when you generate lesson plans and assessments.
+            Upload teaching materials � the AI learns from them and uses them when you generate lesson plans and assessments.
           </p>
         </div>
         <button
@@ -216,11 +216,11 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         </button>
       </div>
 
-      {/* ── How it works ── */}
+      {/* -- How it works -- */}
       <div className="drib-card p-5 mb-6">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Brain size={18} className="text-[#ea4c89]" />
+          <div className="w-10 h-10 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Brain size={18} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold text-sm mb-1">How your resources power the AI</p>
@@ -235,7 +235,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
           {[
             { icon: Upload,   label: "1. Upload",      desc: `Add PDFs, DOCX, or TXT files up to ${MAX_FILE_MB} MB.`,               color: "#3b82f6", bg: "#eff6ff" },
             { icon: Database, label: "2. AI Learns",   desc: "The AI reads, chunks, and stores your content in its knowledge base.", color: "#007531", bg: "#e6f4ec" },
-            { icon: Sparkles, label: "3. Better Plans", desc: "All AI responses are grounded in your own teaching materials.",        color: "#ea4c89", bg: "#fce4ef" },
+            { icon: Sparkles, label: "3. Better Plans", desc: "All AI responses are grounded in your own teaching materials.",        color: "#00A344", bg: "#e6f4ec" },
           ].map(({ icon: Icon, label, desc, color, bg }) => (
             <div key={label} className="flex items-start gap-3">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: bg }}>
@@ -250,11 +250,11 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         </div>
       </div>
 
-      {/* ── Free plan quota bar ── */}
+      {/* -- Free plan quota bar -- */}
       {!isPremium && (
         <div className={cn(
           "drib-card p-4 mb-6 border",
-          atFreeLimit ? "border-[#ea4c89] bg-[#fce4ef]/20" : "border-[--border]"
+          atFreeLimit ? "border-[#00A344] bg-[#e6f4ec]/20" : "border-[--border]"
         )}>
           <div className="flex items-center justify-between mb-2">
             <p className="text-[--text-primary] text-sm font-semibold">
@@ -262,7 +262,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
             </p>
             <span className={cn(
               "text-xs font-bold px-2.5 py-0.5 rounded-full",
-              atFreeLimit ? "bg-[#fce4ef] text-[#ea4c89]" : "bg-[--bg-elevated] text-[--text-secondary]"
+              atFreeLimit ? "bg-[#e6f4ec] text-[#00A344]" : "bg-[--bg-elevated] text-[--text-secondary]"
             )}>
               {uploadCount} / {FREE_MAX_FILES}
             </span>
@@ -272,7 +272,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
             <div
               className={cn(
                 "h-full rounded-full transition-all",
-                atFreeLimit ? "bg-[#ea4c89]" : "bg-[#007531]"
+                atFreeLimit ? "bg-[#00A344]" : "bg-[#007531]"
               )}
               style={{ width: `${Math.min((uploadCount / FREE_MAX_FILES) * 100, 100)}%` }}
             />
@@ -287,18 +287,18 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
           ) : (
             <p className="text-[--text-muted] text-xs">
               {FREE_MAX_FILES - uploadCount} upload{FREE_MAX_FILES - uploadCount !== 1 ? "s" : ""} remaining on the free plan.
-              <Link href="/payment" className="text-[#ea4c89] hover:underline ml-1">Upgrade for unlimited →</Link>
+              <Link href="/payment" className="text-[#00A344] hover:underline ml-1">Upgrade for unlimited ?</Link>
             </p>
           )}
         </div>
       )}
 
-      {/* ── Stats ── */}
+      {/* -- Stats -- */}
       {resources.length > 0 && (
         <div className="grid grid-cols-3 gap-4 mb-6">
           {[
             { value: resources.length,           label: "Resources Uploaded",    color: "#0d0d0d" },
-            { value: totalChunks.toLocaleString(), label: "AI Knowledge Chunks",  color: "#ea4c89" },
+            { value: totalChunks.toLocaleString(), label: "AI Knowledge Chunks",  color: "#00A344" },
             { value: formatBytes(totalSize),       label: "Total Storage Used",   color: "#007531" },
           ].map(({ value, label, color }) => (
             <div key={label} className="drib-card p-4 text-center">
@@ -309,7 +309,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         </div>
       )}
 
-      {/* ── Upload Modal ── */}
+      {/* -- Upload Modal -- */}
       {showUploadForm && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
           <div className="bg-[--bg-surface] rounded-2xl p-6 w-full max-w-lg border border-[--border] shadow-xl">
@@ -317,7 +317,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h2 className="text-[--text-primary] font-semibold">Upload Resource</h2>
-                <p className="text-[--text-muted] text-xs mt-0.5">PDF, DOCX, or TXT — max {MAX_FILE_MB} MB</p>
+                <p className="text-[--text-muted] text-xs mt-0.5">PDF, DOCX, or TXT � max {MAX_FILE_MB} MB</p>
               </div>
               <button onClick={resetForm} className="w-8 h-8 rounded-lg flex items-center justify-center text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all">
                 <X size={16} />
@@ -333,12 +333,12 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
                 onClick={() => fileInputRef.current?.click()}
                 className={cn(
                   "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all",
-                  dragOver ? "border-[#ea4c89] bg-[#fce4ef]/30" : "border-[--border] hover:border-[#ea4c89]/40 hover:bg-[--bg-canvas]"
+                  dragOver ? "border-[#00A344] bg-[#e6f4ec]/30" : "border-[--border] hover:border-[#00A344]/40 hover:bg-[--bg-canvas]"
                 )}
               >
                 <Upload size={26} className="text-[--text-muted] mx-auto mb-3" />
                 <p className="text-[--text-primary] font-semibold text-sm mb-1">Drop your file here or click to browse</p>
-                <p className="text-[--text-muted] text-xs">PDF, DOCX, TXT — up to {MAX_FILE_MB} MB</p>
+                <p className="text-[--text-muted] text-xs">PDF, DOCX, TXT � up to {MAX_FILE_MB} MB</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -384,7 +384,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="e.g. Form 3 Chemistry notes — Term 2"
+                  placeholder="e.g. Form 3 Chemistry notes � Term 2"
                   className={inp}
                   maxLength={200}
                 />
@@ -409,7 +409,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
                 className="flex-1 drib-btn-primary flex items-center justify-center gap-2 text-sm py-2.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {uploading ? (
-                  <><Loader2 size={14} className="animate-spin" /> Learning…</>
+                  <><Loader2 size={14} className="animate-spin" /> Learning�</>
                 ) : (
                   <><Brain size={14} /> Upload &amp; Teach AI</>
                 )}
@@ -419,7 +419,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         </div>
       )}
 
-      {/* ── Library ── */}
+      {/* -- Library -- */}
       {resources.length > 0 ? (
         <div>
           <div className="flex items-center justify-between mb-4">
@@ -438,18 +438,18 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
           </div>
         </div>
       ) : (
-        /* ── Empty state ── */
+        /* -- Empty state -- */
         <div
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           className={cn(
             "drib-card p-14 text-center border-2 border-dashed transition-all",
-            dragOver ? "border-[#ea4c89] bg-[#fce4ef]/10" : "border-[--border]"
+            dragOver ? "border-[#00A344] bg-[#e6f4ec]/10" : "border-[--border]"
           )}
         >
-          <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-5">
-            <FolderOpen size={24} className="text-[#ea4c89]" />
+          <div className="w-14 h-14 bg-[#e6f4ec] rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <FolderOpen size={24} className="text-[#00A344]" />
           </div>
           <h2 className="text-[--text-primary] font-semibold text-lg mb-2">No resources yet</h2>
           <p className="text-[--text-secondary] text-sm max-w-sm mx-auto mb-6">
@@ -461,7 +461,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
               onClick={() => setShowUploadForm(true)}
               className="drib-btn-primary inline-flex items-center gap-2 text-sm"
             >
-              <Brain size={14} /> Teach the AI — Upload Now
+              <Brain size={14} /> Teach the AI � Upload Now
             </button>
             <Link href="/lesson-planner" className="drib-btn-outline inline-flex items-center gap-2 text-sm">
               <Sparkles size={14} /> Generate a Lesson Plan
@@ -471,11 +471,11 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
         </div>
       )}
 
-      {/* ── Premium upsell (if not free-limit bar already shown) ── */}
+      {/* -- Premium upsell (if not free-limit bar already shown) -- */}
       {!isPremium && !atFreeLimit && resources.length > 0 && (
-        <div className="mt-6 drib-card p-6 flex items-center gap-5 border-[#f5b8d4]">
-          <div className="w-11 h-11 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Crown size={20} className="text-[#ea4c89]" />
+        <div className="mt-6 drib-card p-6 flex items-center gap-5 border-[#86efac]">
+          <div className="w-11 h-11 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={20} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold mb-1">Premium: Unlimited Resources</p>
@@ -493,7 +493,7 @@ export default function ResourcesClient({ initialResources, isPremium, userName 
   );
 }
 
-// ── Resource Card ─────────────────────────────────────────────────────────────
+// -- Resource Card -------------------------------------------------------------
 
 function ResourceCard({ resource, onDelete, isDeleting }: {
   resource: Resource;
@@ -524,7 +524,7 @@ function ResourceCard({ resource, onDelete, isDeleting }: {
 
         <div className="flex flex-wrap items-center gap-2.5 mt-1.5">
           {resource.subject && (
-            <span className="text-xs px-2 py-0.5 bg-[#fce4ef] text-[#ea4c89] rounded-full">{resource.subject}</span>
+            <span className="text-xs px-2 py-0.5 bg-[#e6f4ec] text-[#00A344] rounded-full">{resource.subject}</span>
           )}
           {resource.grade && (
             <span className="text-xs px-2 py-0.5 bg-[--bg-elevated] text-[--text-secondary] rounded-full">{resource.grade}</span>

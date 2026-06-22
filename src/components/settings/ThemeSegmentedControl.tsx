@@ -42,7 +42,7 @@ export default function ThemeSegmentedControl() {
               "relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold",
               "transition-all duration-200 select-none",
               isActive
-                ? "bg-[#ea4c89] text-white shadow-pink-sm"
+                ? "bg-[#00A344] text-white shadow-green-sm"
                 : "text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-elevated]"
             )}
           >

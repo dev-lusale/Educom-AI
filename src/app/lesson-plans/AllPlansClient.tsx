@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import Link from "next/link";
@@ -135,7 +135,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           lessonPlanId: plan.id,
-          title: `${plan.grade} ${plan.subject} – ${plan.topic}`,
+          title: `${plan.grade} ${plan.subject} � ${plan.topic}`,
           grade: plan.grade,
           subject: plan.subject,
           topic: plan.topic,
@@ -155,12 +155,12 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
     }
   }
 
-  // ── Empty state ──────────────────────────────────────────────────
+  // -- Empty state --------------------------------------------------
   if (plans.length === 0) {
     return (
       <div className="drib-card p-16 text-center">
-        <div className="w-14 h-14 bg-[#fce4ef] rounded-2xl flex items-center justify-center mx-auto mb-5">
-          <BookOpen size={26} className="text-[#ea4c89]" />
+        <div className="w-14 h-14 bg-[#e6f4ec] rounded-2xl flex items-center justify-center mx-auto mb-5">
+          <BookOpen size={26} className="text-[#00A344]" />
         </div>
         <p className="text-[--text-primary] font-semibold text-base mb-2">No lesson plans yet</p>
         <p className="text-[--text-muted] text-sm mb-6">
@@ -175,7 +175,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
 
   return (
     <div>
-      {/* ── Toolbar ── */}
+      {/* -- Toolbar -- */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
@@ -184,7 +184,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by topic, subject or grade…"
+            placeholder="Search by topic, subject or grade�"
             className="drib-input pl-9 pr-9"
           />
           {search && (
@@ -226,7 +226,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
         </div>
       </div>
 
-      {/* ── Column headers (sort controls) ── */}
+      {/* -- Column headers (sort controls) -- */}
       <div className="hidden sm:grid grid-cols-[1fr_120px_120px_100px_80px_44px] gap-3 px-4 mb-2">
         {(
           [
@@ -244,9 +244,9 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
             {label}
             {sortKey === key ? (
               sortDir === "asc" ? (
-                <SortAsc size={11} className="text-[#ea4c89]" />
+                <SortAsc size={11} className="text-[#00A344]" />
               ) : (
-                <SortDesc size={11} className="text-[#ea4c89]" />
+                <SortDesc size={11} className="text-[#00A344]" />
               )
             ) : null}
           </button>
@@ -255,21 +255,21 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
         <div /> {/* Actions */}
       </div>
 
-      {/* ── Result count ── */}
+      {/* -- Result count -- */}
       {(search || filterSubject !== "All" || filterGrade !== "All") && (
         <p className="text-xs text-[--text-muted] mb-3 px-1">
           {filtered.length} result{filtered.length !== 1 ? "s" : ""}
           {" "}
           <button
             onClick={() => { setSearch(""); setFilterSubject("All"); setFilterGrade("All"); }}
-            className="text-[#ea4c89] hover:text-[#d6437a] font-medium"
+            className="text-[#00A344] hover:text-[#007531] font-medium"
           >
             Clear filters
           </button>
         </p>
       )}
 
-      {/* ── Plan list ── */}
+      {/* -- Plan list -- */}
       {filtered.length === 0 ? (
         <div className="drib-card p-10 text-center">
           <p className="text-[--text-primary] font-semibold text-sm mb-1">No plans match your filters</p>
@@ -290,17 +290,17 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                 }`}
               >
                 {/* Icon */}
-                <div className="w-10 h-10 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-                  <BookOpen size={17} className="text-[#ea4c89]" />
+                <div className="w-10 h-10 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+                  <BookOpen size={17} className="text-[#00A344]" />
                 </div>
 
                 {/* Title + meta */}
                 <div className="flex-1 min-w-0">
                   <p className="text-[--text-primary] font-semibold text-sm truncate">{plan.topic}</p>
                   <p className="text-[--text-muted] text-xs mt-0.5">
-                    {plan.grade} · {plan.subject}
+                    {plan.grade} � {plan.subject}
                     {plan.duration && (
-                      <span className="ml-2 text-[#c4c4c8]">· {plan.duration} min</span>
+                      <span className="ml-2 text-[#c4c4c8]">� {plan.duration} min</span>
                     )}
                   </p>
                 </div>
@@ -348,7 +348,7 @@ export default function AllPlansClient({ plans: initialPlans, isPremium }: Props
                         onClick={() => setOpenMenuId(null)}
                         className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-colors"
                       >
-                        <Pencil size={13} className="text-[#ea4c89]" />
+                        <Pencil size={13} className="text-[#00A344]" />
                         Edit
                       </Link>
                       <button

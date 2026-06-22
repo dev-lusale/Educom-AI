@@ -1,4 +1,4 @@
-﻿import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Navbar from "@/components/layout/Navbar";
@@ -83,8 +83,8 @@ export default async function SettingsPage() {
         {/* Subscription */}
         <div className="drib-card p-6 mb-5">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
-              <Crown size={16} className="text-[#ea4c89]" />
+            <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center">
+              <Crown size={16} className="text-[#00A344]" />
             </div>
             <h2 className="text-[--text-primary] font-semibold">Subscription</h2>
           </div>
@@ -92,14 +92,14 @@ export default async function SettingsPage() {
           {isPremium ? (
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#fce4ef] text-[#ea4c89]">Premium Plan ✦</span>
+                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#e6f4ec] text-[#00A344]">Premium Plan ?</span>
                 <span className={cn(
                   "px-2.5 py-0.5 rounded-full text-xs font-semibold",
                   subInfo.status === "EXPIRING_SOON"
                     ? "bg-yellow-100 text-yellow-600"
                     : "bg-[#e6f4ec] text-[#007531]"
                 )}>
-                  {subInfo.status === "EXPIRING_SOON" ? "⚠ Expiring Soon" : "✓ Active"}
+                  {subInfo.status === "EXPIRING_SOON" ? "? Expiring Soon" : "? Active"}
                 </span>
               </div>
 
@@ -117,9 +117,9 @@ export default async function SettingsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: Calendar, label: "Start Date", value: subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "—" },
+                  { icon: Calendar, label: "Start Date", value: subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "�" },
                   { icon: Calendar, label: "Expiry Date", value: subInfo.endDate ? new Date(subInfo.endDate).toLocaleDateString("en-ZM", { day: "numeric", month: "long", year: "numeric" }) : "No expiry" },
-                  { icon: CreditCard, label: "Payment Method", value: subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—" },
+                  { icon: CreditCard, label: "Payment Method", value: subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "�" },
                 ].map(({ icon: Icon, label, value }) => (
                   <div key={label}>
                     <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Icon size={10} /> {label}</p>
@@ -129,7 +129,7 @@ export default async function SettingsPage() {
                 <div>
                   <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
                   <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-500" : "text-[--text-primary]")}>
-                    {subInfo.daysRemaining !== null ? subInfo.daysRemaining : "∞"}
+                    {subInfo.daysRemaining !== null ? subInfo.daysRemaining : "8"}
                   </p>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default async function SettingsPage() {
           </div>
           <div className="space-y-0">
 
-            {/* ── Theme Preference ── */}
+            {/* -- Theme Preference -- */}
             <div className="flex items-center justify-between py-3.5 border-b border-[--border]">
               <div>
                 <p className="text-[--text-primary] text-sm font-medium">Theme Preference</p>
@@ -218,7 +218,7 @@ export default async function SettingsPage() {
               <ThemeSegmentedControl />
             </div>
 
-            {/* ── Change password ── */}
+            {/* -- Change password -- */}
             <div className="flex items-center justify-between py-3.5 border-b border-[--border]">
               <div>
                 <p className="text-[--text-primary] text-sm font-medium">Password</p>
@@ -232,7 +232,7 @@ export default async function SettingsPage() {
               </Link>
             </div>
 
-            {/* ── Connected account ── */}
+            {/* -- Connected account -- */}
             <div className="flex items-center justify-between py-3.5">
               <div>
                 <p className="text-[--text-primary] text-sm font-medium">Email Address</p>

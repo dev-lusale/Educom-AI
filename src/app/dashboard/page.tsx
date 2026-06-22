@@ -1,4 +1,4 @@
-﻿import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -60,7 +60,7 @@ export default async function DashboardPage() {
   ).size;
 
   const plansWithEnrollment = recentPlansForStats.filter(
-    (p) => p.enrollment && p.enrollment !== "—" && p.enrollment.trim() !== ""
+    (p) => p.enrollment && p.enrollment !== "�" && p.enrollment.trim() !== ""
   ).length;
   const completionRate =
     planCount > 0
@@ -94,7 +94,7 @@ export default async function DashboardPage() {
   return (
     <main className="px-6 py-8 max-w-7xl mx-auto min-h-screen bg-[--bg-canvas] transition-colors duration-200">
 
-      {/* ── Page header ── */}
+      {/* -- Page header -- */}
       <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
         <div>
           <h1 className="text-2xl font-bold text-[--text-primary] mb-1 tracking-tight">
@@ -118,7 +118,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* ── Subscription banners ── */}
+      {/* -- Subscription banners -- */}
       {isPremium && subInfo.status === "EXPIRING_SOON" && subInfo.daysRemaining !== null && (
         <div className="drib-card p-4 mb-6 flex items-center gap-4 border-l-4 border-l-yellow-400">
           <div className="w-9 h-9 bg-yellow-100 rounded-xl flex items-center justify-center shrink-0">
@@ -151,19 +151,19 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* ── 4-stat grid ── */}
+      {/* -- 4-stat grid -- */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
           icon={BookOpen}
           label="Lesson Plans"
           value={planCount}
-          accent="#ea4c89"
-          accentBg="#fce4ef"
+          accent="#00A344"
+          accentBg="#e6f4ec"
         />
         <StatCard
           icon={Users}
           label="Students Managed"
-          value={studentCount || "—"}
+          value={studentCount || "�"}
           accent="#007531"
           accentBg="#e6f4ec"
         />
@@ -177,19 +177,19 @@ export default async function DashboardPage() {
         <StatCard
           icon={BarChart2}
           label="Completion Rate"
-          value={planCount > 0 ? `${completionRate}%` : "—"}
+          value={planCount > 0 ? `${completionRate}%` : "�"}
           accent="#8b5cf6"
           accentBg="#f5f3ff"
           isText
         />
       </div>
 
-      {/* ── Premium status card ── */}
+      {/* -- Premium status card -- */}
       {isPremium && subInfo.endDate && (
         <div className="drib-card p-5 mb-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
-              <Crown size={16} className="text-[#ea4c89]" />
+            <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center">
+              <Crown size={16} className="text-[#00A344]" />
             </div>
             <div>
               <p className="text-[--text-primary] font-semibold text-sm">Premium Subscription Active</p>
@@ -207,15 +207,15 @@ export default async function DashboardPage() {
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <MetaField icon={Calendar} label="Start Date" value={subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" }) : "—"} />
+            <MetaField icon={Calendar} label="Start Date" value={subInfo.startDate ? new Date(subInfo.startDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" }) : "�"} />
             <MetaField icon={Calendar} label="Expiry Date" value={new Date(subInfo.endDate).toLocaleDateString("en-ZM", { day: "numeric", month: "short", year: "numeric" })} />
             <div>
               <p className="text-[--text-muted] text-xs mb-1 flex items-center gap-1"><Clock size={10} /> Days Remaining</p>
               <p className={cn("font-bold text-xl", subInfo.daysRemaining !== null && subInfo.daysRemaining <= 7 ? "text-yellow-600" : "text-[--text-primary]")}>
-                {subInfo.daysRemaining ?? "∞"}
+                {subInfo.daysRemaining ?? "8"}
               </p>
             </div>
-            <MetaField icon={CreditCard} label="Payment" value={subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "—"} />
+            <MetaField icon={CreditCard} label="Payment" value={subInfo.paymentMethod ? (METHOD_LABELS[subInfo.paymentMethod] ?? subInfo.paymentMethod) : "�"} />
           </div>
           {subInfo.receiptNumber && (
             <div className="mt-3 pt-3 border-t border-[--border]">
@@ -227,7 +227,7 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* ── Free plan usage bar ── */}
+      {/* -- Free plan usage bar -- */}
       {!isPremium && (
         <div className="drib-card p-5 mb-6">
           <div className="flex items-center justify-between mb-3">
@@ -237,7 +237,7 @@ export default async function DashboardPage() {
                 {monthlyCount} of {FREE_LIMIT} lesson plans this month
               </p>
             </div>
-            <Link href="/payment" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#fce4ef] text-[#ea4c89] hover:bg-[#f5b8d4]/30 transition-all">
+            <Link href="/payment" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#e6f4ec] text-[#00A344] hover:bg-[#86efac]/30 transition-all">
               <Crown size={10} /> Upgrade
             </Link>
           </div>
@@ -245,7 +245,7 @@ export default async function DashboardPage() {
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-500",
-                usagePercent >= 100 ? "bg-red-500" : usagePercent >= 80 ? "bg-yellow-400" : "bg-[#ea4c89]"
+                usagePercent >= 100 ? "bg-red-500" : usagePercent >= 80 ? "bg-yellow-400" : "bg-[#00A344]"
               )}
               style={{ width: `${usagePercent}%` }}
             />
@@ -258,16 +258,16 @@ export default async function DashboardPage() {
         </div>
       )}
 
-      {/* ── Main two-column layout ── */}
+      {/* -- Main two-column layout -- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* Recent Plans — 2 cols */}
+        {/* Recent Plans � 2 cols */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[--text-primary] font-semibold text-base">Recent Lesson Plans</h2>
             <Link
               href="/lesson-plans"
-              className="text-[#ea4c89] text-xs hover:text-[#d6437a] transition-colors flex items-center gap-1 font-medium"
+              className="text-[#00A344] text-xs hover:text-[#007531] transition-colors flex items-center gap-1 font-medium"
             >
               View all <ArrowRight size={12} />
             </Link>
@@ -281,20 +281,20 @@ export default async function DashboardPage() {
           {/* AI Assistant panel */}
           <div className="rounded-2xl p-5 flex flex-col gap-3 bg-gradient-to-br from-[#1a0a12] to-[#2d1022] border border-[#3d1a2e]">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-[#ea4c89] rounded-lg flex items-center justify-center">
+              <div className="w-7 h-7 bg-[#00A344] rounded-lg flex items-center justify-center">
                 <Sparkles size={13} className="text-white" />
               </div>
               <span className="text-white font-semibold text-sm">AI Assistant</span>
-              <span className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#ea4c89]/20 text-[#f082ac] border border-[#ea4c89]/30">
+              <span className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#00A344]/20 text-[#00c455] border border-[#00A344]/30">
                 BETA
               </span>
             </div>
             <p className="text-white/55 text-xs leading-relaxed">
-              Hi {firstName}! Ask anything — lesson ideas, CBC guidance, teaching strategies.
+              Hi {firstName}! Ask anything � lesson ideas, CBC guidance, teaching strategies.
             </p>
             <Link
               href="/assistant"
-              className="flex items-center justify-between gap-2 text-sm px-4 py-2.5 mt-1 rounded-xl bg-[#ea4c89] text-white font-semibold hover:bg-[#d6437a] transition-colors"
+              className="flex items-center justify-between gap-2 text-sm px-4 py-2.5 mt-1 rounded-xl bg-[#00A344] text-white font-semibold hover:bg-[#007531] transition-colors"
             >
               <span>Open Assistant</span>
               <ArrowRight size={14} />
@@ -309,8 +309,8 @@ export default async function DashboardPage() {
                 href="/lesson-planner"
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-canvas] transition-all group"
               >
-                <div className="w-7 h-7 bg-[#fce4ef] rounded-lg flex items-center justify-center shrink-0">
-                  <Plus size={14} className="text-[#ea4c89]" />
+                <div className="w-7 h-7 bg-[#e6f4ec] rounded-lg flex items-center justify-center shrink-0">
+                  <Plus size={14} className="text-[#00A344]" />
                 </div>
                 New Lesson Plan
               </Link>
@@ -335,10 +335,10 @@ export default async function DashboardPage() {
               {!isPremium && (
                 <Link
                   href="/payment"
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#ea4c89] hover:bg-[--accent-pale] transition-all group"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-[#00A344] hover:bg-[--accent-pale] transition-all group"
                 >
                   <div className="w-7 h-7 bg-[--accent-pale] rounded-lg flex items-center justify-center shrink-0">
-                    <Crown size={14} className="text-[#ea4c89]" />
+                    <Crown size={14} className="text-[#00A344]" />
                   </div>
                   Upgrade to Premium
                 </Link>
@@ -351,7 +351,7 @@ export default async function DashboardPage() {
   );
 }
 
-// ── Sub-components ─────────────────────────────────────────────
+// -- Sub-components ---------------------------------------------
 
 function StatCard({
   icon: Icon, label, value, accent, accentBg, isText,

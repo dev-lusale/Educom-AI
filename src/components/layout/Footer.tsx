@@ -1,4 +1,4 @@
-ï»¿import Link from "next/link";
+import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 
 export default function Footer() {
@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 bg-[#ea4c89] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#00A344] rounded-lg flex items-center justify-center">
                 <GraduationCap size={18} className="text-white" />
               </div>
               <span className="font-bold text-lg text-[--text-primary] tracking-tight">Educom</span>
@@ -30,7 +30,7 @@ export default function Footer() {
                 { label: "Dashboard", href: "/dashboard" },
               ].map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-[--text-secondary] hover:text-[#ea4c89] text-sm transition-colors">
+                  <Link href={l.href} className="text-[--text-secondary] hover:text-[#00A344] text-sm transition-colors">
                     {l.label}
                   </Link>
                 </li>
@@ -46,7 +46,7 @@ export default function Footer() {
                 { label: "Terms of Service", href: "/terms" },
               ].map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-[--text-secondary] hover:text-[#ea4c89] text-sm transition-colors">
+                  <Link href={l.href} className="text-[--text-secondary] hover:text-[#00A344] text-sm transition-colors">
                     {l.label}
                   </Link>
                 </li>
@@ -57,10 +57,10 @@ export default function Footer() {
 
         <div className="border-t border-[--border] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[--text-muted] text-xs">
-            Â© {new Date().getFullYear()} Educom. Built for Zambian educators.
+            © {new Date().getFullYear()} Educom. Built for Zambian educators.
           </p>
           <p className="text-[--text-muted] text-xs">
-            Aligned with TCZ Â· CBC Â· ECZ Â· 2022â€“2026 Strategic Plan
+            Aligned with TCZ · CBC · ECZ · 2022–2026 Strategic Plan
           </p>
         </div>
       </div>

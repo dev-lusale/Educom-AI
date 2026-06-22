@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -119,7 +119,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
         setStep("failed");
         toast.error(data.message ?? "Payment failed.");
       } else {
-        toast("Payment still processing. Please wait.", { icon: "⏳" });
+        toast("Payment still processing. Please wait.", { icon: "?" });
       }
     } catch {
       toast.error("Verification failed. Please try again.");
@@ -141,25 +141,25 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
 
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#fce4ef] rounded-2xl mb-4">
-            <Crown size={24} className="text-[#ea4c89]" />
+          <div className="inline-flex items-center justify-center w-14 h-14 bg-[#e6f4ec] rounded-2xl mb-4">
+            <Crown size={24} className="text-[#00A344]" />
           </div>
           <h1 className="text-2xl font-bold text-[--text-primary] mb-2 tracking-tight">
             {isRenewal ? "Renew Premium" : "Upgrade to Premium"}
           </h1>
           <p className="text-[--text-secondary] text-sm">
             {isRenewal && daysRemaining !== null && daysRemaining !== undefined && daysRemaining > 0
-              ? `Hello ${userName} — your subscription expires in ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""}. Renew to keep full access.`
+              ? `Hello ${userName} � your subscription expires in ${daysRemaining} day${daysRemaining !== 1 ? "s" : ""}. Renew to keep full access.`
               : isRenewal
-              ? `Hello ${userName} — your subscription has expired. Renew to restore premium access.`
-              : `Hello ${userName} — unlock unlimited lesson plans, community sharing, and more.`}
+              ? `Hello ${userName} � your subscription has expired. Renew to restore premium access.`
+              : `Hello ${userName} � unlock unlimited lesson plans, community sharing, and more.`}
           </p>
         </div>
 
         {/* Price card */}
-        <div className="drib-card p-5 mb-7 flex items-center justify-between border-[#f5b8d4] bg-gradient-to-r from-[#fce4ef]/30 to-white">
+        <div className="drib-card p-5 mb-7 flex items-center justify-between border-[#86efac] bg-gradient-to-r from-[#e6f4ec]/30 to-white">
           <div>
-            <p className="text-[#ea4c89] font-semibold text-sm mb-1">Premium Plan</p>
+            <p className="text-[#00A344] font-semibold text-sm mb-1">Premium Plan</p>
             <div className="flex items-end gap-1">
               <span className="text-[--text-primary] text-3xl font-bold">K150</span>
               <span className="text-[--text-muted] text-sm mb-0.5">/month</span>
@@ -168,13 +168,13 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           <ul className="text-[--text-secondary] text-xs space-y-1.5">
             {["Unlimited lesson plans", "Unlimited assessments & exams", "Community sharing", "PDF export", "Priority support"].map((f) => (
               <li key={f} className="flex items-center gap-1.5">
-                <CheckCircle2 size={11} className="text-[#ea4c89]" /> {f}
+                <CheckCircle2 size={11} className="text-[#00A344]" /> {f}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* ── Step: Select ── */}
+        {/* -- Step: Select -- */}
         {step === "select" && (
           <div className="drib-card p-6">
             <p className="text-[--text-muted] text-xs font-semibold uppercase tracking-wider mb-4">Choose Payment Method</p>
@@ -188,7 +188,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                   className={cn(
                     "px-5 py-2.5 text-sm font-medium transition-colors relative",
                     activeTab === tab.key
-                      ? "text-[#ea4c89] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#ea4c89] after:rounded-t"
+                      ? "text-[#00A344] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#00A344] after:rounded-t"
                       : "text-[--text-secondary] hover:text-[--text-primary]"
                   )}
                 >
@@ -202,7 +202,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               <div className="grid grid-cols-3 gap-3">
                 {METHODS.filter((m) => m.id !== "BANK_TRANSFER").map((m) => (
                   <button key={m.id} onClick={() => handleSelectMethod(m.id)}
-                    className="group flex flex-col items-center justify-center gap-2 rounded-xl p-4 bg-[--bg-canvas] border border-[--border] hover:border-[#ea4c89]/50 hover:bg-[#fce4ef]/30 transition-all">
+                    className="group flex flex-col items-center justify-center gap-2 rounded-xl p-4 bg-[--bg-canvas] border border-[--border] hover:border-[#00A344]/50 hover:bg-[#e6f4ec]/30 transition-all">
                     <div className="w-13 h-13 rounded-lg overflow-hidden flex items-center justify-center bg-[--bg-surface] p-1">
                       <Image src={m.logo} alt={m.label} width={44} height={44} className="object-contain" />
                     </div>
@@ -236,7 +236,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           </div>
         )}
 
-        {/* ── Step: Details ── */}
+        {/* -- Step: Details -- */}
         {step === "details" && selectedMethodData && (
           <div className="drib-card p-6">
             <button onClick={() => setStep("select")}
@@ -250,7 +250,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
               </div>
               <div>
                 <p className="text-[--text-primary] font-semibold text-sm">{selectedMethodData.label}</p>
-                <p className="text-[--text-muted] text-xs">K150 ZMW · 30-day Premium access</p>
+                <p className="text-[--text-muted] text-xs">K150 ZMW � 30-day Premium access</p>
               </div>
             </div>
 
@@ -282,17 +282,17 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                 </>
               )}
               <button type="submit" disabled={loading} className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-base">
-                {loading ? <><Loader2 size={17} className="animate-spin" /> Processing…</> : <><Zap size={17} /> Pay K150 Now</>}
+                {loading ? <><Loader2 size={17} className="animate-spin" /> Processing�</> : <><Zap size={17} /> Pay K150 Now</>}
               </button>
             </form>
           </div>
         )}
 
-        {/* ── Step: Processing ── */}
+        {/* -- Step: Processing -- */}
         {step === "processing" && result && (
           <div className="drib-card p-6 text-center">
-            <div className="w-14 h-14 bg-[#fce4ef] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Clock size={24} className="text-[#ea4c89] animate-pulse" />
+            <div className="w-14 h-14 bg-[#e6f4ec] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Clock size={24} className="text-[#00A344] animate-pulse" />
             </div>
             <h2 className="text-[--text-primary] font-bold text-xl mb-2">Payment Initiated</h2>
 
@@ -305,7 +305,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                 <div className="bg-[--bg-canvas] border border-[--border] rounded-xl p-4 flex items-center justify-between mb-5">
                   <div>
                     <p className="text-[--text-muted] text-xs mb-1">Reference Code</p>
-                    <p className="text-[#ea4c89] font-mono font-semibold">{result.referenceCode}</p>
+                    <p className="text-[#00A344] font-mono font-semibold">{result.referenceCode}</p>
                   </div>
                   <button onClick={() => copyToClipboard(result.referenceCode ?? "")}
                     className="flex items-center gap-1.5 text-xs text-[--text-secondary] hover:text-[--text-primary] transition-colors">
@@ -327,12 +327,12 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
             )}
 
             <button onClick={handleVerify} disabled={verifying} className="drib-btn-primary w-full flex items-center justify-center gap-2 py-3.5">
-              {verifying ? <><Loader2 size={17} className="animate-spin" /> Verifying…</> : <><CheckCircle2 size={17} /> Verify Payment</>}
+              {verifying ? <><Loader2 size={17} className="animate-spin" /> Verifying�</> : <><CheckCircle2 size={17} /> Verify Payment</>}
             </button>
           </div>
         )}
 
-        {/* ── Step: Success ── */}
+        {/* -- Step: Success -- */}
         {step === "success" && (
           <div className="drib-card p-8 text-center">
             <div className="w-16 h-16 bg-[#e6f4ec] rounded-full flex items-center justify-center mx-auto mb-5">
@@ -346,7 +346,7 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
                 {[
                   { label: "Amount Paid", value: "K150 ZMW" },
                   { label: "Plan", value: "Premium" },
-                  { label: "Receipt Number", value: result?.receiptNumber ?? "—" },
+                  { label: "Receipt Number", value: result?.receiptNumber ?? "�" },
                   { label: "Valid For", value: "30 days" },
                 ].map(({ label, value }) => (
                   <div key={label}>
@@ -363,11 +363,11 @@ export default function PaymentPageClient({ userName, isRenewal, daysRemaining }
           </div>
         )}
 
-        {/* ── Step: Failed ── */}
+        {/* -- Step: Failed -- */}
         {step === "failed" && (
           <div className="drib-card p-8 text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-5">
-              <span className="text-3xl">✗</span>
+              <span className="text-3xl">?</span>
             </div>
             <h2 className="text-[--text-primary] font-bold text-2xl mb-2">Payment Failed</h2>
             <p className="text-[--text-secondary] mb-6 text-sm">Your payment could not be processed. Please try again or contact support.</p>

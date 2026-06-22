@@ -1,4 +1,4 @@
-Ôªø"use client";
+"use client";
 
 import { useState } from "react";
 import { User, Pencil } from "lucide-react";
@@ -18,7 +18,7 @@ interface ProfileSectionProps {
 export default function ProfileSection({ user }: ProfileSectionProps) {
   const [showModal, setShowModal] = useState(false);
 
-  // Fields that are still blank ‚Äî used to decide whether to nudge the user
+  // Fields that are still blank ó used to decide whether to nudge the user
   const missingFields = [
     !user.name && "Full Name",
     !user.school && "School",
@@ -26,10 +26,10 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
   ].filter(Boolean) as string[];
 
   const fields = [
-    { label: "Full Name", value: user.name ?? "‚Äî" },
+    { label: "Full Name", value: user.name ?? "ó" },
     { label: "Email", value: user.email },
-    { label: "School", value: user.school ?? "‚Äî" },
-    { label: "Province", value: user.province ?? "‚Äî" },
+    { label: "School", value: user.school ?? "ó" },
+    { label: "Province", value: user.province ?? "ó" },
     {
       label: "Member Since",
       value: new Date(user.createdAt).toLocaleDateString("en-ZM", {
@@ -44,8 +44,8 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
       <div className="drib-card p-6 mb-5">
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-[#fce4ef] rounded-xl flex items-center justify-center">
-              <User size={16} className="text-[#ea4c89]" />
+            <div className="w-9 h-9 bg-[#e6f4ec] rounded-xl flex items-center justify-center">
+              <User size={16} className="text-[#00A344]" />
             </div>
             <h2 className="text-[--text-primary] font-semibold">Profile</h2>
           </div>
@@ -54,7 +54,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
           {user.isGoogleAccount && (
             <button
               onClick={() => setShowModal(true)}
-              className="flex items-center gap-1.5 text-xs font-medium text-[#ea4c89] hover:text-[#d63f7a] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#fce4ef]"
+              className="flex items-center gap-1.5 text-xs font-medium text-[#00A344] hover:text-[#d63f7a] transition-colors px-3 py-1.5 rounded-lg hover:bg-[#e6f4ec]"
             >
               <Pencil size={12} />
               Edit
@@ -65,7 +65,7 @@ export default function ProfileSection({ user }: ProfileSectionProps) {
         {/* Nudge banner if Google user has missing info */}
         {user.isGoogleAccount && missingFields.length > 0 && (
           <div className="mb-4 flex items-start gap-3 bg-[#fffbf0] border border-[#f6d860] rounded-xl px-4 py-3">
-            <span className="text-base leading-none mt-0.5">‚úèÔ∏è</span>
+            <span className="text-base leading-none mt-0.5">??</span>
             <div className="flex-1 min-w-0">
               <p className="text-[--text-primary] text-xs font-medium">
                 Complete your profile

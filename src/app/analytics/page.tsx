@@ -1,4 +1,4 @@
-﻿import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import {
@@ -65,7 +65,7 @@ export default async function AnalyticsPage() {
     "Form 5", "Form 6",
   ];
 
-  // Migrate old Grade 8–12 labels to the current CBC Form system
+  // Migrate old Grade 8�12 labels to the current CBC Form system
   const GRADE_MIGRATION: Record<string, string> = {
     "Grade 8":  "Form 1",
     "Grade 9":  "Form 2",
@@ -129,7 +129,7 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <KpiCard
           icon={BookOpen} label="Total Plans" value={totalPlans}
-          accent="#ea4c89" accentBg="#fce4ef"
+          accent="#00A344" accentBg="#e6f4ec"
         />
         <KpiCard
           icon={Calendar} label="This Month" value={thisMonthPlans}
@@ -158,7 +158,7 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <div className="lg:col-span-2 drib-card p-5">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-[--text-primary] font-semibold">Activity — Last 7 Days</h2>
+            <h2 className="text-[--text-primary] font-semibold">Activity � Last 7 Days</h2>
             <span className="text-[--text-muted] text-xs">Plans per day</span>
           </div>
           <div className="flex items-end gap-2 h-36">
@@ -169,7 +169,7 @@ export default async function AnalyticsPage() {
                   className="w-full rounded-t-lg transition-all duration-500"
                   style={{
                     height: `${Math.max((day.count / maxActivity) * 100, day.count > 0 ? 8 : 4)}%`,
-                    background: day.count > 0 ? "linear-gradient(to top, #ea4c89, #f082ac)" : "#f0f0f0",
+                    background: day.count > 0 ? "linear-gradient(to top, #00A344, #00c455)" : "#f0f0f0",
                     minHeight: "4px",
                   }}
                 />
@@ -180,7 +180,7 @@ export default async function AnalyticsPage() {
           {activityData.every((d) => d.count === 0) && (
             <p className="text-center text-[--text-muted] text-sm mt-4">
               No plans in the last 7 days.{" "}
-              <Link href="/lesson-planner" className="text-[#ea4c89] hover:underline">Create one now →</Link>
+              <Link href="/lesson-planner" className="text-[#00A344] hover:underline">Create one now ?</Link>
             </p>
           )}
         </div>
@@ -213,7 +213,7 @@ export default async function AnalyticsPage() {
                       <span className="text-[--text-muted] text-xs font-medium">{s._count.subject} <span className="text-[#c4c4ca]">({pct}%)</span></span>
                     </div>
                     <div className="h-1.5 bg-[--bg-elevated] rounded-full overflow-hidden">
-                      <div className="h-full rounded-full transition-all duration-700 bg-[#ea4c89]" style={{ width: `${pct}%` }} />
+                      <div className="h-full rounded-full transition-all duration-700 bg-[#00A344]" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 );
@@ -221,7 +221,7 @@ export default async function AnalyticsPage() {
             </div>
           ) : (
             <p className="text-[--text-muted] text-sm text-center py-8">
-              No plans yet. <Link href="/lesson-planner" className="text-[#ea4c89] hover:underline">Create your first →</Link>
+              No plans yet. <Link href="/lesson-planner" className="text-[#00A344] hover:underline">Create your first ?</Link>
             </p>
           )}
         </div>
@@ -255,8 +255,8 @@ export default async function AnalyticsPage() {
       <div className="drib-card p-5">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[--text-primary] font-semibold">Recent Plans</h2>
-          <Link href="/lesson-planner" className="text-[#ea4c89] text-xs hover:text-[#d6437a] transition-colors font-medium">
-            View all →
+          <Link href="/lesson-planner" className="text-[#00A344] text-xs hover:text-[#007531] transition-colors font-medium">
+            View all ?
           </Link>
         </div>
         {recentPlans.length > 0 ? (
@@ -264,12 +264,12 @@ export default async function AnalyticsPage() {
             {recentPlans.map((plan) => (
               <div key={plan.id} className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-[--bg-canvas] transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-8 h-8 bg-[#fce4ef] rounded-lg flex items-center justify-center shrink-0">
-                    <BookOpen size={13} className="text-[#ea4c89]" />
+                  <div className="w-8 h-8 bg-[#e6f4ec] rounded-lg flex items-center justify-center shrink-0">
+                    <BookOpen size={13} className="text-[#00A344]" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[--text-primary] text-sm font-medium truncate">{plan.topic}</p>
-                    <p className="text-[--text-muted] text-xs">{plan.subject} · {plan.grade}</p>
+                    <p className="text-[--text-muted] text-xs">{plan.subject} � {plan.grade}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5 text-[--text-muted] text-xs shrink-0 ml-4">
@@ -292,9 +292,9 @@ export default async function AnalyticsPage() {
 
       {/* Premium upsell */}
       {!isPremium && (
-        <div className="mt-6 drib-card p-6 flex items-center gap-5 border-[#f5b8d4] bg-gradient-to-r from-[#fce4ef]/50 to-white">
-          <div className="w-11 h-11 bg-[#fce4ef] rounded-xl flex items-center justify-center shrink-0">
-            <Crown size={20} className="text-[#ea4c89]" />
+        <div className="mt-6 drib-card p-6 flex items-center gap-5 border-[#86efac] bg-gradient-to-r from-[#e6f4ec]/50 to-white">
+          <div className="w-11 h-11 bg-[#e6f4ec] rounded-xl flex items-center justify-center shrink-0">
+            <Crown size={20} className="text-[#00A344]" />
           </div>
           <div className="flex-1">
             <p className="text-[--text-primary] font-semibold mb-1">Unlock Advanced Analytics</p>

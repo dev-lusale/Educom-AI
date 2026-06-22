@@ -127,134 +127,123 @@ async def lifespan(app: FastAPI):
         logger.warning(f"  AI provider check failed: {e}")
 
     # Auto-ingest curriculum_docs directory on startup
-    # Uses a folder-content hash to detect new/changed files — avoids
-    # redundant re-ingestion on every redeploy while ensuring new papers
-    # are always picked up.
-    try:
-        from rag.exam_paper_parser import build_exam_paper_metadata
-        from rag.document_processor import DocumentProcessor
-        from vector_db.chroma_client import get_chroma_client as _get_chroma
+    # Skipped if SKIP_AUTO_INGEST=true (set on low-memory instances like Railway hobby plan).
+    # Use POST /api/curriculum/ingest-directory to trigger ingestion manually after startup.
+    skip_auto_ingest = os.environ.get("SKIP_AUTO_INGEST", "false").lower() == "true"
+    if skip_auto_ingest:
+        logger.info("  SKIP_AUTO_INGEST=true — skipping background ingestion on startup.")
+        logger.info("  Trigger manually: POST /api/curriculum/ingest-directory")
+    else:
+        try:
+            from rag.exam_paper_parser import build_exam_paper_metadata
+            from rag.document_processor import DocumentProcessor
+            from vector_db.chroma_client import get_chroma_client as _get_chroma
 
-        _chroma      = _get_chroma()
-        docs_dir     = settings.curriculum_docs_dir
-        supported    = {".pdf", ".docx", ".doc", ".txt"}
+            _chroma      = _get_chroma()
+            docs_dir     = settings.curriculum_docs_dir
+            supported    = {".pdf", ".docx", ".doc", ".txt"}
 
-        if os.path.exists(docs_dir):
-            all_doc_files = [
-                f for f in Path(docs_dir).rglob("*")
-                if f.is_file() and f.suffix.lower() in supported
-            ]
+            if os.path.exists(docs_dir):
+                all_doc_files = [
+                    f for f in Path(docs_dir).rglob("*")
+                    if f.is_file() and f.suffix.lower() in supported
+                ]
 
-            # Separate exam papers from general curriculum docs
-            exam_papers_dir  = Path(docs_dir) / "exam_papers"
-            exam_paper_files = [
-                f for f in all_doc_files
-                if f.parent == exam_papers_dir or "exam_paper" in str(f.parent).lower()
-            ]
-            other_doc_files  = [f for f in all_doc_files if f not in exam_paper_files]
+                exam_papers_dir  = Path(docs_dir) / "exam_papers"
+                exam_paper_files = [
+                    f for f in all_doc_files
+                    if f.parent == exam_papers_dir or "exam_paper" in str(f.parent).lower()
+                ]
+                other_doc_files  = [f for f in all_doc_files if f not in exam_paper_files]
 
-            logger.info(
-                f"  Found {len(all_doc_files)} curriculum documents "
-                f"({len(exam_paper_files)} exam papers, {len(other_doc_files)} other)"
-            )
-
-            # ── Folder-content hash: SHA1 of sorted filename+size pairs ─────
-            # Changes only when files are added, removed, or replaced.
-            def _folder_hash(files: list) -> str:
-                sig = "|".join(
-                    sorted(f"{f.name}:{f.stat().st_size}" for f in files)
-                )
-                import hashlib
-                return hashlib.sha1(sig.encode()).hexdigest()[:12]
-
-            # Hash stored in a tiny sentinel file next to the vector DB
-            sentinel_path = Path(settings.chroma_persist_dir) / ".ingest_hash"
-
-            def _read_sentinel() -> str:
-                try:
-                    return sentinel_path.read_text().strip()
-                except Exception:
-                    return ""
-
-            def _write_sentinel(h: str):
-                try:
-                    sentinel_path.write_text(h)
-                except Exception:
-                    pass
-
-            current_hash  = _folder_hash(all_doc_files)
-            previous_hash = _read_sentinel()
-            already_indexed = _chroma.get_collection_count("curriculum")
-
-            needs_ingest = (
-                current_hash != previous_hash
-            )
-
-            if not needs_ingest:
                 logger.info(
-                    f"  Curriculum already up-to-date: {already_indexed} chunks, "
-                    f"hash={current_hash}. Skipping ingestion."
-                )
-            else:
-                logger.info(
-                    f"  New/changed documents detected (hash {previous_hash!r} → {current_hash!r}). "
-                    f"Starting background ingestion of {len(all_doc_files)} files…"
+                    f"  Found {len(all_doc_files)} curriculum documents "
+                    f"({len(exam_paper_files)} exam papers, {len(other_doc_files)} other)"
                 )
 
-                def _ingest_all():
-                    processor = DocumentProcessor()
-                    success = failed = 0
+                def _folder_hash(files: list) -> str:
+                    import hashlib
+                    sig = "|".join(sorted(f"{f.name}:{f.stat().st_size}" for f in files))
+                    return hashlib.sha1(sig.encode()).hexdigest()[:12]
 
-                    # ── 1. Exam papers — rich filename metadata ───────────────
-                    for file_path in exam_paper_files:
-                        try:
-                            meta = build_exam_paper_metadata(str(file_path))
-                            processor.ingest_document(
-                                str(file_path), "curriculum", meta
-                            )
-                            success += 1
-                            logger.info(
-                                f"  [exam_paper] ✓ {file_path.name} "
-                                f"→ {meta.get('subject','')} {meta.get('grade','')} {meta.get('year','')}"
-                            )
-                        except Exception as exc:
-                            failed += 1
-                            logger.warning(f"  [exam_paper] ✗ {file_path.name}: {exc}")
+                sentinel_path = Path(settings.chroma_persist_dir) / ".ingest_hash"
 
-                    # ── 2. Other curriculum docs (syllabi, guides, etc.) ──────
-                    for file_path in other_doc_files:
-                        try:
-                            subfolder = file_path.parent.name
-                            meta: dict = {}
-                            if subfolder.lower() != Path(docs_dir).name.lower():
-                                meta["category"] = subfolder
-                            processor.ingest_document(
-                                str(file_path), "curriculum", meta
-                            )
-                            success += 1
-                            logger.info(f"  [curriculum] ✓ {file_path.name}")
-                        except Exception as exc:
-                            failed += 1
-                            logger.warning(f"  [curriculum] ✗ {file_path.name}: {exc}")
+                def _read_sentinel() -> str:
+                    try:
+                        return sentinel_path.read_text().strip()
+                    except Exception:
+                        return ""
 
-                    final_count = _chroma.get_collection_count("curriculum")
+                def _write_sentinel(h: str):
+                    try:
+                        sentinel_path.write_text(h)
+                    except Exception:
+                        pass
+
+                current_hash    = _folder_hash(all_doc_files)
+                previous_hash   = _read_sentinel()
+                needs_ingest    = current_hash != previous_hash
+
+                if not needs_ingest:
+                    already_indexed = _chroma.get_collection_count("curriculum")
                     logger.info(
-                        f"  Ingestion complete — {success} succeeded, {failed} failed "
-                        f"| Total chunks in DB: {final_count}"
+                        f"  Curriculum already up-to-date: {already_indexed} chunks, "
+                        f"hash={current_hash}. Skipping ingestion."
                     )
-                    _write_sentinel(current_hash)
+                else:
+                    logger.info(
+                        f"  New/changed documents detected (hash {previous_hash!r} → {current_hash!r}). "
+                        f"Starting background ingestion of {len(all_doc_files)} files…"
+                    )
 
-                executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ingest")
-                asyncio.get_running_loop().run_in_executor(executor, _ingest_all)
-                logger.info(
-                    "  Background ingestion started. "
-                    "Poll GET /api/curriculum/ingest-status for progress."
-                )
-        else:
-            logger.info(f"  curriculum_docs directory not found at: {docs_dir}")
+                    def _ingest_all():
+                        processor = DocumentProcessor()
+                        success = failed = 0
 
-    except Exception as e:
-        logger.warning(f"  Curriculum ingestion startup error: {e}", exc_info=True)
+                        for file_path in exam_paper_files:
+                            try:
+                                meta = build_exam_paper_metadata(str(file_path))
+                                processor.ingest_document(str(file_path), "curriculum", meta)
+                                success += 1
+                                logger.info(
+                                    f"  [exam_paper] ✓ {file_path.name} "
+                                    f"→ {meta.get('subject','')} {meta.get('grade','')} {meta.get('year','')}"
+                                )
+                            except Exception as exc:
+                                failed += 1
+                                logger.warning(f"  [exam_paper] ✗ {file_path.name}: {exc}")
+
+                        for file_path in other_doc_files:
+                            try:
+                                subfolder = file_path.parent.name
+                                meta: dict = {}
+                                if subfolder.lower() != Path(docs_dir).name.lower():
+                                    meta["category"] = subfolder
+                                processor.ingest_document(str(file_path), "curriculum", meta)
+                                success += 1
+                                logger.info(f"  [curriculum] ✓ {file_path.name}")
+                            except Exception as exc:
+                                failed += 1
+                                logger.warning(f"  [curriculum] ✗ {file_path.name}: {exc}")
+
+                        final_count = _chroma.get_collection_count("curriculum")
+                        logger.info(
+                            f"  Ingestion complete — {success} succeeded, {failed} failed "
+                            f"| Total chunks in DB: {final_count}"
+                        )
+                        _write_sentinel(current_hash)
+
+                    executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ingest")
+                    asyncio.get_running_loop().run_in_executor(executor, _ingest_all)
+                    logger.info(
+                        "  Background ingestion started. "
+                        "Poll GET /api/curriculum/ingest-status for progress."
+                    )
+            else:
+                logger.info(f"  curriculum_docs directory not found at: {docs_dir}")
+
+        except Exception as e:
+            logger.warning(f"  Curriculum ingestion startup error: {e}", exc_info=True)
 
     logger.info("  Educom AI Backend is ready!")
     logger.info("=" * 60)

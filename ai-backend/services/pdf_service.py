@@ -128,6 +128,56 @@ def _make_styles():
             textColor=_rl_color(DGRAY),
             alignment=rl["TA_CENTER"]),
         "normal": ss["Normal"],
+
+        # ── Lesson plan specific ─────────────────────────────────────────
+        "lp_school": PS("LPSchool",
+            fontName="Helvetica-Bold", fontSize=13,
+            textColor=_rl_color(NAVY),
+            alignment=rl["TA_CENTER"], spaceAfter=2),
+        "lp_dept": PS("LPDept",
+            fontName="Helvetica-Bold", fontSize=11,
+            textColor=_rl_color(NAVY),
+            alignment=rl["TA_CENTER"], spaceAfter=1),
+        "lp_section": PS("LPSection",
+            fontName="Helvetica", fontSize=10,
+            textColor=_rl_color(NAVY),
+            alignment=rl["TA_CENTER"], spaceAfter=4),
+        "lp_bio_label": PS("LPBioLabel",
+            fontName="Helvetica-Bold", fontSize=9,
+            textColor=_rl_color(BLACK), spaceAfter=1),
+        "lp_bio_value": PS("LPBioValue",
+            fontName="Helvetica", fontSize=9,
+            textColor=_rl_color(BLACK), spaceAfter=1),
+        "lp_objectives": PS("LPObjectives",
+            fontName="Times-Roman", fontSize=9,
+            leading=14, spaceAfter=2,
+            alignment=rl["TA_JUSTIFY"]),
+        "lp_col_header": PS("LPColHeader",
+            fontName="Helvetica-Bold", fontSize=9,
+            textColor=_rl_color(WHITE),
+            alignment=rl["TA_CENTER"], spaceAfter=0),
+        "lp_stage": PS("LPStage",
+            fontName="Helvetica-Bold", fontSize=9,
+            textColor=_rl_color(NAVY),
+            alignment=rl["TA_LEFT"], spaceAfter=2),
+        "lp_stage_time": PS("LPStageTime",
+            fontName="Helvetica", fontSize=8,
+            textColor=_rl_color(DGRAY),
+            alignment=rl["TA_LEFT"], spaceAfter=0),
+        "lp_cell": PS("LPCell",
+            fontName="Times-Roman", fontSize=9,
+            leading=13, spaceAfter=2,
+            alignment=rl["TA_LEFT"]),
+        "lp_cell_bold": PS("LPCellBold",
+            fontName="Helvetica-Bold", fontSize=9,
+            leading=13, spaceAfter=0,
+            alignment=rl["TA_LEFT"]),
+        "lp_eval_label": PS("LPEvalLabel",
+            fontName="Helvetica-Bold", fontSize=10,
+            textColor=_rl_color(NAVY), spaceAfter=2),
+        "lp_eval_box": PS("LPEvalBox",
+            fontName="Times-Roman", fontSize=9,
+            leading=14, spaceAfter=2),
     }
     return styles
 
@@ -573,9 +623,35 @@ def generate_marking_scheme_pdf(ms_data: dict) -> bytes:
 
 # ── Lesson Plan PDF ───────────────────────────────────────────────────────────
 
+def _lp_bullet_paragraphs(items: list, style) -> list:
+    """Convert a list of strings into bullet Paragraph objects for a table cell."""
+    paras = []
+    for item in items:
+        if item:
+            paras.append(item.__class__(f"• {item}", style) if hasattr(item, "__class__") and not isinstance(item, str) else None)
+    # Simple version: just return joined text as one paragraph
+    return items
+
+
+def _lp_cell(items: list, style) -> "Paragraph":
+    """Build a single Paragraph from a list of bullet items for a table cell."""
+    rl = _get_rl()
+    Paragraph = rl["Paragraph"]
+    if not items:
+        return Paragraph("", style)
+    text = "<br/>".join(f"• {line}" for line in items if line)
+    return Paragraph(text, style)
+
+
 def generate_lesson_plan_pdf(plan_data: dict) -> bytes:
     """
-    Generate a professional lesson plan PDF matching the CBC format.
+    Generate a lesson plan PDF matching the sample CBC format:
+      - School / Department header block
+      - Biographic data section (name, date, class, subject, topic, objectives, references, teaching aids)
+      - 4-column lesson table: Stage & Time | Teacher Activity | Pupil Activity | Materials & Techniques
+      - Conclusion rows (cognitive closure + social closure) inside the same table
+      - Evaluation box
+      - Signature block
 
     Args:
         plan_data: Dict matching the LessonPlanData Pydantic model.
@@ -583,156 +659,279 @@ def generate_lesson_plan_pdf(plan_data: dict) -> bytes:
     Returns:
         PDF as bytes.
     """
-    rl     = _get_rl()
-    buffer = io.BytesIO()
-    styles = _make_styles()
-    Paragraph  = rl["Paragraph"]
-    Spacer     = rl["Spacer"]
-    Table      = rl["Table"]
-    TableStyle = rl["TableStyle"]
-    HRFlowable = rl["HRFlowable"]
+    rl           = _get_rl()
+    buffer       = io.BytesIO()
+    styles       = _make_styles()
+    Paragraph    = rl["Paragraph"]
+    Spacer       = rl["Spacer"]
+    Table        = rl["Table"]
+    TableStyle   = rl["TableStyle"]
+    HRFlowable   = rl["HRFlowable"]
     KeepTogether = rl["KeepTogether"]
-    cm         = rl["cm"]
-    colors     = rl["colors"]
+    cm           = rl["cm"]
+    colors       = rl["colors"]
 
-    subject = plan_data.get("subject", "Subject")
-    grade   = plan_data.get("grade", "Grade")
-    topic   = plan_data.get("topic", "Topic")
-    doc     = _make_doc(buffer, f"{grade} {subject} — {topic} Lesson Plan")
+    # Convenience aliases for lesson-plan styles
+    S = styles  # shorthand
+
+    subject      = plan_data.get("subject", "Subject")
+    grade        = plan_data.get("grade", "Grade")
+    topic        = plan_data.get("topic", "Topic")
+    school       = plan_data.get("school", "")
+    department   = plan_data.get("department", "")
+    teacher_name = plan_data.get("teacherName", "")
+    date_str     = plan_data.get("date", "")
+    duration     = plan_data.get("duration", "")
+    enrollment   = plan_data.get("enrollment", "")
+    references   = plan_data.get("references", "")
+    objectives   = plan_data.get("objectives", "")
+    lesson_title = plan_data.get("lessonTitle", topic)
+    lesson_type  = plan_data.get("lessonType", "")
+
+    aids  = plan_data.get("teachingAids", [])
+    steps = plan_data.get("steps", [])
+    hw    = plan_data.get("homework", {})
+
+    doc = _make_doc(buffer, f"{grade} {subject} — {topic} Lesson Plan")
 
     story = []
 
-    # ── Header band ─────────────────────────────────────────────────────────
-    header_data = [[Paragraph("EduCom AI — Lesson Plan", styles["header_sub"])]]
-    t = Table(header_data, colWidths=["100%"])
-    t.setStyle(TableStyle([
-        ("BACKGROUND", (0, 0), (-1, -1), _rl_color(NAVY)),
-        ("TEXTCOLOR",  (0, 0), (-1, -1), colors.white),
-        ("ALIGN",      (0, 0), (-1, -1), "CENTER"),
-        ("TOPPADDING", (0, 0), (-1, -1), 6),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
-    ]))
-    story.append(t)
-    story.append(Spacer(1, 0.3 * cm))
-    story.append(Paragraph("ZAMBIA COMPETENCY-BASED CURRICULUM", styles["header_title"]))
-    story.append(Paragraph("LESSON PLAN", styles["header_sub"]))
-    story.append(Spacer(1, 0.2 * cm))
-    story.append(HRFlowable(width="100%", thickness=2, color=_rl_color(GOLD)))
-    story.append(Spacer(1, 0.3 * cm))
+    # ── School / Department header ──────────────────────────────────────────
+    if school:
+        story.append(Paragraph(school.upper(), S["lp_school"]))
+    if department:
+        story.append(Paragraph(f"DEPARTMENT OF {department.upper()}", S["lp_dept"]))
+    story.append(Paragraph("ZAMBIA COMPETENCY-BASED CURRICULUM", S["lp_section"]))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=_rl_color(NAVY)))
+    story.append(Spacer(1, 0.25 * cm))
 
-    # ── Administrative info table ────────────────────────────────────────────
-    info = [
-        ["School:", plan_data.get("school", ""), "Date:", plan_data.get("date", "")],
-        ["Teacher:", plan_data.get("teacherName", ""), "Department:", plan_data.get("department", "")],
-        ["Grade:", plan_data.get("grade", ""), "Subject:", plan_data.get("subject", "")],
-        ["Topic:", plan_data.get("topic", ""), "Duration:", plan_data.get("duration", "")],
-        ["Enrollment:", plan_data.get("enrollment", ""), "References:", plan_data.get("references", "")],
+    # ── Biographic data (two-column key/value layout) ───────────────────────
+    def bio_row(label1, val1, label2, val2):
+        return [
+            Paragraph(f"<b>{label1}</b>", S["lp_bio_label"]),
+            Paragraph(str(val1), S["lp_bio_value"]),
+            Paragraph(f"<b>{label2}</b>", S["lp_bio_label"]),
+            Paragraph(str(val2), S["lp_bio_value"]),
+        ]
+
+    # Determine lesson type label from step data or explicit field
+    type_label = lesson_type
+    if not type_label and steps:
+        step2_title = steps[1].get("title", "") if len(steps) > 1 else ""
+        if step2_title:
+            # Extract type keyword from step 2 title (e.g. "Development — Structure")
+            parts = step2_title.split("—")
+            type_label = parts[-1].strip() if len(parts) > 1 else step2_title
+
+    bio_data = [
+        bio_row("SUBJECT:", subject, "DATE:", date_str),
+        bio_row("TEACHER:", teacher_name, "DURATION:", duration),
+        bio_row("CLASS/GRADE:", grade, "NO. OF LEARNERS:", enrollment),
+        bio_row("TYPE OF LESSON:", type_label or "—", "REFERENCES:", references),
+        bio_row("TOPIC:", topic, "LESSON:", lesson_title),
     ]
-    info_table = Table(info, colWidths=[2.5 * cm, None, 2.5 * cm, None])
-    info_table.setStyle(TableStyle([
-        ("FONTNAME",  (0, 0), (0, -1), "Helvetica-Bold"),
-        ("FONTNAME",  (2, 0), (2, -1), "Helvetica-Bold"),
-        ("FONTNAME",  (1, 0), (1, -1), "Times-Roman"),
-        ("FONTNAME",  (3, 0), (3, -1), "Times-Roman"),
-        ("FONTSIZE",  (0, 0), (-1, -1), 9),
-        ("BACKGROUND",(0, 0), (0, -1), _rl_color(LGRAY)),
-        ("BACKGROUND",(2, 0), (2, -1), _rl_color(LGRAY)),
-        ("VALIGN",    (0, 0), (-1, -1), "TOP"),
-        ("TOPPADDING",(0, 0), (-1, -1), 3),
-        ("BOTTOMPADDING",(0, 0), (-1, -1), 3),
-        ("GRID",      (0, 0), (-1, -1), 0.3, _rl_color(DGRAY)),
-    ]))
-    story.append(info_table)
-    story.append(Spacer(1, 0.4 * cm))
 
-    # ── Objectives ───────────────────────────────────────────────────────────
-    story.append(Paragraph("LEARNING OBJECTIVES", styles["section_label"]))
-    story.append(Paragraph(plan_data.get("objectives", ""), styles["q_body"]))
-    story.append(Spacer(1, 0.3 * cm))
-
-    # ── Teaching aids ────────────────────────────────────────────────────────
-    aids = plan_data.get("teachingAids", [])
+    # Teaching aids on its own row spanning columns 2-4
     if aids:
-        story.append(Paragraph("TEACHING AND LEARNING MATERIALS", styles["section_label"]))
-        story.append(Paragraph("  •  ".join(aids), styles["q_body"]))
-        story.append(Spacer(1, 0.3 * cm))
+        aids_text = ",  ".join(aids)
+        bio_data.append([
+            Paragraph("<b>TEACHING AIDS:</b>", S["lp_bio_label"]),
+            Paragraph(aids_text, S["lp_bio_value"]),
+            Paragraph("", S["lp_bio_label"]),
+            Paragraph("", S["lp_bio_value"]),
+        ])
 
-    # ── 3-Step lesson table ──────────────────────────────────────────────────
-    story.append(Paragraph("LESSON STEPS", styles["section_label"]))
+    bio_col_widths = [3.2 * cm, None, 3.2 * cm, None]
+    bio_table = Table(bio_data, colWidths=bio_col_widths)
+    bio_style = [
+        ("FONTSIZE",    (0, 0), (-1, -1), 9),
+        ("VALIGN",      (0, 0), (-1, -1), "TOP"),
+        ("TOPPADDING",  (0, 0), (-1, -1), 3),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
+        ("LINEBELOW",   (0, 0), (-1, -1), 0.25, _rl_color(LGRAY)),
+    ]
+    # Span teaching aids value across columns 1–3
+    if aids:
+        last_row = len(bio_data) - 1
+        bio_style.append(("SPAN", (1, last_row), (3, last_row)))
 
-    col_widths = [2.2 * cm, None, None]
-    step_header = [["Step / Time", "Teacher Activities", "Learner Activities"]]
-    step_rows = [step_header[0]]
+    bio_table.setStyle(TableStyle(bio_style))
+    story.append(bio_table)
+    story.append(Spacer(1, 0.25 * cm))
 
-    steps = plan_data.get("steps", [])
+    # ── Objectives ──────────────────────────────────────────────────────────
+    story.append(Paragraph("<b>OBJECTIVES:</b>", S["lp_bio_label"]))
+    story.append(Paragraph(objectives, S["lp_objectives"]))
+    story.append(HRFlowable(width="100%", thickness=0.75, color=_rl_color(LGRAY)))
+    story.append(Spacer(1, 0.2 * cm))
+
+    # ── 4-Column lesson table ────────────────────────────────────────────────
+    # Columns: Stage & Time | Teacher Activity | Pupil Activity | Materials & Techniques
+    COL_STAGE  = 3.0 * cm
+    COL_TEACH  = None       # flexible
+    COL_PUPIL  = None       # flexible
+    COL_MATS   = 3.5 * cm
+    col_widths = [COL_STAGE, COL_TEACH, COL_PUPIL, COL_MATS]
+
+    # Header row
+    lesson_rows = [[
+        Paragraph("STAGE &amp; TIME", S["lp_col_header"]),
+        Paragraph("TEACHER ACTIVITY", S["lp_col_header"]),
+        Paragraph("PUPIL ACTIVITY", S["lp_col_header"]),
+        Paragraph("MATERIALS &amp; CLASS TECHNIQUES", S["lp_col_header"]),
+    ]]
+    table_style_cmds = [
+        # Header row
+        ("BACKGROUND",    (0, 0), (-1, 0), _rl_color(NAVY)),
+        ("TEXTCOLOR",     (0, 0), (-1, 0), colors.white),
+        ("ALIGN",         (0, 0), (-1, 0), "CENTER"),
+        ("VALIGN",        (0, 0), (-1, 0), "MIDDLE"),
+        ("FONTNAME",      (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTSIZE",      (0, 0), (-1, -1), 9),
+        ("TOPPADDING",    (0, 0), (-1, -1), 4),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 4),
+        ("RIGHTPADDING",  (0, 0), (-1, -1), 4),
+        ("VALIGN",        (0, 1), (-1, -1), "TOP"),
+        ("GRID",          (0, 0), (-1, -1), 0.4, _rl_color(DGRAY)),
+    ]
+
+    row_idx = 1  # track row number for span/background commands
+
     for step in steps:
         step_num   = step.get("stepNumber", "")
         step_title = step.get("title", "")
         step_dur   = step.get("duration", "")
         t_acts     = step.get("teacherActivities", [])
         l_acts     = step.get("learnerActivities", [])
+        competencies = step.get("competencies", [])
+        step_aids  = step.get("teachingAids", [])
 
-        max_rows = max(len(t_acts), len(l_acts))
-        for i in range(max_rows):
-            ta_text = f"• {t_acts[i]}" if i < len(t_acts) else ""
-            la_text = f"• {l_acts[i]}" if i < len(l_acts) else ""
-            if i == 0:
-                step_cell = Paragraph(
-                    f"<b>Step {step_num}</b><br/>{step_title}<br/><font size='8'>{step_dur}</font>",
-                    styles["q_number"]
-                )
-                step_rows.append([step_cell, Paragraph(ta_text, styles["q_body"]), Paragraph(la_text, styles["q_body"])])
-            else:
-                step_rows.append(["", Paragraph(ta_text, styles["q_body"]), Paragraph(la_text, styles["q_body"])])
+        # Build materials/techniques cell combining step aids + competencies
+        mats_parts = []
+        if step_aids:
+            mats_parts.extend(step_aids)
+        if competencies:
+            mats_parts.extend(competencies)
+        if not mats_parts and aids:
+            # Fall back to global teaching aids for this step
+            mats_parts = list(aids)
 
-    steps_table = Table(step_rows, colWidths=col_widths)
-    style_cmds = [
-        ("BACKGROUND", (0, 0), (-1, 0), _rl_color(NAVY)),
-        ("TEXTCOLOR",  (0, 0), (-1, 0), colors.white),
-        ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
-        ("FONTSIZE",   (0, 0), (-1, -1), 9),
-        ("VALIGN",     (0, 0), (-1, -1), "TOP"),
-        ("GRID",       (0, 0), (-1, -1), 0.3, _rl_color(DGRAY)),
-        ("TOPPADDING", (0, 0), (-1, -1), 3),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 3),
-    ]
-    # Shade step header cells (first column per step)
-    row_cursor = 1
-    for step in steps:
-        t_acts = step.get("teacherActivities", [])
-        l_acts = step.get("learnerActivities", [])
-        step_height = max(len(t_acts), len(l_acts))
-        if step_height > 0:
-            style_cmds.append(("BACKGROUND", (0, row_cursor), (0, row_cursor + step_height - 1), _rl_color(LGRAY)))
-            if step_height > 1:
-                style_cmds.append(("SPAN", (0, row_cursor), (0, row_cursor + step_height - 1)))
-        row_cursor += step_height
+        # Stage cell: title + time
+        stage_cell = Paragraph(
+            f"<b>{step_title}</b><br/><font size='8' color='#{int(DGRAY[0]*255):02x}{int(DGRAY[1]*255):02x}{int(DGRAY[2]*255):02x}'>{step_dur}</font>",
+            S["lp_stage"]
+        )
 
-    steps_table.setStyle(TableStyle(style_cmds))
-    story.append(steps_table)
+        teacher_cell = _lp_cell(t_acts, S["lp_cell"])
+        pupil_cell   = _lp_cell(l_acts, S["lp_cell"])
+        mats_cell    = _lp_cell(mats_parts, S["lp_cell"])
+
+        lesson_rows.append([stage_cell, teacher_cell, pupil_cell, mats_cell])
+
+        # Shade stage column for this step row
+        table_style_cmds.append(("BACKGROUND", (0, row_idx), (0, row_idx), _rl_color(LGRAY)))
+
+        row_idx += 1
+
+    # ── Conclusion rows (inside the same table) ──────────────────────────────
+    # Only add auto-generated conclusion rows if no step already covers conclusion/evaluation.
+    # Detect whether the AI data already includes a conclusion step.
+    _conclusion_keywords = {"conclusion", "closure", "evaluation", "close"}
+    _has_conclusion_step = any(
+        any(kw in step.get("title", "").lower() for kw in _conclusion_keywords)
+        for step in steps
+    )
+
+    if not _has_conclusion_step:
+        conclusion_teacher = [
+            "Ask learners what they have learnt today in this lesson.",
+            "Emphasise main points covered in the lesson.",
+            "Praise and thank learners for participating actively.",
+            "Ask learners to clap for themselves.",
+        ]
+        conclusion_pupil = [
+            "Answer teacher's questions about what was learned.",
+            "Listen attentively.",
+            "Clap for themselves.",
+        ]
+
+        # Add homework into conclusion if hw exists
+        hw_desc = hw.get("description", "") if isinstance(hw, dict) else ""
+        if hw_desc:
+            conclusion_teacher.insert(2, f"Assign homework: {hw_desc}")
+            conclusion_pupil.insert(2, "Write down homework assignment in exercise books.")
+
+        split = len(conclusion_teacher) // 2 + 1
+
+        # Cognitive closure row
+        lesson_rows.append([
+            Paragraph("<b>CONCLUSION</b><br/><b>Cognitive Closure</b>", S["lp_stage"]),
+            _lp_cell(conclusion_teacher[:split], S["lp_cell"]),
+            _lp_cell(conclusion_pupil[:split], S["lp_cell"]),
+            _lp_cell([], S["lp_cell"]),
+        ])
+        table_style_cmds.append(("BACKGROUND", (0, row_idx), (0, row_idx), _rl_color(LGRAY)))
+        row_idx += 1
+
+        # Social closure row
+        lesson_rows.append([
+            Paragraph("<b>Social Closure</b>", S["lp_stage"]),
+            _lp_cell(conclusion_teacher[split:], S["lp_cell"]),
+            _lp_cell(conclusion_pupil[split:], S["lp_cell"]),
+            _lp_cell([], S["lp_cell"]),
+        ])
+        table_style_cmds.append(("BACKGROUND", (0, row_idx), (0, row_idx), _rl_color(LGRAY)))
+        row_idx += 1
+
+    lesson_table = Table(lesson_rows, colWidths=col_widths)
+    lesson_table.setStyle(TableStyle(table_style_cmds))
+    story.append(lesson_table)
+    story.append(Spacer(1, 0.35 * cm))
+
+    # ── Evaluation section ───────────────────────────────────────────────────
+    story.append(Paragraph("<b>EVALUATION</b>", S["lp_eval_label"]))
+
+    eval_lines = ["_" * 90, "_" * 90, "_" * 90]
+    eval_data  = [[Paragraph(line, S["lp_eval_box"])] for line in eval_lines]
+    eval_table = Table(eval_data, colWidths=["100%"])
+    eval_table.setStyle(TableStyle([
+        ("FONTSIZE",    (0, 0), (-1, -1), 9),
+        ("TOPPADDING",  (0, 0), (-1, -1), 2),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ("BOX",         (0, 0), (-1, -1), 0.5, _rl_color(DGRAY)),
+    ]))
+    story.append(eval_table)
     story.append(Spacer(1, 0.4 * cm))
 
-    # ── Homework ─────────────────────────────────────────────────────────────
-    hw = plan_data.get("homework", {})
-    if hw:
-        story.append(Paragraph("HOMEWORK / ASSIGNMENT", styles["section_label"]))
-        story.append(Paragraph(hw.get("description", ""), styles["q_body"]))
-        ecz_align = hw.get("eczAlignment", "")
-        if ecz_align:
-            story.append(Paragraph(f"<i>ECZ Alignment:</i>  {ecz_align}", styles["examiner_note"]))
+    # ── ECZ alignment note (from homework) ──────────────────────────────────
+    ecz_align = hw.get("eczAlignment", "") if isinstance(hw, dict) else ""
+    if ecz_align:
+        story.append(Paragraph(
+            f"<i>ECZ Examination Alignment:</i>  {ecz_align}",
+            S["examiner_note"]
+        ))
         story.append(Spacer(1, 0.3 * cm))
 
-    # ── Teacher signature block ───────────────────────────────────────────────
+    # ── Signature block ──────────────────────────────────────────────────────
+    story.append(HRFlowable(width="100%", thickness=0.5, color=_rl_color(LGRAY)))
+    story.append(Spacer(1, 0.3 * cm))
     sig_data = [
-        ["Teacher's Signature: _______________________", "Head of Department: _______________________"],
-        ["Date: ___________________", "Date: ___________________"],
+        [
+            Paragraph("Prepared by: ________________________________", S["lp_bio_value"]),
+            Paragraph("Head of Department: ________________________", S["lp_bio_value"]),
+        ],
+        [
+            Paragraph("Date: ______________________________________", S["lp_bio_value"]),
+            Paragraph("Date: ______________________________________", S["lp_bio_value"]),
+        ],
     ]
     sig_table = Table(sig_data, colWidths=["50%", "50%"])
     sig_table.setStyle(TableStyle([
-        ("FONTSIZE", (0, 0), (-1, -1), 9),
-        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("FONTSIZE",    (0, 0), (-1, -1), 9),
+        ("TOPPADDING",  (0, 0), (-1, -1), 5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
     ]))
-    story.append(Spacer(1, 0.5 * cm))
     story.append(sig_table)
 
     doc.build(story)
